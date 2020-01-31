@@ -1,0 +1,39 @@
+body {
+    background-color: lightgray;
+}
+
+.logo {
+    margin-left: 40%;
+}
+
+.navbar a:hover {
+  background-color: #000;
+}
+
+.bg-light {
+    background-color: dimgray !important;
+}
+
+.navbar a {
+
+  padding: 12px;
+  color: chocolate;
+  text-decoration: none;
+  font-size: 17px;}
+
+.navbar ul {
+    margin-left: 60%;
+}
+
+.socials {
+    position: fixed;
+    left: 0;
+    top: 40%;
+    width: auto;
+    text-align: right;
+}
+
+
+.socials img {
+  padding: 2px;
+}
