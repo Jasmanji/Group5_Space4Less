@@ -3,13 +3,46 @@
 
 <head>
     <meta charset="UTF-8">
+    <!--The link to our stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='design.css') }}">
+    <!-- this makes sure it is responsive to different screen sizes-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- link to font -->
+    <link href="https://fonts.googleapis.com/css?family=Sriracha&display=swap" rel="stylesheet">
     <title>Title</title>
 </head>
 
 
 <body>
+<header>
+    <!-- Navbar code from codepen-->
+    <div class="nav">
+        <input type="checkbox" id="nav-check">
+        <div class="nav-header">
+            <div class="nav-title">
+                Space4Less
+            </div>
+        </div>
+        <div class="nav-btn">
+            <label for="nav-check">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+        </div>
 
+        <div class="nav-links">
+            <a href="#" target="_blank">Home/Browse</a>
+            <a href="#" target="_blank">Account</a>
+            <a href="#" target="_blank">Notifications</a>
+            <a href="#" target="_blank">Post/Book</a>
+        </div>
+    </div>
+
+</header>
+
+{% block content %}
+
+{% endblock content %}
 </body>
-
-
 </html>
