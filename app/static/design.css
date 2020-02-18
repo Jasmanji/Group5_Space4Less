@@ -100,3 +100,8 @@ body {
 header{
   font-family: 'Sriracha', cursive !important;
 }
+
+h2{
+  padding-left: 20%;
+  padding-right: 20%;
+}
