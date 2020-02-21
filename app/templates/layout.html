@@ -12,17 +12,21 @@
     <title>Title</title>
 </head>
 
-
 <body>
 <header>
     <!-- Navbar code from codepen-->
-    <div class="nav">
+    <nav class="nav">
+        <!-- allows for clicking the navbar icon when the screen is small-->
         <input type="checkbox" id="nav-check">
+
+        <!-- navbar title on the left -->
         <div class="nav-header">
             <div class="nav-title">
                 Space<span style='color: red'>4</span>Less
             </div>
         </div>
+
+        <!-- design of the nav-bar icon when the screen is small-->
         <div class="nav-btn">
             <label for="nav-check">
                 <span></span>
@@ -31,19 +35,21 @@
             </label>
         </div>
 
+        <!-- navbar content on the right -->
         <div class="nav-links">
-            <a href="#" target="_blank">Home/Browse</a>
-            <a href="#" target="_blank">Account</a>
-            <a href="#" target="_blank">Notifications</a>
-            <a href="#" target="_blank">Post/Book</a>
-            <a href="#" target="_blank">Registration</a>
+            <a href="{{ url_for('main.home_page') }}"> Home/Browse</a>
+            <a href="{{ url_for('main.account') }}"> Account</a>
+            <a href="{{ url_for('main.account') }}"> Notifications</a>
+            <a href="#" target="_blank"> Post/Book </a>
+            <a href="{{ url_for('main.login') }}"> Registration</a>
         </div>
-    </div>
+    </nav>
 
 </header>
 
 {% block content %}
 
 {% endblock content %}
+
 </body>
 </html>

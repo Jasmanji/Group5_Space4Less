@@ -35,14 +35,15 @@ def signup_page():
             flash('there was something wrong with your password or email!', 'error')
     return render_template('signup.html', title='signup', form=form)
 
-
-# @bp_main.route('/blog', methods=['GET'])
-# def blog_page():
-#     forecast_info = Forecast.query.all()
-#     return render_template('blogs.html', title='blog posts', forecast=forecast_info)
-
-
 @bp_main.route("/login", methods=['GET', 'POST'])
 def login():
     form_instance = LoginForm()
     return render_template('login.html', title='login', form=form_instance)
+
+@bp_main.route("/account")
+def account():
+    return render_template('account.html', username='Aure')
+
+@bp_main.route("/notifications")
+def notifications():
+    return render_template('notifications.html')
