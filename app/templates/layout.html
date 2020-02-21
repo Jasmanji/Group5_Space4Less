@@ -9,7 +9,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- link to font -->
     <link href="https://fonts.googleapis.com/css?family=Sriracha&display=swap" rel="stylesheet">
-    <title>Title</title>
+
+    {# the title of the head will change depending on the page we are at. We can do this with an if statement #}
+    {% if title %}
+        <title> {{title}} </title>
+    {% else %}
+        <title> {{ space4less }}</title>
+    {% endif %}
+
 </head>
 
 <body>
@@ -39,7 +46,7 @@
         <div class="nav-links">
             <a href="{{ url_for('main.home_page') }}"> Home/Browse</a>
             <a href="{{ url_for('main.account') }}"> Account</a>
-            <a href="{{ url_for('main.account') }}"> Notifications</a>
+            <a href="{{ url_for('main.notifications') }}"> Notifications</a>
             <a href="#" target="_blank"> Post/Book </a>
             <a href="{{ url_for('main.login') }}"> Registration</a>
         </div>

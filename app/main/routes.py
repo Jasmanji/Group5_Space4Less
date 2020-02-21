@@ -1,8 +1,10 @@
-from flask import render_template, flash, redirect, url_for, Blueprint, request
-from sqlalchemy.exc import IntegrityError
-
 # the render template is to help us with returning an html template for a route
 # the url_for is a function within flask that will find the exact location of routes for us
+from flask import render_template, url_for, redirect, flash, Blueprint, request
+
+from sqlalchemy.exc import IntegrityError
+
+
 from app import RegistrationForm, db
 from app.main.forms import LoginForm
 from app.models import User
@@ -15,7 +17,7 @@ bp_main = Blueprint('main', __name__)
 @bp_main.route('/')
 @bp_main.route('/home')
 def home_page():
-    return render_template('home.html')
+    return render_template('home.html', title='Home Page')
 
 
 # route for signup page
@@ -33,17 +35,17 @@ def signup_page():
         except IntegrityError:
             db.session.rollback()
             flash('there was something wrong with your password or email!', 'error')
-    return render_template('signup.html', title='signup', form=form)
+    return render_template('signup.html', title='Signup Page', form=form)
 
 @bp_main.route("/login", methods=['GET', 'POST'])
 def login():
     form_instance = LoginForm()
-    return render_template('login.html', title='login', form=form_instance)
+    return render_template('login.html', title='Login Page', form=form_instance)
 
 @bp_main.route("/account")
 def account():
-    return render_template('account.html', username='Aure')
+    return render_template('account.html', title='account' , username='Aure')
 
 @bp_main.route("/notifications")
 def notifications():
-    return render_template('notifications.html')
+    return render_template('notifications.html', title='Notifications')

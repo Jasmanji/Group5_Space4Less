@@ -1,15 +1,17 @@
 {% extends 'layout.html'%}
 
 {% block content %}
+    <div >
+        <h2>Registration</h2>
+        <div id="register-text">
+            <p> Please fill in all the boxes below</p>
+        </div>
 
-    <h2>Registration</h2>
-    <div id="register-text">
-        <p> Please fill in all the boxes below</p>
+        <form method="POST" action=" " novalidate>
+            <div class="form-field">{{ form.email.label }} {{ form.email(size=20) }}</div>
+            <div class="form-field"> {{ form.password.label }} {{ form.password }}</div>
+        </form>
+        <p>{{ form.submit }}</p>
     </div>
 
-    <form method="POST" action=" " novalidate>
-        <div class="form-field">{{ form.email.label }} {{ form.email(size=20) }}</div>
-        <div class="form-field"> {{ form.password.label }} {{ form.password }}</div>
-    </form>
-     <p>{{ form.submit }}</p>
 {% endblock content %}

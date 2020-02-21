@@ -1,11 +1,29 @@
-/* Navbar CSS */
-* {
-  box-sizing: border-box;
+
+h1{
+  position: relative;
+  left: 50%;
+}
+main{
+  text-align: center;
 }
 
 body {
-  margin: 0;
   font-family: 'Sriracha', cursive;
+  text-align: center;
+}
+
+header{
+  font-family: 'Sriracha', cursive !important;
+}
+
+h2{
+  padding-left: 20%;
+  padding-right: 20%;
+}
+
+/* Navbar CSS */
+* {
+  box-sizing: border-box;
 }
 
 .nav {
@@ -55,8 +73,8 @@ body {
   .nav > .nav-btn {
     display: inline-block;
     position: absolute;
-    right: 0px;
-    top: 0px;
+    right: 0;
+    top: 0;
   }
   .nav > .nav-btn > label {
     display: inline-block;
@@ -78,18 +96,18 @@ body {
     display: block;
     width: 100%;
     background-color: #afcfde;
-    height: 0px;
+    height: 0;
     transition: all 0.3s ease-in;
     overflow-y: hidden;
     top: 50px;
-    left: 0px;
+    left: 0;
   }
   .nav > .nav-links > a {
     display: block;
     width: 100%;
   }
   .nav > #nav-check:not(:checked) ~ .nav-links {
-    height: 0px;
+    height: 0;
   }
   .nav > #nav-check:checked ~ .nav-links {
     height: calc(100vh - 50px);
@@ -97,11 +115,3 @@ body {
   }
 }
 
-header{
-  font-family: 'Sriracha', cursive !important;
-}
-
-h2{
-  padding-left: 20%;
-  padding-right: 20%;
-}
