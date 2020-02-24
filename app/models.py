@@ -5,7 +5,6 @@ from app import db
 # importing for encryption purposes
 from werkzeug.security import generate_password_hash, check_password_hash
 
-
 # # Define the classes and tables
 
 # # Columns for user table: user_id (INTEGER PRIMARY KEY), username (TEXT NOT NULL), email (TEXT NOT NULL)

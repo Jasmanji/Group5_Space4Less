@@ -3,14 +3,16 @@
 
 <head>
     <meta charset="UTF-8">
-    <!--The link to our stylesheet -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='design.css') }}">
+
     <!-- this makes sure it is responsive to different screen sizes-->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- link to font -->
     <link href="https://fonts.googleapis.com/css?family=Sriracha&display=swap" rel="stylesheet">
 
+    <!--The link to our stylesheet -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='design.css') }}">
     {# the title of the head will change depending on the page we are at. We can do this with an if statement #}
+
     {% if title %}
         <title> {{title}} </title>
     {% else %}
@@ -54,9 +56,10 @@
 
 </header>
 
-{% block content %}
+<div class="container">
+    {% block content %}{% endblock content %}
+</div>
 
-{% endblock content %}
 
 </body>
 </html>

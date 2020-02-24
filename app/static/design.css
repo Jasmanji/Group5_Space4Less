@@ -1,19 +1,17 @@
 
 h1{
-  position: relative;
-  left: 50%;
+  text-align: center;
 }
 main{
   text-align: center;
 }
 
 body {
-  font-family: 'Sriracha', cursive;
-  text-align: center;
+
 }
 
 header{
-  font-family: 'Sriracha', cursive !important;
+
 }
 
 h2{
