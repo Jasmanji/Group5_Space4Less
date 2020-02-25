@@ -33,7 +33,7 @@ class RegistrationForm(FlaskForm):
     confirm_password = PasswordField('Confirm Password',
                                      validators=[DataRequired(message='conf'), EqualTo('password')]
                                      )
-    # role = SelectField('Role', choices=[(0, 'Property owner'), (1, 'Renter')])
+
     # we also need a submit button to send the information
     submit = SubmitField('Sign Up')
 
