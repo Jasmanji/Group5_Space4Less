@@ -13,6 +13,10 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='design.css') }}">
     {# the title of the head will change depending on the page we are at. We can do this with an if statement #}
 
+    <style>
+    @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+    </style>
+
     {% if title %}
         <title> {{title}} </title>
     {% else %}
@@ -50,13 +54,22 @@
             <a href="{{ url_for('main.account') }}"> Account</a>
             <a href="{{ url_for('main.notifications') }}"> Notifications</a>
             <a href="#" target="_blank"> Post/Book </a>
-            <a href="{{ url_for('main.login') }}"> Registration</a>
+            <a href="{{ url_for('main.signup') }}"> Signup</a>
+            <a href="{{ url_for('main.login') }}"> Login </a>
         </div>
     </nav>
 
 </header>
 
 <div class="container">
+    {# in order to display the flash messages, we will put it at the top of each page so that you will see it no matter what page you are on #}
+    {% with messages=get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
     {% block content %}{% endblock content %}
 </div>
 

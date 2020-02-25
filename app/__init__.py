@@ -12,7 +12,6 @@ from app.main.forms import RegistrationForm
 from app.config import DevConfig
 from flask_sqlalchemy import SQLAlchemy
 
-
 # we start by creating a database instance which we will use in our models.py for creating the database.
 db = SQLAlchemy()
 
@@ -31,13 +30,13 @@ def create_app(config_class=DevConfig):
     db.init_app(app)
 
     # for demonstration purposes:
-    # from app.populate import populate_db
-    # from app.models import City, Forecast, User
+    from app.populate import populate_db
+    from app.models import User, Post
 
     # creating columns and populating database
     with app.app_context():
         db.create_all() # creates table structure for each imported user
-    #    populate_db() # adding dummy data
+        populate_db() # adding dummy data
 
     from app.main.routes import bp_main
     app.register_blueprint(bp_main)

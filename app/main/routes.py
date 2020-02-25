@@ -4,8 +4,8 @@ from flask import render_template, url_for, redirect, flash, Blueprint, request
 
 from sqlalchemy.exc import IntegrityError
 
-
 from app import RegistrationForm, db
+# we also need to import the forms
 from app.main.forms import LoginForm
 from app.models import User
 
@@ -20,12 +20,11 @@ def home_page():
     return render_template('home.html', title='Home Page')
 
 
-# route for signup page
 @bp_main.route("/signup", methods=['GET', 'POST'])
-def signup_page():
+def signup():
     form = RegistrationForm()
-    if form.validate_on_submit() and request.method == 'POST':  # this will tell us if the for was valid when submitted
-        user = User(username=form.username.data, email=form.email.data)
+    if form.validate_on_submit() and request.method=='POST':  # this will tell us if the for was valid when submitted
+        user = User(username=form.username.data, first_name=form.firstname.data, last_name=form.surname.data, email=form.email.data)
         user.set_password(form.password.data)
         try:
             db.session.add(user)
@@ -35,8 +34,10 @@ def signup_page():
         except IntegrityError:
             db.session.rollback()
             flash('there was something wrong with your password or email!', 'error')
-    return render_template('signup.html', title='Signup Page', form=form)
+    return render_template('signup.html', title='signup', form=form)
 
+
+# route for the login
 @bp_main.route("/login", methods=['GET', 'POST'])
 def login():
     form_instance = LoginForm()

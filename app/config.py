@@ -13,6 +13,7 @@ class Config(object):
     # secrets.token_urlsafe(16)
     # General Config DEBUG = False TESTING = False
     # Forms config
+    # we also need a secret key for the forms
     WTF_CSRF_SECRET_KEY = 'lCgqy2NPRYY5NYkk25bhuQ'
 
     # Database config
