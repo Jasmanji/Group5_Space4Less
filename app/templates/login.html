@@ -1,17 +1,20 @@
-{% extends 'layout.html'%}
+{% extends 'layout.html' %}
 
 {% block content %}
-
-        <h2>Registration</h2>
-        <div id="register-text">
-            <p> Please fill in all the boxes below</p>
-        </div>
+    <div class="attempt">
+        <!-- changed the class names to match the styling of the register page (bootstrap styling)-->
 
         <form method="POST" action=" " novalidate>
-            <div class="form-field">{{ form.email.label }} {{ form.email(size=20) }}</div>
-            <div class="form-field"> {{ form.password.label }} {{ form.password }}</div>
+            <fieldset class="form-design">
+                <legend>Log In</legend>
+                <div id="register-text">
+                    <p> Please fill in all the boxes below</p>
+                </div>
+                <div class="form-group">{{ form.email.label(class="form-control-label") }} {{ form.email(class="form-control") }}</div>
+                <div class="form-group"> {{ form.password.label(class="form-control-label") }} {{ form.password(class="form-control") }}</div>
+            </fieldset>
         </form>
-        <p>{{ form.submit }}</p>
-
+        <p id="signupbutton">{{ form.submit(class="form-control form-control-lg") }}</p>
+    </div>
 
 {% endblock content %}
