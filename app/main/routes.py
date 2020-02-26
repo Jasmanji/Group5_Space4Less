@@ -22,7 +22,7 @@ def home_page():
 def signup():
     form = RegistrationForm()
     if form.validate_on_submit() and request.method == 'POST':  # this will tell us if the for was valid when submitted
-        user = User(username=form.username.data, first_name=form.firstname.data, last_name=form.surname.data,
+        user = User(username=form.username.data, role=form.role.data, first_name=form.firstname.data, last_name=form.surname.data,
                     email=form.email.data)
         user.set_password(form.password.data)
 

@@ -34,6 +34,8 @@ class RegistrationForm(FlaskForm):
                                      validators=[DataRequired(message='conf'), EqualTo('password')]
                                      )
 
+    role = SelectField('Role', choices=[('0', 'Property Owner'), ('1', 'Renter')])
+
     # we also need a submit button to send the information
     submit = SubmitField('Sign Up')
 

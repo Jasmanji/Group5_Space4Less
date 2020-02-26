@@ -17,9 +17,9 @@ class User(db.Model):
     last_name = db.Column(db.String(250), nullable=False)
     email = db.Column(db.String(250), nullable=False)
     password = db.Column(db.String(200))
-
+    role= db.Column(db.Integer, nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
-    # posts = db.relationship('Post', backref='author', lazy=True)
+    posts = db.relationship('Post', backref='author', lazy=True)
     def __repr__(self):
         return "<User('%s', '%s', '%s')>" % ( self.username, self.email,  self.image_file)
 

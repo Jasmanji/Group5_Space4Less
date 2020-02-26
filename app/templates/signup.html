@@ -3,10 +3,10 @@
 {% block content %}
 
     <!--  title of registration -->
-    <h2>Registration</h2>
+
 
     <div id="register-text">
-        <p> Please fill in all the boxes below</p>
+
     </div>
 
 <!--  creating the list of input required for sign up page -->
@@ -16,7 +16,7 @@
     <form method="POST" novalidate>
         {{ form.hidden_tag() }} <!-- we add a CSRF token for protection against furgery attacks -->
         <fieldset class="form-design">
-            <legend class="border-bottom"> Join Today!!</legend>
+            <legend class="border-bottom"> Registration!!</legend>
             <div class="form-group">
                 {{ form.firstname.label(class="form-control-label") }}
 
@@ -112,15 +112,15 @@
                     {{ form.confirm_password(class="form-control form-control-lg") }}
                 {% endif %}
             </div>
-        {#
-            <div>
-                {{ form.role.label }}
-                <br>
-                {{ form.role }}
-            </div>
-           #}
 
-            <p>{{ form.submit }}</p>
+            <div>
+                {{ form.role.label(class="form-control-label") }}
+                <br>
+                {{ form.role(class="form-control form-control-lg") }}
+            </div>
+
+
+            <p>{{ form.submit(class="form-control form-control-lg") }}</p>
             <small class="text-muted">already have an account? <a href="{{ url_for('main.login') }}">Log In</a> </small>
         </fieldset>
 

@@ -13,6 +13,7 @@
 
 h1{
   text-align: center;
+  color:red;
 }
 main{
   text-align: center;
@@ -37,6 +38,7 @@ h2{
 }
 
 .nav {
+  justify-content: space-between;
   height: 50px;
   width: 100%;
   background-color: transparent;
