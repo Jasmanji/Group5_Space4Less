@@ -35,9 +35,14 @@ h2{
   padding-left: 20%;
   padding-right: 20%;
 }
+
 form {
   margin-top: 10%;
+    background-color: rgb(198, 217, 224);
+    padding-top: 5%;
+    padding-bottom: 5%
 }
+
 
 /* Navbar CSS */
 * {
