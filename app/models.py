@@ -12,7 +12,7 @@ from app import login
 # # userMixin is a provided class from flask documentation to assist log in functionality
 # # Columns for user table: user_id (INTEGER PRIMARY KEY), username (TEXT NOT NULL), email (TEXT NOT NULL)
 
-class User(UserMixin, db.Model):
+class User( db.Model, UserMixin):
     __tablename__ = 'user'
     user_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(250), nullable=False)

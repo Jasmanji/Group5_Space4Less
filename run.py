@@ -8,3 +8,4 @@ from app import create_app
 # That returns the instance of an app and we save it all under the variable 'app'.
 app = create_app()
 
+

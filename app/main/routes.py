@@ -21,10 +21,11 @@ def home_page():
 
 @bp_main.route("/signup", methods=['GET', 'POST'])
 def signup():
+    if current_user.is_authenticated:
+        return redirect(url_for('home_page'))
     form = RegistrationForm()
     if form.validate_on_submit() and request.method == 'POST':  # this will tell us if the for was valid when submitted
-        user = User(username=form.username.data, role=form.role.data, first_name=form.firstname.data,
-                    last_name=form.surname.data, email=form.email.data)
+        user = User(username=form.username.data, role=form.role.data, first_name=form.firstname.data,last_name=form.surname.data, email=form.email.data)
         user.set_password(form.password.data)
 
         db.session.add(user)
@@ -47,16 +48,32 @@ def signup():
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('home_page'))
-    form_instance = LoginForm()
-    if form_instance.validate_on_submit():
-        user = User.query.filter_by(username=form_instance.username.data).first()
-        if user is None or not user.check_password(form_instance.password.data):
+    # we create an instance of the form the user inputted
+    form = LoginForm()
+    # we want to check that the form submitted by the username exists, so we can check the email address exists:
+    # to do this, we query to see if there's any value in the column email which matches to the email the user inputted in the form.
+    if form.validate_on_submit():
+        user=User.query.filter_by(email=form.email.data).first()
+        # now that we know that the email exists in the database, we want to see
+        # if the password matches the email they submitted
+        if user and user.check_password(form.password.data):
+            login_user(user, remember=form.remember_me.data)
+            return redirect(url_for('home_page'))
+        else:
             flash('Invalid Login')
-            return redirect(url_for('login'))
-        login_user(user, remember=form_instance.remember_me.data)
-        flash('congrats you are logged in {}' .format(user.username))
-        return redirect(url_for('home_page'))
-    return render_template('login.html', title='Login Page', form=form_instance)
+
+    return render_template('login.html', title='Login Page', form=form)
+
+    #
+    # form_instance = LoginForm()
+    # if form_instance.validate_on_submit():
+    #     user = User.query.filter_by(username=form_instance.username.data).first()
+    #     if user is None or not user.check_password(form_instance.password.data):
+    #         flash('Invalid Login')
+    #         return redirect(url_for('login'))
+    #     login_user(user, remember=form_instance.remember_me.data)
+    #     flash('congrats you are logged in {}' .format(user.username))
+    #     return redirect(url_for('home_page'))
 
 
 @bp_main.route("/account")
@@ -67,3 +84,4 @@ def account():
 @bp_main.route("/notifications")
 def notifications():
     return render_template('notifications.html', title='Notifications')
+
