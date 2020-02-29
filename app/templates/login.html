@@ -1,21 +1,42 @@
-{% extends 'layout.html' %}
+{% extends 'layout.html'%}
 
 {% block content %}
-    <div class="attempt">
-        <!-- changed the class names to match the styling of the register page (bootstrap styling)-->
 
-        <form method="POST" action=" " novalidate>
-            <fieldset class="form-design">
-                <legend>Log In</legend>
-                <div id="register-text">
-                    <p> Please fill in all the boxes below</p>
-                </div>
-                <div class="form-group">{{ form.email.label(class="form-control-label") }} {{ form.email(class="form-control") }}</div>
-                <div class="form-group"> {{ form.password.label(class="form-control-label") }} {{ form.password(class="form-control") }}</div>
-            <p id="signupbutton">{{ form.submit }}</p></fieldset>
-        </form>
+    <!--  title of registration -->
+
+
+    <div id="register-text">
 
     </div>
-    <br>
-    <small class="text-muted">Don't have an account? <a href="{{ url_for('main.signup') }}">Register Here</a> </small>
+
+<!--  creating the list of input required for sign up page -->
+    <!-- we want the method to be POST and action we set as an empty string so that it goes back to the same route
+     once the method is POST. -->
+    <div class="content-section">
+    <form method="POST" novalidate>
+        {{ form.hidden_tag() }} <!-- we add a CSRF token for protection against furgery attacks -->
+        <fieldset class="form-design">
+            <legend class="border-bottom"> Login </legend>
+
+
+            <div class="form-group">
+                {{ form.email.label(class="form-control-label") }}
+                 {{ form.email(class="form-control form-control-lg") }}
+            </div>
+            <div class="form-group">
+                {{ form.password.label(class="form-control-label") }}
+                {{ form.password(class="form-control form-control-lg") }}
+            </div>
+
+
+
+            <div class="attempt">
+                <!-- added this above class and the below id to make the elements easier to target with css -->
+            <p id="signupbutton" >{{ form.submit(class="form-control form-control-lg") }}</p></div>
+
+        </fieldset>
+
+
+    </form>
+    </div>
 {% endblock content %}

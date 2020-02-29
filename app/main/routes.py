@@ -7,9 +7,12 @@ from app import RegistrationForm, db
 from app.main.forms import LoginForm
 from app.models import User
 from flask_login import current_user, login_user, logout_user
+
 # we create an instance of blueprint as main
 bp_main = Blueprint('main', __name__)
-#bp_auth = Blueprint('auth', __name__)
+
+
+# bp_auth = Blueprint('auth', __name__)
 
 
 # route for home page.
@@ -23,16 +26,19 @@ def home_page():
 def signup():
     if current_user.is_authenticated:
         return redirect(url_for('home_page'))
-    form = RegistrationForm()
-    if form.validate_on_submit() and request.method == 'POST':  # this will tell us if the for was valid when submitted
-        user = User(username=form.username.data, role=form.role.data, first_name=form.firstname.data,last_name=form.surname.data, email=form.email.data)
-        user.set_password(form.password.data)
+    form_signup = RegistrationForm()
+    if form_signup.validate_on_submit() and request.method == 'POST':  # this will tell us if the for was valid when
+        # submitted
+        user = User(username=form_signup.username.data, role=form_signup.role.data,
+                    first_name=form_signup.firstname.data, last_name=form_signup.surname.data,
+                    email=form_signup.email.data)
+        user.set_password(form_signup.password.data)
 
         db.session.add(user)
         db.session.commit()
         flash('congratulations, you have created an account!', 'success')
         return redirect(url_for('main.home_page'))
-    return render_template('signup.html', title='signup', form=form)
+    return render_template('signup.html', title='signup', form=form_signup)
 
 
 # route for the login
@@ -46,23 +52,28 @@ def signup():
 # using the log in function
 @bp_main.route("/login", methods=['GET', 'POST'])
 def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('home_page'))
+    # if current_user.is_authenticated:
+    #   return redirect(url_for('home_page'))
     # we create an instance of the form the user inputted
-    form = LoginForm()
-    # we want to check that the form submitted by the username exists, so we can check the email address exists:
-    # to do this, we query to see if there's any value in the column email which matches to the email the user inputted in the form.
-    if form.validate_on_submit():
-        user=User.query.filter_by(email=form.email.data).first()
-        # now that we know that the email exists in the database, we want to see
-        # if the password matches the email they submitted
-        if user and user.check_password(form.password.data):
-            login_user(user, remember=form.remember_me.data)
-            return redirect(url_for('home_page'))
-        else:
-            flash('Invalid Login')
+    form_login = LoginForm()
 
-    return render_template('login.html', title='Login Page', form=form)
+    # we want to check that the form submitted by the username exists, so we can check the email address exists: to
+    # do this, we query to see if there's any value in the column email which matches to the email the user inputted
+    # in the form. first else statement = correct login details, the second else statement is where the query returns
+    # no users matching that email
+    if request.method == 'POST':
+        if form_login.validate_on_submit():
+            user = User.query.filter_by(email=form_login.email.data).first()
+            if user is None or not user.check_password(form_login.password.data):
+                # login_user(user, remember=form_login.remember_me.data)
+                flash('Invalid Login')
+            else:
+                flash('SUCESSSSS')
+
+        else:
+            flash('Failed')
+
+    return render_template('login.html', title='Login Page', form=form_login)
 
     #
     # form_instance = LoginForm()
@@ -84,4 +95,3 @@ def account():
 @bp_main.route("/notifications")
 def notifications():
     return render_template('notifications.html', title='Notifications')
-

@@ -17,29 +17,29 @@ class RegistrationForm(FlaskForm):
     # the render_kw are there to add the placeholders for the string field type entries but the same is not applicatble
     # for the selectfield thus a different method (default) was used.
     username = StringField('Username',
-                           validators=[DataRequired(message='This field is required'), Length(min=2, max=20)],
+                           validators=[DataRequired(), Length(min=2, max=20)],
                            render_kw={"placeholder": "Enter a unique username"}
                            )
     firstname = StringField('First Name',
-                            validators=[DataRequired(message='This field is required'), Length(min=2, max=20)],
+                            validators=[DataRequired(), Length(min=2, max=20)],
                             render_kw={"placeholder": "Name"}
                             )
     surname = StringField('Surname',
-                          validators=[DataRequired(message='This field is required')],
+                          validators=[DataRequired()],
                           render_kw={"placeholder": "Surname"}
                           )
     # the validator Email() will check if the input email is a valid email
     email = StringField('Email',
-                        validators=[DataRequired(message='This field is required'), Email()],
+                        validators=[DataRequired(), Email()],
                         render_kw={"placeholder": "name@email.com"}
                         )
     password = PasswordField('Password',
-                             validators=[DataRequired(message='This field is required'), Length(min=4, max=20)],
+                             validators=[DataRequired(), Length(min=4, max=20)],
                              render_kw={"placeholder": "Must be at least 4 characters"}
                              )
     # the EqualTo('password') will make sure that it contains the same content as the password field
     confirm_password = PasswordField('Confirm Password',
-                                     validators=[DataRequired(message='This field is required'), EqualTo('password')],
+                                     validators=[DataRequired(), EqualTo('password')],
                                      render_kw={"placeholder": "Re-Enter Password"}
                                      )
 

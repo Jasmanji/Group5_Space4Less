@@ -7,7 +7,6 @@ from flask import Flask
 
 from flask_login import LoginManager
 
-
 # we will also need to do some initialisation (configuration) to our forms module ??????? where
 # (which is inside app >> main >> forms.py)
 from app.main.forms import RegistrationForm
@@ -20,7 +19,6 @@ db = SQLAlchemy()
 login = LoginManager()
 
 
-
 # we then initialise the application:
 # config_class ->> under this variable we need to input the DevConfig
 #                  we made in our configuration file.
@@ -28,7 +26,9 @@ def create_app(config_class=DevConfig):
     # we start by creating an instance of an app.
     app = Flask(__name__)
     # initialising the login function
-    # login.init_app(app)
+
+    login.login_view = 'main.login'
+
     # configuring (initialising and stuff):
     app.config.from_object(config_class)
 
@@ -48,7 +48,4 @@ def create_app(config_class=DevConfig):
     from app.main.routes import bp_main
     app.register_blueprint(bp_main)
 
-
-
     return app
-
