@@ -87,6 +87,12 @@ def login():
     #     return redirect(url_for('home_page'))
 
 
+@bp_main.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
+
 @bp_main.route("/account")
 def account():
     return render_template('account.html', title='account', username='Aure')
