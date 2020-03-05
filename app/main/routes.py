@@ -2,9 +2,9 @@
 # the url_for is a function within flask that will find the exact location of routes for us
 from flask import render_template, url_for, redirect, flash, Blueprint, request
 
-from app import RegistrationForm, db
+from app import db
 # we also need to import the forms
-from app.main.forms import LoginForm
+from app.main.forms import LoginForm, RegistrationForm, UpdateAccountForm
 from app.models import User
 from flask_login import current_user, login_user, logout_user, login_required
 
@@ -81,10 +81,24 @@ def logout():
     return redirect(url_for('main.home_page'))
 
 
-@bp_main.route("/account")
+
+
+@bp_main.route("/account", methods=['GET', 'POST'])
 @login_required
 def account():
-    return render_template('account.html', title='account')
+    form_account = UpdateAccountForm()
+    if form_account.validate_on_submit():
+        if form_account.picture.data:
+            current_user.first_name = form_account.firstname.data
+            current_user.last_name = form_account.surname.data
+            current_user.username = form_account.username.data
+            current_user.email = form_account.email.data
+            db.session.commit()
+            flash('your account has been updated successfuly!', 'success')
+        return redirect(url_for('main.account'))
+    image = url_for('static', filename='profile_pictures/' + current_user.image_file)
+    return render_template('account.html', title='account', image_file=image, form=form_account)
+
 
 
 @bp_main.route("/notifications")

@@ -1,4 +1,103 @@
 {% extends 'layout.html' %}
 {% block content %}
-    <h1>{{ current_user.username }}</h1>
+
+    <img src="{{ image_file }}">
+    <h1>{{ current_user.first_name }} {{ current_user.last_name }}</h1>
+    <h2>{{ current_user.username }}</h2>
+    <h3>{{ current_user.email }}</h3>
+
+
+        <div class="content-section">
+        <form method="POST" novalidate enctype="multipart/form-data">
+            {{ form.hidden_tag() }} <!-- we add a CSRF token for protection against furgery attacks -->
+            <fieldset class="form-design">
+                <legend class="border-bottom">Update account Information</legend>
+                <div class="form-group">
+                    {{ form.firstname.label(class="form-control-label") }}
+
+                    {# for more specific feedback to the user of any errors in this field #}
+                    {% if form.firstname.errors %}
+                        <br>
+                        {{ form.firstname(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.firstname.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <br>
+                        {{ form.firstname(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.surname.label(class="form-control-label") }}
+
+                    {% if form.surname.errors %}
+                        <br>
+                        {{ form.surname(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.surname.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+
+                        <br>
+                        {{ form.surname(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.username.label(class="form-control-label") }}
+
+                    {% if form.username.errors %}
+                        <br>
+                        {{ form.username(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.username.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <br>
+                        {{ form.username(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.email.label(class="form-control-label") }}
+                    {% if form.email.errors %}
+                        <br>
+                        {{ form.email(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.email.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <br>
+                        {{ form.email(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.picture.label() }}
+                    {{ form.picture(class="form-coltrol-file") }}
+
+                    {% if form.picture.errors %}
+                        {% for error in form.picture.errors %}
+                                <span class="text-danger">{{ error }}</span>
+                            {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="attempt">
+                    <!-- added this above class and the below id to make the elements easier to target with css -->
+                    <p id="signupbutton">{{ form.submit(class="form-control form-control-lg") }}</p></div>
+
+
+            </fieldset>
+
+
+        </form>
+    </div>
 {% endblock content %}

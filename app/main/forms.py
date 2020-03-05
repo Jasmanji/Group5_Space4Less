@@ -1,11 +1,14 @@
 # we want to import wtforms to help us with the validation
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 # we need to import all the form fields as-well
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField
-from wtforms.validators import DataRequired, Length, Email, EqualTo
-
-
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+# from app.models import User
 # creating the class for the sign up form, which will inherit from the class FlaskForm to be representative of our form
+
+
+
 class RegistrationForm(FlaskForm):
     # we will create form fields to validate specific things
     # the username is going to be a string field.
@@ -51,6 +54,19 @@ class RegistrationForm(FlaskForm):
     # we also need a submit button to send the information
     submit = SubmitField('Sign Up')
 
+    # checking there are no same usernames as the one you chose
+    # def validate_username(self, username):
+    #     user = User.query.filter_by(username=username.data).first()
+    #     if user:
+    #         raise ValidationError('This username is already taken! please choose another username')
+    #
+    #
+    # # we also want the email to be unique
+    # def validate_email(self, email):
+    #     user = User.query.filter_by(username=email.data).first()
+    #     if user:
+    #         raise ValidationError('An account has already been created with this email.')
+
 
 # creating the LoginForm class
 class LoginForm(FlaskForm):
@@ -68,4 +84,31 @@ class LoginForm(FlaskForm):
     # again, we will need a submit button
     submit = SubmitField('Log In')
 
-# when we use this forms we need to use a secret key
+
+class UpdateAccountForm(FlaskForm):
+    username = StringField('Username',
+                           validators=[DataRequired(), Length(min=2, max=20)],
+                           render_kw={"placeholder": "Enter a unique username"}
+                           )
+    firstname = StringField('First Name',
+                            validators=[DataRequired(), Length(min=2, max=20)],
+                            render_kw={"placeholder": "Name"}
+                            )
+    surname = StringField('Surname',
+                          validators=[DataRequired()],
+                          render_kw={"placeholder": "Surname"}
+                          )
+    # the validator Email() will check if the input email is a valid email
+    email = StringField('Email',
+                        validators=[DataRequired(), Email()],
+                        render_kw={"placeholder": "name@email.com"}
+                        )
+
+    # for adding a picture
+    picture= FileField('Profile picture',
+                       validators=[FileAllowed(['jpg', 'png'])]
+
+    )
+
+    # we also need a submit button to send the information
+    submit = SubmitField('Update')

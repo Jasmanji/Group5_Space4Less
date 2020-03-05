@@ -34,8 +34,9 @@ def create_app(config_class=DevConfig):
     db.init_app(app)
     # initialising the login function
     login.init_app(app)
-    login.login_view = 'main.login'
-    login.login_message_category = 'info' #bootstrap category to make message look nicer
+    login.login_view = 'login'
+    login.login_message_category = 'info'
+
     # for demonstration purposes:
     from app.populate import populate_db
     from app.models import User, Post
@@ -44,6 +45,7 @@ def create_app(config_class=DevConfig):
     with app.app_context():
         db.create_all()  # creates table structure for each imported user
         populate_db()  # adding dummy data
+
 
     from app.main.routes import bp_main
     app.register_blueprint(bp_main)

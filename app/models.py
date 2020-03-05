@@ -1,11 +1,11 @@
 # importing databse instance from __init__ of app
 from sqlalchemy import Column, ForeignKey, Integer, String
-from app import db
 # importing for encryption purposes
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+from app import db, login
 from flask_login import UserMixin
-from app import login
+
 
 
 # function to get user by id
@@ -26,7 +26,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(250), nullable=False)
     password = db.Column(db.String(200))
     role = db.Column(db.Integer, nullable=False)
-    image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
+    image_file = db.Column(db.String(20), nullable=False, default='default-profile.png')
     posts = db.relationship('Post', backref='author', lazy=True)
 
     def get_id(self):
