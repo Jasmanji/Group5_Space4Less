@@ -65,13 +65,15 @@ def login():
         if form_login.validate_on_submit():
             user = User.query.filter_by(email=form_login.email.data).first()
             if user is None or not user.check_password(form_login.password.data):
-                flash('Invalid username or password')
+                flash('Invalid username or password', 'danger')
                 return redirect(url_for('login'))
-            login_user(user, remember=form_login.remember.data)
-            return redirect(url_for('main.home_page'))
+            else:
+                login_user(user, remember=form_login.remember.data)
+                flash('Login successful!', 'success')
+                return redirect(url_for('main.home_page'))
     return render_template('login.html', title='Login Page', form=form_login)
 
-    #
+
     # form_instance = LoginForm()
     # if form_instance.validate_on_submit():
     #     user = User.query.filter_by(username=form_instance.username.data).first()
@@ -86,7 +88,7 @@ def login():
 @bp_main.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('index'))
+    return redirect(url_for('main.home_page'))
 
 
 @bp_main.route("/account")
