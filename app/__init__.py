@@ -25,17 +25,17 @@ login = LoginManager()
 def create_app(config_class=DevConfig):
     # we start by creating an instance of an app.
     app = Flask(__name__)
-    # initialising the login function
 
-    login.login_view = 'main.login'
 
     # configuring (initialising and stuff):
     app.config.from_object(config_class)
 
     # this links the db to the app
     db.init_app(app)
+    # initialising the login function
     login.init_app(app)
-
+    login.login_view = 'main.login'
+    login.login_message_category = 'info' #bootstrap category to make message look nicer
     # for demonstration purposes:
     from app.populate import populate_db
     from app.models import User, Post

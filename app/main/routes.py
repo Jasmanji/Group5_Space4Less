@@ -6,7 +6,7 @@ from app import RegistrationForm, db
 # we also need to import the forms
 from app.main.forms import LoginForm
 from app.models import User
-from flask_login import current_user, login_user, logout_user
+from flask_login import current_user, login_user, logout_user, login_required
 
 # we create an instance of blueprint as main
 bp_main = Blueprint('main', __name__)
@@ -70,19 +70,9 @@ def login():
             else:
                 login_user(user, remember=form_login.remember.data)
                 flash('Login successful!', 'success')
-                return redirect(url_for('main.home_page'))
+                next_page=request.args.get('next') # will get the page the user wanted to go to before they were redirected to login
+                return redirect(next_page) if next_page else redirect(url_for('main.home_page')) # will redirect user to the page they requested before they tried to log in, otherwise they will be redirected to home.
     return render_template('login.html', title='Login Page', form=form_login)
-
-
-    # form_instance = LoginForm()
-    # if form_instance.validate_on_submit():
-    #     user = User.query.filter_by(username=form_instance.username.data).first()
-    #     if user is None or not user.check_password(form_instance.password.data):
-    #         flash('Invalid Login')
-    #         return redirect(url_for('login'))
-    #     login_user(user, remember=form_instance.remember_me.data)
-    #     flash('congrats you are logged in {}' .format(user.username))
-    #     return redirect(url_for('home_page'))
 
 
 @bp_main.route('/logout')
@@ -92,10 +82,12 @@ def logout():
 
 
 @bp_main.route("/account")
+@login_required
 def account():
     return render_template('account.html', title='account')
 
 
 @bp_main.route("/notifications")
+@login_required
 def notifications():
     return render_template('notifications.html', title='Notifications')
