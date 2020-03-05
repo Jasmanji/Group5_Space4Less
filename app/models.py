@@ -8,11 +8,16 @@ from flask_login import UserMixin
 from app import login
 
 
+# function to get user by id
+@login.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
 # # Define the classes and tables
 # # userMixin is a provided class from flask documentation to assist log in functionality
 # # Columns for user table: user_id (INTEGER PRIMARY KEY), username (TEXT NOT NULL), email (TEXT NOT NULL)
 
-class User( db.Model, UserMixin):
+class User(db.Model, UserMixin):
     __tablename__ = 'user'
     user_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(250), nullable=False)
@@ -23,6 +28,9 @@ class User( db.Model, UserMixin):
     role = db.Column(db.Integer, nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     posts = db.relationship('Post', backref='author', lazy=True)
+
+    def get_id(self):
+        return (self.user_id)
 
     def __repr__(self):
         return "<User('%s', '%s', '%s')>" % (self.username, self.email, self.image_file)
@@ -51,6 +59,3 @@ class Post(db.Model):
         return "<User('%s', '%s', '%s')>" % (self.title, self.date_posted, self.image)
 
 
-@login.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))

@@ -11,9 +11,7 @@ from flask_login import current_user, login_user, logout_user
 # we create an instance of blueprint as main
 bp_main = Blueprint('main', __name__)
 
-
 # bp_auth = Blueprint('auth', __name__)
-
 
 # route for home page.
 @bp_main.route('/')
@@ -25,15 +23,14 @@ def home_page():
 @bp_main.route("/signup", methods=['GET', 'POST'])
 def signup():
     if current_user.is_authenticated:
-        return redirect(url_for('home_page'))
+        return redirect(url_for('main.home_page'))
     form_signup = RegistrationForm()
-    if form_signup.validate_on_submit() and request.method == 'POST':  # this will tell us if the for was valid when
+    if form_signup.validate_on_submit():  # this will tell us if the for was valid when
         # submitted
         user = User(username=form_signup.username.data, role=form_signup.role.data,
                     first_name=form_signup.firstname.data, last_name=form_signup.surname.data,
                     email=form_signup.email.data)
         user.set_password(form_signup.password.data)
-
         db.session.add(user)
         db.session.commit()
         flash('congratulations, you have created an account!', 'success')
@@ -52,6 +49,8 @@ def signup():
 # using the log in function
 @bp_main.route("/login", methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.home_page'))
     # if current_user.is_authenticated:
     #   return redirect(url_for('home_page'))
     # we create an instance of the form the user inputted
@@ -61,18 +60,15 @@ def login():
     # do this, we query to see if there's any value in the column email which matches to the email the user inputted
     # in the form. first else statement = correct login details, the second else statement is where the query returns
     # no users matching that email
-    if request.method == 'POST':
+
+    if form_login.validate_on_submit():
         if form_login.validate_on_submit():
             user = User.query.filter_by(email=form_login.email.data).first()
             if user is None or not user.check_password(form_login.password.data):
-                # login_user(user, remember=form_login.remember_me.data)
-                flash('Invalid Login')
-            else:
-                flash('SUCESSSSS')
-
-        else:
-            flash('Failed')
-
+                flash('Invalid username or password')
+                return redirect(url_for('login'))
+            login_user(user, remember=form_login.remember.data)
+            return redirect(url_for('main.home_page'))
     return render_template('login.html', title='Login Page', form=form_login)
 
     #
