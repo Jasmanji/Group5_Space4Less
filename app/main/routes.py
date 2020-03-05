@@ -93,7 +93,7 @@ def logout():
 
 @bp_main.route("/account")
 def account():
-    return render_template('account.html', title='account', username='Aure')
+    return render_template('account.html', title='account')
 
 
 @bp_main.route("/notifications")
