@@ -5,13 +5,14 @@ from flask import render_template, url_for, redirect, flash, Blueprint, request
 from app import db
 # we also need to import the forms
 from app.main.forms import LoginForm, RegistrationForm, UpdateAccountForm
-from app.models import User
+from app.models import User, Role
 from flask_login import current_user, login_user, logout_user, login_required
-
+from flask_user import roles_required
 # we create an instance of blueprint as main
 bp_main = Blueprint('main', __name__)
 
 # bp_auth = Blueprint('auth', __name__)
+
 
 # route for home page.
 @bp_main.route('/')
@@ -27,10 +28,13 @@ def signup():
     form_signup = RegistrationForm()
     if form_signup.validate_on_submit():  # this will tell us if the for was valid when
         # submitted
-        user = User(username=form_signup.username.data, role=form_signup.role.data,
+        user = User(username=form_signup.username.data,
                     first_name=form_signup.firstname.data, last_name=form_signup.surname.data,
                     email=form_signup.email.data)
         user.set_password(form_signup.password.data)
+        # adding the role of the user- property_owner or renter
+        user_role = Role(name=form_signup.role.data)
+        user.roles.append(user_role)
         db.session.add(user)
         db.session.commit()
         flash('congratulations, you have created an account!', 'success')
@@ -66,7 +70,7 @@ def login():
             user = User.query.filter_by(email=form_login.email.data).first()
             if user is None or not user.check_password(form_login.password.data):
                 flash('Invalid username or password', 'danger')
-                return redirect(url_for('login'))
+                return redirect(url_for('main.login'))
             else:
                 login_user(user, remember=form_login.remember.data)
                 flash('Login successful!', 'success')
@@ -81,6 +85,17 @@ def logout():
     return redirect(url_for('main.home_page'))
 
 
+@bp_main.route('/post')
+@login_required
+@roles_required('property_owner')
+def post():
+    return render_template('post.html')
+
+@bp_main.route('/book')
+@login_required
+@roles_required('renter')
+def book():
+    return render_template(url_for('book'))
 
 
 @bp_main.route("/account", methods=['GET', 'POST'])
@@ -105,3 +120,4 @@ def account():
 @login_required
 def notifications():
     return render_template('notifications.html', title='Notifications')
+

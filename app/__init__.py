@@ -6,6 +6,7 @@
 from flask import Flask
 
 from flask_login import LoginManager
+from flask_user import UserManager
 
 # we will also need to do some initialisation (configuration) to our forms module ??????? where
 # (which is inside app >> main >> forms.py)
@@ -37,16 +38,18 @@ def create_app(config_class=DevConfig):
     login.login_view = 'login'
     login.login_message_category = 'info'
 
+
     # for demonstration purposes:
-    from app.populate import populate_db
+    # from app.populate import populate_db
     from app.models import User, Post
 
     # creating columns and populating database
     with app.app_context():
         db.create_all()  # creates table structure for each imported user
-        populate_db()  # adding dummy data
+        # populate_db()  # adding dummy data
 
-
+    # somehow i need to initialise the UserManager (which needs 3 inputs- app, db and User
+    #user_manager=UserManager(app, db, User)
     from app.main.routes import bp_main
     app.register_blueprint(bp_main)
 

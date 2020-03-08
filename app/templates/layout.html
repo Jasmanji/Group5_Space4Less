@@ -54,14 +54,22 @@
         <div class="nav-links">
             <a href="{{ url_for('main.home_page') }}"> Home/Browse</a>
             {% if current_user.is_authenticated %}
+                {% if current_user.roles[0].name == 'property_owner' %}
+                    <a href="{{ url_for('main.post') }}" target="_blank"> Post </a>
+                {% else %}
+                    <a href="{{ url_for('main.book') }}" target="_blank"> Book </a>
+                {% endif %}
                 <a href="{{ url_for('main.logout') }}">Logout</a>
                 <a href="{{ url_for('main.account') }}"> Account</a>
                 <a href="{{ url_for('main.notifications') }}"> Notifications</a>
-                <a href="#" target="_blank"> Post/Book </a>
+
             {% else %}
                 <a href="{{ url_for('main.signup') }}"> Signup</a>
                 <a href="{{ url_for('main.login') }}"> Login </a>
             {% endif %}
+
+
+
         </div>
     </nav>
 

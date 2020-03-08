@@ -46,9 +46,8 @@ class RegistrationForm(FlaskForm):
                                      render_kw={"placeholder": "Re-Enter Password"}
                                      )
 
-    role = SelectField('Role', default=('0', 'Select'), choices=[('0', 'Select'), ('1', 'Property Owner'),
-                                                                 ('2', 'Renter')]
-
+    role = SelectField('Role', default=('0', 'Select'), choices=[('0', 'Select'), ('property_owner', 'Property Owner'),
+                                                                 ('renter', 'Renter')]
                        )
 
     # we also need a submit button to send the information

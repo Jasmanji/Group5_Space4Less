@@ -22,6 +22,8 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + join(CWD, 'spaceless.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    # user-manager config
+    USER_ENABLE_EMAIL= False
 
 class ProdConfig(Config):
     DEBUG = False

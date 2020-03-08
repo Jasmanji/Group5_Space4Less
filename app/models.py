@@ -7,16 +7,15 @@ from app import db, login
 from flask_login import UserMixin
 
 
-
 # function to get user by id
 @login.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    user = User.query.get(int(user_id))
+    return user
 
 # # Define the classes and tables
 # # userMixin is a provided class from flask documentation to assist log in functionality
 # # Columns for user table: user_id (INTEGER PRIMARY KEY), username (TEXT NOT NULL), email (TEXT NOT NULL)
-
 class User(db.Model, UserMixin):
     __tablename__ = 'user'
     user_id = db.Column(db.Integer, primary_key=True)
@@ -25,9 +24,11 @@ class User(db.Model, UserMixin):
     last_name = db.Column(db.String(250), nullable=False)
     email = db.Column(db.String(250), nullable=False)
     password = db.Column(db.String(200))
-    role = db.Column(db.Integer, nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default-profile.png')
     posts = db.relationship('Post', backref='author', lazy=True)
+
+    roles = db.relationship('Role', secondary='user_roles',
+                            backref=db.backref('users'))
 
     def get_id(self):
         return (self.user_id)
@@ -41,9 +42,22 @@ class User(db.Model, UserMixin):
         self.password = generate_password_hash(password)
 
     # for reading password
-
     def check_password(self, password):
         return check_password_hash(self.password, password)
+
+
+class Role(db.Model):
+    __tablename__ = 'role'
+    role_id = db.Column(db.Integer(), primary_key=True)
+    user_id = db.Column(db.Integer(), db.ForeignKey('user.user_id', ondelete='CASCADE'))
+    name = db.Column(db.String(50))
+
+
+# Define UserRoles model
+class UserRoles(db.Model):
+    user_roles_id = db.Column(db.Integer(), primary_key=True)
+    user_id = db.Column(db.Integer(), db.ForeignKey('user.user_id', ondelete='CASCADE'))
+    role_id = db.Column(db.Integer(), db.ForeignKey('role.role_id', ondelete='CASCADE'))
 
 
 class Post(db.Model):
