@@ -2,7 +2,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 # we need to import all the form fields as-well
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 # from app.models import User
 # creating the class for the sign up form, which will inherit from the class FlaskForm to be representative of our form
@@ -111,3 +111,11 @@ class UpdateAccountForm(FlaskForm):
 
     # we also need a submit button to send the information
     submit = SubmitField('Update')
+
+
+class PostForm(FlaskForm):
+    title=StringField('Title',
+                      validators=[DataRequired()])
+    content= TextAreaField('Content',
+                      validators=[DataRequired()])
+    submit=SubmitField('Post')

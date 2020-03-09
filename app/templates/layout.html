@@ -54,7 +54,7 @@
         <div class="nav-links">
             <a href="{{ url_for('main.home_page') }}"> Home/Browse</a>
             {% if current_user.is_authenticated %}
-                {% if current_user.roles[0].name == 'property_owner' %}
+                {% if current_user.roles == 'property_owner' %}
                     <a href="{{ url_for('main.post') }}" target="_blank"> Post </a>
                 {% else %}
                     <a href="{{ url_for('main.book') }}" target="_blank"> Book </a>

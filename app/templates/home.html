@@ -1,12 +1,12 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-    <main>
-        <h1>POST TITLE</h1>
+    {% for post in posts %}
+        <h1>{{ post.title }}</h1>
+        <p> Posted by <a href="#">{{ post.author.username }}</a> </p>
+        <small> Date posted: {{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+        <p >{{ post.content }}</p>
+    {% endfor %}
 
-        <p>post content akehfekruhgekuhrgegislurh
-        skergseurhgiesurghesgkjeghrulksuehrgliesuhtg
-        </p>
-    </main>
 
 {% endblock content %}

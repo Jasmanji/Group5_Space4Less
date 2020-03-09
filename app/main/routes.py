@@ -5,23 +5,38 @@ import os
 import secrets
 from app import db
 # we also need to import the forms
-from app.main.forms import LoginForm, RegistrationForm, UpdateAccountForm
-from app.models import User, Role
+from app.main.forms import LoginForm, RegistrationForm, UpdateAccountForm, PostForm
+from app.models import User, Post
 from flask_login import current_user, login_user, logout_user, login_required
-from flask_user import roles_required
+
 
 # we create an instance of blueprint as main
 bp_main = Blueprint('main', __name__)
 
 
-# bp_auth = Blueprint('auth', __name__)
+# def role_required(required_role):
+#     def has_role(current_user):
+#         return current_user.roles == required_role
+#
+#     def role_decorator(func):
+#         def function_wrapper(*args, **kwargs):
+#             if has_role(current_user):
+#                 func(*args, **kwargs)
+#             else:
+#                 raise Exception(f'not allowed :(. requires role <<{required_role}>>')
+#
+#         return function_wrapper
+#
+#     return role_decorator
+#
 
 
 # route for home page.
 @bp_main.route('/')
 @bp_main.route('/home')
 def home_page():
-    return render_template('home.html', title='Home Page')
+    posts=Post.query.all()
+    return render_template('home.html', title='Home Page', posts=posts)
 
 
 @bp_main.route("/signup", methods=['GET', 'POST'])
@@ -32,12 +47,14 @@ def signup():
     if form_signup.validate_on_submit():  # this will tell us if the for was valid when
         # submitted
         user = User(username=form_signup.username.data,
-                    first_name=form_signup.firstname.data, last_name=form_signup.surname.data,
-                    email=form_signup.email.data)
+                    first_name=form_signup.firstname.data,
+                    last_name=form_signup.surname.data,
+                    email=form_signup.email.data,
+                    roles = form_signup.role.data)
         user.set_password(form_signup.password.data)
         # adding the role of the user- property_owner or renter
-        user_role = Role(name=form_signup.role.data)
-        user.roles.append(user_role)
+
+
         db.session.add(user)
         db.session.commit()
         flash('congratulations, you have created an account!', 'success')
@@ -92,18 +109,23 @@ def logout():
     return redirect(url_for('main.home_page'))
 
 
-@bp_main.route('/post')
+@bp_main.route('/post', methods=['GET', 'POST'])
 @login_required
-@roles_required('property_owner')
 def post():
-    return render_template('post.html')
+    form_post=PostForm()
+    if form_post.validate_on_submit():
+        post = Post(title=form_post.title.data, content=form_post.content.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash('you have successfully posted your property!!', 'success')
+        return redirect(url_for('main.home_page'))
+    return render_template('post.html', title='Post', form=form_post)
 
 
 @bp_main.route('/book')
 @login_required
-@roles_required('renter')
 def book():
-    return render_template(url_for('book'))
+    return render_template('book.html', title='Book')
 
 
 def saving_pictures(profile_picture):
@@ -144,3 +166,8 @@ def account():
 @login_required
 def notifications():
     return render_template('notifications.html', title='Notifications')
+
+
+
+
+

@@ -23,9 +23,6 @@ class Config(object):
     UPLOAD_FOLDER = join(CWD, 'static/profile_pictures')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    # user-manager config
-    USER_APP_NAME = "Flask-User Basic App"
-    USER_ENABLE_EMAIL = False
 
 
 class ProdConfig(Config):
