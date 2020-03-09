@@ -1,15 +1,18 @@
 # the render template is to help us with returning an html template for a route
 # the url_for is a function within flask that will find the exact location of routes for us
-from flask import render_template, url_for, redirect, flash, Blueprint, request
-
+from flask import render_template, url_for, redirect, flash, Blueprint, request, app, current_app
+import os
+import secrets
 from app import db
 # we also need to import the forms
 from app.main.forms import LoginForm, RegistrationForm, UpdateAccountForm
 from app.models import User, Role
 from flask_login import current_user, login_user, logout_user, login_required
 from flask_user import roles_required
+
 # we create an instance of blueprint as main
 bp_main = Blueprint('main', __name__)
+
 
 # bp_auth = Blueprint('auth', __name__)
 
@@ -51,6 +54,7 @@ def signup():
 # associated with that username
 # the final section is where there are no errors and the user is officially logged in
 # using the log in function
+
 @bp_main.route("/login", methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -74,8 +78,11 @@ def login():
             else:
                 login_user(user, remember=form_login.remember.data)
                 flash('Login successful!', 'success')
-                next_page=request.args.get('next') # will get the page the user wanted to go to before they were redirected to login
-                return redirect(next_page) if next_page else redirect(url_for('main.home_page')) # will redirect user to the page they requested before they tried to log in, otherwise they will be redirected to home.
+                next_page = request.args.get(
+                    'next')  # will get the page the user wanted to go to before they were redirected to login
+                return redirect(next_page) if next_page else redirect(url_for(
+                    'main.home_page'))  # will redirect user to the page they requested before they tried to log in,
+                # otherwise they will be redirected to home.
     return render_template('login.html', title='Login Page', form=form_login)
 
 
@@ -91,11 +98,21 @@ def logout():
 def post():
     return render_template('post.html')
 
+
 @bp_main.route('/book')
 @login_required
 @roles_required('renter')
 def book():
     return render_template(url_for('book'))
+
+
+def saving_pictures(profile_picture):
+    hide_name = secrets.token_hex(6)
+    _, f_extension = os.path.splitext(profile_picture.filename)
+    p_pic = hide_name + f_extension
+    pic_path = os.path.join(current_app.config['UPLOAD_FOLDER'], p_pic)
+    profile_picture.save(pic_path)
+    return p_pic
 
 
 @bp_main.route("/account", methods=['GET', 'POST'])
@@ -104,20 +121,26 @@ def account():
     form_account = UpdateAccountForm()
     if form_account.validate_on_submit():
         if form_account.picture.data:
-            current_user.first_name = form_account.firstname.data
-            current_user.last_name = form_account.surname.data
-            current_user.username = form_account.username.data
-            current_user.email = form_account.email.data
-            db.session.commit()
-            flash('your account has been updated successfuly!', 'success')
+            file = request.files['picture']
+            pic = saving_pictures(file)
+            current_user.image_file = pic
+        current_user.first_name = form_account.firstname.data
+        current_user.last_name = form_account.surname.data
+        current_user.username = form_account.username.data
+        current_user.email = form_account.email.data
+        db.session.commit()
+        flash('your account has been updated successfully!', 'success')
         return redirect(url_for('main.account'))
+    elif request.method == 'GET':
+        form_account.email.data = current_user.email
+        form_account.username.data = current_user.username
+        form_account.surname.data = current_user.last_name
+        form_account.firstname.data = current_user.first_name
     image = url_for('static', filename='profile_pictures/' + current_user.image_file)
     return render_template('account.html', title='account', image_file=image, form=form_account)
-
 
 
 @bp_main.route("/notifications")
 @login_required
 def notifications():
     return render_template('notifications.html', title='Notifications')
-

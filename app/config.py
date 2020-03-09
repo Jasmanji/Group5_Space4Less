@@ -1,8 +1,8 @@
 """Flask config class."""
 from os.path import dirname, abspath, join
 
-class Config(object):
 
+class Config(object):
     # we also need to set up a secret key for our application.
     # This will protect against modifying cookies and cross-site request forgery attacks...
     """Set Flask base configuration"""
@@ -20,10 +20,13 @@ class Config(object):
     CWD = dirname(abspath(__file__))
     # choosing path of where database will be and its name
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + join(CWD, 'spaceless.db')
+    UPLOAD_FOLDER = join(CWD, 'static/profile_pictures')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # user-manager config
-    USER_ENABLE_EMAIL= False
+    USER_APP_NAME = "Flask-User Basic App"
+    USER_ENABLE_EMAIL = False
+
 
 class ProdConfig(Config):
     DEBUG = False

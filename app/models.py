@@ -10,8 +10,8 @@ from flask_login import UserMixin
 # function to get user by id
 @login.user_loader
 def load_user(user_id):
-    user = User.query.get(int(user_id))
-    return user
+    return User.query.get(int(user_id))
+
 
 # # Define the classes and tables
 # # userMixin is a provided class from flask documentation to assist log in functionality
@@ -71,5 +71,3 @@ class Post(db.Model):
 
     def __repr__(self):
         return "<User('%s', '%s', '%s')>" % (self.title, self.date_posted, self.image)
-
-
