@@ -6,7 +6,10 @@
         <p> Posted by <a href="#">{{ post.author.username }}</a> </p>
         <small> Date posted: {{ post.date_posted.strftime('%Y-%m-%d') }}</small>
         <p >{{ post.content }}</p>
-    {% endfor %}
+        <img alt= 'hello' src="{{ url_for('static', filename='post_pictures/' + post.image) }}
+">
 
+
+    {% endfor %}
 
 {% endblock content %}
