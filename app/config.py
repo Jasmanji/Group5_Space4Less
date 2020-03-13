@@ -21,6 +21,7 @@ class Config(object):
     # choosing path of where database will be and its name
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + join(CWD, 'spaceless.db')
     UPLOAD_FOLDER = join(CWD, 'static/profile_pictures')
+    POST_UPLOAD = join(CWD, 'static/post_pictures')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 

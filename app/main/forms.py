@@ -4,9 +4,10 @@ from flask_wtf.file import FileField, FileAllowed
 # we need to import all the form fields as-well
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+
+
 # from app.models import User
 # creating the class for the sign up form, which will inherit from the class FlaskForm to be representative of our form
-
 
 
 class RegistrationForm(FlaskForm):
@@ -104,18 +105,23 @@ class UpdateAccountForm(FlaskForm):
                         )
 
     # for adding a picture
-    picture= FileField('Profile picture',
-                       validators=[FileAllowed(['jpg', 'png'])]
+    picture = FileField('Profile picture',
+                        validators=[FileAllowed(['jpg', 'png'])]
 
-    )
+                        )
 
     # we also need a submit button to send the information
     submit = SubmitField('Update')
 
 
 class PostForm(FlaskForm):
-    title=StringField('Title',
-                      validators=[DataRequired()])
-    content= TextAreaField('Content',
-                      validators=[DataRequired()])
-    submit=SubmitField('Post')
+    title = StringField('Title',
+                        validators=[DataRequired()])
+    content = TextAreaField('Content',
+                            validators=[DataRequired()])
+    # location = TextAreaField('location', validators=[DataRequired()])
+    # space_size = StringField('space_size', validators=[DataRequired()])
+    picture_for_posts = FileField('Post picture',
+                                  validators=[FileAllowed(['jpg', 'png'])]
+                                  )
+    submit = SubmitField('Post')

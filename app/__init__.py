@@ -20,7 +20,6 @@ db = SQLAlchemy()
 login = LoginManager()
 
 
-
 # we then initialise the application:
 # config_class ->> under this variable we need to input the DevConfig
 #                  we made in our configuration file.
@@ -41,15 +40,13 @@ def create_app(config_class=DevConfig):
     # for demonstration purposes:
     # from app.populate import populate_db
     from app.models import User, Post
-    #user_manager = UserManager(app, db, User)
+    # user_manager = UserManager(app, db, User)
     # creating columns and populating database
     with app.app_context():
         db.create_all()  # creates table structure for each imported user
         # populate_db()  # adding dummy data
 
     # somehow i need to initialise the UserManager (which needs 3 inputs- app, db and User
-
-
 
     from app.main.routes import bp_main
     app.register_blueprint(bp_main)

@@ -9,7 +9,6 @@ from app.main.forms import LoginForm, RegistrationForm, UpdateAccountForm, PostF
 from app.models import User, Post
 from flask_login import current_user, login_user, logout_user, login_required
 
-
 # we create an instance of blueprint as main
 bp_main = Blueprint('main', __name__)
 
@@ -35,7 +34,7 @@ bp_main = Blueprint('main', __name__)
 @bp_main.route('/')
 @bp_main.route('/home')
 def home_page():
-    posts=Post.query.all()
+    posts = Post.query.all()
     return render_template('home.html', title='Home Page', posts=posts)
 
 
@@ -50,10 +49,9 @@ def signup():
                     first_name=form_signup.firstname.data,
                     last_name=form_signup.surname.data,
                     email=form_signup.email.data,
-                    roles = form_signup.role.data)
+                    roles=form_signup.role.data)
         user.set_password(form_signup.password.data)
         # adding the role of the user- property_owner or renter
-
 
         db.session.add(user)
         db.session.commit()
@@ -109,19 +107,38 @@ def logout():
     return redirect(url_for('main.home_page'))
 
 
+def saving_pictures_post(post_picture):
+    hide_name = secrets.token_hex(6)
+    _, f_extension = os.path.splitext(post_picture.filename)
+    post_image = hide_name + f_extension
+    config = current_app.config
+    post_path = os.path.join(config['POST_UPLOAD'], post_image)
+    post_picture.save(post_path)
+    return post_image
+
+
 @bp_main.route('/post', methods=['GET', 'POST'])
 @login_required
 def post():
-    form_post=PostForm()
+    form_post = PostForm()
     if form_post.validate_on_submit():
-        post = Post(title=form_post.title.data, content=form_post.content.data, author=current_user)
-        db.session.add(post)
-        db.session.commit()
+        if form_post.picture_for_posts.data:
+            file = request.files['picture_for_posts']
+            print('1')
+            pic = saving_pictures_post(file)
+            form_post.picture_for_posts = pic
+            post = Post(title=form_post.title.data, content=form_post.content.data,
+                        image=form_post.picture_for_posts,
+                        author=current_user)
+            db.session.add(post)
+            db.session.commit()
         flash('you have successfully posted your property!!', 'success')
         return redirect(url_for('main.home_page'))
-    return render_template('post.html', title='Post', form=form_post)
+    image = url_for('static', filename='post_pictures/' + str(form_post.picture_for_posts))
+    return render_template('post.html', title='Post', content='content', image=image, form=form_post)
 
-
+# image = image
+# image=form_post.picture,
 @bp_main.route('/book')
 @login_required
 def book():
@@ -166,8 +183,3 @@ def account():
 @login_required
 def notifications():
     return render_template('notifications.html', title='Notifications')
-
-
-
-
-

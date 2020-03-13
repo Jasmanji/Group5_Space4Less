@@ -13,7 +13,6 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-
 # # Define the classes and tables
 # # userMixin is a provided class from flask documentation to assist log in functionality
 # # Columns for user table: user_id (INTEGER PRIMARY KEY), username (TEXT NOT NULL), email (TEXT NOT NULL)
@@ -29,7 +28,6 @@ class User(db.Model, UserMixin):
     roles = db.Column(db.String(20))
 
     posts = db.relationship('Post', backref='author', lazy=True)
-
 
     def get_id(self):
         return (self.user_id)
@@ -52,7 +50,9 @@ class Post(db.Model):
     post_id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(30), nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    image = db.Column(db.String(20), nullable=False, default='default.jpg')
+    image = db.Column(db.String(30), nullable=False, default='default.png')
+    # location = db.Column(db.String(50), nullable=False)
+    # space_size = db.Column(?) nullable=True
     content = db.Column(db.String(30), nullable=False)
     user_id = db.Column(db.Integer, ForeignKey('user.user_id'), nullable=False)
 
