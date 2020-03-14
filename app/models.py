@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from app import db, login
 from flask_login import UserMixin
-
+# import flask_whooshalchemy as wa
 
 # function to get user by id
 @login.user_loader
@@ -51,8 +51,8 @@ class Post(db.Model):
     title = db.Column(db.String(30), nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     image = db.Column(db.String(30), nullable=False, default='default.png')
-    # location = db.Column(db.String(50), nullable=False)
-    # space_size = db.Column(?) nullable=True
+    location = db.Column(db.String(50), nullable=False)
+    space_size = db.Column(db.String(15), nullable=True)
     content = db.Column(db.String(30), nullable=False)
     user_id = db.Column(db.Integer, ForeignKey('user.user_id'), nullable=False)
 

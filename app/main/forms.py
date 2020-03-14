@@ -119,9 +119,13 @@ class PostForm(FlaskForm):
                         validators=[DataRequired()])
     content = TextAreaField('Content',
                             validators=[DataRequired()])
-    # location = TextAreaField('location', validators=[DataRequired()])
-    # space_size = StringField('space_size', validators=[DataRequired()])
+    location = TextAreaField('location', validators=[DataRequired()])
+    space_size = SelectField('Space Size', default=('0', 'Select'), choices=[('0', 'Select'), ('Extra Small', 'XS'),
+                                                                       ('Small', 'S'), ('Medium', 'M'),
+                                                                       ('Medium Large', 'ML'), ('Large', 'L'),
+                                                                       ('Extra Large', 'XL')])
     picture_for_posts = FileField('Post picture',
                                   validators=[FileAllowed(['jpg', 'png'])]
                                   )
     submit = SubmitField('Post')
+

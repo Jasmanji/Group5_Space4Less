@@ -17,6 +17,16 @@
                     {{ form.content(class="form-control form-control-lg") }}
                 </div>
                 <div class="form-group">
+                    {{ form.location.label(class="form-control-label") }}
+                    {{ form.location(class="form-control form-control-lg") }}
+                </div>
+                <div class="dropdownmenu">
+                    {{ form.space_size.label(class="form-control-label") }}
+                    <br>
+                    {{ form.space_size(class="form-control form-control-lg") }}
+                </div>
+
+                <div class="form-group">
                     {{ form.picture_for_posts.label() }}
                     {{ form.picture_for_posts(class="form-coltrol-file") }}
                 </div>

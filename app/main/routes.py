@@ -4,6 +4,7 @@ from flask import render_template, url_for, redirect, flash, Blueprint, request,
 import os
 import secrets
 from app import db
+from PIL import Image
 # we also need to import the forms
 from app.main.forms import LoginForm, RegistrationForm, UpdateAccountForm, PostForm
 from app.models import User, Post
@@ -36,6 +37,27 @@ bp_main = Blueprint('main', __name__)
 def home_page():
     posts = Post.query.all()
     return render_template('home.html', title='Home Page', posts=posts)
+
+
+# bp_main.route("/search", methods=['POST'])
+# def search():
+#    query = request.args('search')
+#   return render_template('search.html', title='Search', search=search)
+
+@bp_main.route('/search', methods=['POST', 'GET'])
+def search():
+    if request.method == 'POST':
+        term = request.form['search_term']
+        if term == "":
+            flash("Enter a location/size to search for")
+            return redirect('/')
+        results = Post.query.filter(Post.location.contains(term)).all()
+        if not results:
+            flash("No post found matching this data.")
+            return redirect('/')
+        return render_template('search.html', results=results)
+    else:
+        return redirect(url_for('main.home_page'))
 
 
 @bp_main.route("/signup", methods=['GET', 'POST'])
@@ -113,7 +135,10 @@ def saving_pictures_post(post_picture):
     post_image = hide_name + f_extension
     config = current_app.config
     post_path = os.path.join(config['POST_UPLOAD'], post_image)
-    post_picture.save(post_path)
+    output_size = (100, 100)
+    final = Image.open(post_picture)
+    final.thumbnail(output_size)
+    final.save(post_path)
     return post_image
 
 
@@ -124,11 +149,12 @@ def post():
     if form_post.validate_on_submit():
         if form_post.picture_for_posts.data:
             file = request.files['picture_for_posts']
-            print('1')
+
             pic = saving_pictures_post(file)
             form_post.picture_for_posts = pic
             post = Post(title=form_post.title.data, content=form_post.content.data,
-                        image=form_post.picture_for_posts,
+                        image=form_post.picture_for_posts, location=form_post.location.data,
+                        space_size=form_post.space_size.data,
                         author=current_user)
             db.session.add(post)
             db.session.commit()
@@ -137,8 +163,7 @@ def post():
     image = url_for('static', filename='post_pictures/' + str(form_post.picture_for_posts))
     return render_template('post.html', title='Post', content='content', image=image, form=form_post)
 
-# image = image
-# image=form_post.picture,
+
 @bp_main.route('/book')
 @login_required
 def book():
