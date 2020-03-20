@@ -170,9 +170,19 @@ def book(postid):
     book = Book(user_id=current_user.get_id() , post_id=postid)
     db.session.add(book)
     db.session.commit()
+    flash('you have successfully posted a request for the property')
+    bookings= Book.query.join(User)
+    return render_template('home.html')
 
-    return render_template('book.html', title='Book')
-
+@bp_main.route('/bookings')
+@login_required
+def bookings():
+    user = current_user.get_id()
+    print(user)
+    bookings = Book.query.join(Post, Book.post_id == Post.post_id).join(User, User.user_id == Book.user_id).filter_by(user_id=user).all()
+    
+    print(bookings)
+    return render_template('bookings.html', title='Book', bookings=bookings)
 
 def saving_pictures(profile_picture):
     hide_name = secrets.token_hex(6)
@@ -181,6 +191,7 @@ def saving_pictures(profile_picture):
     pic_path = os.path.join(current_app.config['UPLOAD_FOLDER'], p_pic)
     profile_picture.save(pic_path)
     return p_pic
+
 
 
 @bp_main.route("/account", methods=['GET', 'POST'])
