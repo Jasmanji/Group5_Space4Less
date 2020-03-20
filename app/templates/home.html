@@ -9,8 +9,12 @@
         <img alt= 'hello' src="{{ url_for('static', filename='post_pictures/' + post.image, width=50, height =50) }}">
 
         {% if current_user.roles == 'renter' %}
-            <a href={{ url_for('main.book') }}>Book</a>
+            <a href="{{ url_for('main.book', postid=post.post_id)  }}" >Book</a>
         {% endif %}
+
+
+
+
 
     {% endfor %}
 

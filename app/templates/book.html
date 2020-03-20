@@ -1,5 +1,7 @@
 {% extends 'layout.html' %}
 {% block content %}
-    <p>select dates</p>
-    <button>Book</button>
+    {% for booking in bookings %}
+        {{ user.bookings }}
+    {% endfor %}
+
 {% endblock %}

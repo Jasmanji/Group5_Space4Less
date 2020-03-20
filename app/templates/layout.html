@@ -56,8 +56,8 @@
             {% if current_user.is_authenticated %}
                 {% if current_user.roles == 'property_owner' %}
                     <a href="{{ url_for('main.post') }}" target="_blank"> Post </a>
-                {% else %}
-                    <a href="{{ url_for('main.book') }}" target="_blank"> Book </a>
+                {#{% else %}
+                    <a href="{{ url_for('main.book') }}" target="_blank"> Book </a>#}
                 {% endif %}
                 <a href="{{ url_for('main.logout') }}">Logout</a>
                 <a href="{{ url_for('main.account') }}"> Account</a>

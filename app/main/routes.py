@@ -7,7 +7,7 @@ from app import db
 from PIL import Image
 # we also need to import the forms
 from app.main.forms import LoginForm, RegistrationForm, UpdateAccountForm, PostForm
-from app.models import User, Post
+from app.models import User, Post, Book
 from flask_login import current_user, login_user, logout_user, login_required
 
 # we create an instance of blueprint as main
@@ -164,13 +164,12 @@ def post():
     return render_template('post.html', title='Post', content='content', image=image, form=form_post)
 
 
-
-
-
-
-@bp_main.route('/book')
+@bp_main.route('/book/<postid>')
 @login_required
-def book():
+def book(postid):
+    book = Book(user_id=current_user.get_id() , post_id=postid)
+    db.session.add(book)
+    db.session.commit()
     return render_template('book.html', title='Book')
 
 
