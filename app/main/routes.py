@@ -170,6 +170,7 @@ def book(postid):
     book = Book(user_id=current_user.get_id() , post_id=postid)
     db.session.add(book)
     db.session.commit()
+
     return render_template('book.html', title='Book')
 
 
