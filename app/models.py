@@ -28,6 +28,7 @@ class User(db.Model, UserMixin):
     roles = db.Column(db.String(20))
 
     posts = db.relationship('Post', backref='author', lazy=True)
+    bookings= db.relationship('Book')
 
     def get_id(self):
         return (self.user_id)
@@ -55,6 +56,14 @@ class Post(db.Model):
     space_size = db.Column(db.String(15), nullable=True)
     content = db.Column(db.String(30), nullable=False)
     user_id = db.Column(db.Integer, ForeignKey('user.user_id'), nullable=False)
+    bookings = db.relationship('Book')
 
     def __repr__(self):
         return "<User('%s', '%s', '%s')>" % (self.title, self.date_posted, self.image)
+
+
+class Book(db.Model):
+    __tablename__ = 'book'
+    book_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, ForeignKey('user.user_id'), nullable=False)
+    post_id = db.Column(db.Integer, ForeignKey('post.post_id'), nullable=False)

@@ -164,6 +164,10 @@ def post():
     return render_template('post.html', title='Post', content='content', image=image, form=form_post)
 
 
+
+
+
+
 @bp_main.route('/book')
 @login_required
 def book():
@@ -208,3 +212,4 @@ def account():
 @login_required
 def notifications():
     return render_template('notifications.html', title='Notifications')
+
