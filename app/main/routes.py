@@ -171,20 +171,8 @@ def book(postid):
     db.session.add(book)
     db.session.commit()
     flash('you have successfully posted a request for the property')
-    bookings= Book.query.join(User)
     return render_template('home.html')
 
-@bp_main.route('/bookings')
-@login_required
-def bookings():
-    userid = current_user.get_id()
-    print(userid)
-    bookings = Book.query.join(Post, Book.post_id == Post.post_id) \
-        .join(User, User.user_id == Book.user_id) \
-        .add_columns(User.user_id, User.email, Post.title, Post.content, Book.book_id) \
-        .filter_by(user_id=userid).all()
-    print(bookings)
-    return render_template('bookings.html', title='Book', bookings=bookings)
 
 def saving_pictures(profile_picture):
     hide_name = secrets.token_hex(6)
@@ -199,12 +187,28 @@ def saving_pictures(profile_picture):
 @login_required
 def profile():
     image = url_for('static', filename='profile_pictures/' + current_user.image_file)
-    return render_template('profile.html', title='profile', image_file=image)
+    userid = current_user.get_id()
+    bookings = Book.query.join(Post, Book.post_id == Post.post_id) \
+        .join(User, User.user_id == Book.user_id) \
+        .add_columns(User.user_id, User.email, Post.title, Post.content, Book.book_id, Book.date_booked) \
+        .filter_by(user_id=userid).all()
 
+    return render_template('profile.html', title='profile', image_file=image, bookings=bookings)
 
-@bp_main.route("/account", methods=['GET', 'POST'])
+@bp_main.route('/bookings')
 @login_required
-def account():
+def bookings():
+    userid = current_user.get_id()
+    bookings = Book.query.filter_by(user_id=userid).all()
+    print(bookings)
+    posts_booked = bookings.post_id
+    print(posts_booked)
+    return render_template('bookings.html', title='Book', bookings=posts_booked)
+
+
+@bp_main.route("/update_account", methods=['GET', 'POST'])
+@login_required
+def update_account():
     form_account = UpdateAccountForm()
     if form_account.validate_on_submit():
         if form_account.picture.data:
@@ -217,13 +221,13 @@ def account():
         current_user.email = form_account.email.data
         db.session.commit()
         flash('your account has been updated successfully!', 'success')
-        return redirect(url_for('main.account'))
+        return redirect(url_for('main.update_account'))
     elif request.method == 'GET':
         form_account.email.data = current_user.email
         form_account.username.data = current_user.username
         form_account.surname.data = current_user.last_name
         form_account.firstname.data = current_user.first_name
-    return render_template('account.html', title='account', form=form_account)
+    return render_template('update_account.html', title='account', form=form_account)
 
 
 @bp_main.route("/notifications")
@@ -236,3 +240,6 @@ def notifications():
 def single_post(post_id):
     post=Post.query.get_or_404(post_id)
     return render_template('single_post.html', title=post.title, post=post)
+
+
+

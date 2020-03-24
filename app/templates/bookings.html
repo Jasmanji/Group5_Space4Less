@@ -1,11 +1,18 @@
 {% extends 'layout.html' %}
 {% block content %}
 
-    {% for booking in bookings %}
-        <p>kwaeuhfuawhefahwefuhawe</p>
-        {{ booking.book_id }}
-        {{ booking.title }}
-        {{ booking.email }}
+    <h1>{{ current_user.name }}'s bookings</h1>
+    {% for post in bookings %}
+        <div class="media content-section">
+                <img class="mr-3 article-image" src="{{ url_for('static', filename='post_pictures/' + post.image, width=50, height =50) }}">
+
+                <div class="media-body">
+                    <h4 class="media-heading">"{{ post.title }}</h4>
+                    <p>Posted by <a href="#">{{ post.author.username }}</a></p>
+                    <p>{{ post.content }}</p>
+                    <small> Date posted: {{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+                </div>
+            </div>
     {% endfor %}
 
 {% endblock %}

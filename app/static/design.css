@@ -1,4 +1,17 @@
+#profile_picture{
+  border: 7px solid black;
 
+  margin: auto;
+  display: block;
+  max-width:20%;
+  max-height:20%;
+  width: auto;
+  height: auto;
+}
+
+.align_center{
+  text-align: center;
+}
 .form-design{
   font-family: 'Open Sans', cursive;
   text-align: center;
@@ -15,6 +28,7 @@ h1{
   text-align: center;
   color:red;
 }
+
 main{
   text-align: center;
 }

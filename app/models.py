@@ -67,3 +67,4 @@ class Book(db.Model):
     book_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, ForeignKey('user.user_id'), nullable=False)
     post_id = db.Column(db.Integer, ForeignKey('post.post_id'), nullable=False)
+    date_booked = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
