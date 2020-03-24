@@ -177,10 +177,12 @@ def book(postid):
 @bp_main.route('/bookings')
 @login_required
 def bookings():
-    user = current_user.get_id()
-    print(user)
-    bookings = Book.query.join(Post, Book.post_id == Post.post_id).join(User, User.user_id == Book.user_id).filter_by(user_id=user).all()
-    
+    userid = current_user.get_id()
+    print(userid)
+    bookings = Book.query.join(Post, Book.post_id == Post.post_id) \
+        .join(User, User.user_id == Book.user_id) \
+        .add_columns(User.user_id, User.email, Post.title, Post.content, Book.book_id) \
+        .filter_by(user_id=userid).all()
     print(bookings)
     return render_template('bookings.html', title='Book', bookings=bookings)
 

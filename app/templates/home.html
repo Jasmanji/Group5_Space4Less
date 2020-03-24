@@ -2,14 +2,42 @@
 
 {% block content %}
     {% for post in posts %}
-        <h1>{{ post.title }}</h1>
+            <div class="container">
+            <div class="media">
+                <img class="mr-3" src="{{ url_for('static', filename='post_pictures/' + post.image, width=50, height =50) }}">
+
+                <div class="media-body">
+                    <h4 class="media-heading">{{ post.title }}</h4>
+                    <p>Posted by <a href="#">{{ post.author.username }}</a></p>
+                    <p>{{ post.content }}</p>
+                    <small> Date posted: {{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+                    {#<ul class="list-inline list-unstyled">
+                        <li>|</li>
+                        <li>
+                            <span><i class="glyphicon glyphicon-comment"></i> 2 comments</span>
+                        </li>
+                        <li>|</li>
+                        <li>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star-empty"></span>
+                        </li>
+                    </ul>#}
+                </div>
+            </div>
+            </div>
+
+
+        {# <h1>{{ post.title }}</h1>
         <p> Posted by <a href="#">{{ post.author.username }}</a> </p>
         <small> Date posted: {{ post.date_posted.strftime('%Y-%m-%d') }}</small>
         <p >{{ post.content }}</p>
         <img alt= 'hello' src="{{ url_for('static', filename='post_pictures/' + post.image, width=50, height =50) }}">
-
+#}
         {% if current_user.roles == 'renter' %}
-            <a href="{{ url_for('main.book', postid=post.post_id)  }}" >Book</a>
+            <a href="{{ url_for('main.book', postid=post.post_id) }}">Book</a>
         {% endif %}
 
 
