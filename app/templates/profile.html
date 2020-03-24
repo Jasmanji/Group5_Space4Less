@@ -18,7 +18,11 @@
             <tr>
                 <td> {{ booking.date_booked.strftime('%Y-%m-%d')}} </td>
                 <td> {{ booking.title }} </td>
-                <td> confirmation pending/payed </td>
+                {% if booking.state == 'verified' %}
+                    <td> confirmation pending/payed </td>
+                {% else %}
+
+                {% endif %}
             </tr>
         {% endfor %}
 

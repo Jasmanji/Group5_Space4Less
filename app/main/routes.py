@@ -9,6 +9,13 @@ from PIL import Image
 from app.main.forms import LoginForm, RegistrationForm, UpdateAccountForm, PostForm
 from app.models import User, Post, Book
 from flask_login import current_user, login_user, logout_user, login_required
+import stripe
+
+pub_key = 'pk_test_IzPesEUVXnPzY8a4Ecvr3J7C00bikUjRsi'
+secret_key = 'sk_test_H8AjWDFHjwYjMkzloMCbE4qA00XSQyhQbS'
+stripe.api_key=secret_key
+
+
 
 # we create an instance of blueprint as main
 bp_main = Blueprint('main', __name__)
@@ -192,8 +199,13 @@ def profile():
         .join(User, User.user_id == Book.user_id) \
         .add_columns(User.user_id, User.email, Post.title, Post.content, Book.book_id, Book.date_booked) \
         .filter_by(user_id=userid).all()
-
     return render_template('profile.html', title='profile', image_file=image, bookings=bookings)
+
+@bp_main.route("/payment", methods=['GET', 'POST'])
+@login_required
+def payment():
+    return render_template('payment.html', pub_key=pub_key)
+
 
 @bp_main.route('/bookings')
 @login_required
@@ -235,11 +247,23 @@ def update_account():
 def notifications():
     return render_template('notifications.html', title='Notifications')
 
+
 @bp_main.route("/single_post/<post_id>")
 @login_required
 def single_post(post_id):
-    post=Post.query.get_or_404(post_id)
+    post = Post.query.get_or_404(post_id)
     return render_template('single_post.html', title=post.title, post=post)
 
 
+@bp_main.route('/pay', methods=['POST'])
+def pay():
+    customer = stripe.Customer.create(email=request.form['stripeEmail'], source=request.form['stripeToken'])
 
+    charge = stripe.Charge.create(
+        customer=customer.id,
+        amount=3000,
+        currency='gbp',
+        description='Space4Less renting space'
+    )
+    flash('you have successfully payed for the property', 'success')
+    return redirect(url_for('main.home_page'))
