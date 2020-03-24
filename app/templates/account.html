@@ -1,17 +1,7 @@
-{% extends 'layout.html' %}
+{% extends 'layout.html'%}
 {% block content %}
 
-    <img src="{{ image_file }}">
-    <h1>{{ current_user.first_name }} {{ current_user.last_name }}</h1>
-    <h2>{{ current_user.username }}</h2>
-    <h3>{{ current_user.email }}</h3>
-    <p>
-    {% for booking in bookings %}
-
-    {% endfor %}
-    </p>
-
-        <div class="content-section">
+    <div class="content-section">
         <form method="POST" novalidate enctype="multipart/form-data">
             {{ form.hidden_tag() }} <!-- we add a CSRF token for protection against furgery attacks -->
             <fieldset class="form-design">
@@ -97,11 +87,8 @@
                 <div class="attempt">
                     <!-- added this above class and the below id to make the elements easier to target with css -->
                     <p id="signupbutton">{{ form.submit(class="form-control form-control-lg") }}</p></div>
-
-
             </fieldset>
-
-
         </form>
     </div>
-{% endblock content %}
+
+{% endblock %}

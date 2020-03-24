@@ -8,7 +8,7 @@ from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 
 # for configuring the app we will need the DevConfig from our config.py module therefore we import this aswell.
-from flask_user import UserManager
+#from flask_user import UserManager
 
 from app.config import DevConfig
 # we will also need to do some initialisation (configuration) to our forms module ??????? where

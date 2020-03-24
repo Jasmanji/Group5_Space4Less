@@ -60,12 +60,13 @@
                     <a href="{{ url_for('main.book') }}" target="_blank"> Book </a>#}
                 {% endif %}
                 <a href="{{ url_for('main.logout') }}">Logout</a>
-                <a href="{{ url_for('main.account') }}"> Account</a>
+                <a href="{{ url_for('main.account') }}">Update account</a>
+                <a href="{{ url_for('main.profile') }}">My profile</a>
                 <a href="{{ url_for('main.notifications') }}"> Notifications</a>
 
             {% else %}
-                <a href="{{ url_for('main.signup') }}"> Signup</a>
-                <a href="{{ url_for('main.login') }}"> Login </a>
+                <a href="{{ url_for('main.signup') }}">Signup</a>
+                <a href="{{ url_for('main.login') }}">Login </a>
             {% endif %}
 
 

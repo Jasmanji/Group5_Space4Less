@@ -195,6 +195,12 @@ def saving_pictures(profile_picture):
     return p_pic
 
 
+@bp_main.route("/profile", methods=['GET', 'POST'])
+@login_required
+def profile():
+    image = url_for('static', filename='profile_pictures/' + current_user.image_file)
+    return render_template('profile.html', title='profile', image_file=image)
+
 
 @bp_main.route("/account", methods=['GET', 'POST'])
 @login_required
@@ -217,8 +223,7 @@ def account():
         form_account.username.data = current_user.username
         form_account.surname.data = current_user.last_name
         form_account.firstname.data = current_user.first_name
-    image = url_for('static', filename='profile_pictures/' + current_user.image_file)
-    return render_template('account.html', title='account', image_file=image, form=form_account)
+    return render_template('account.html', title='account', form=form_account)
 
 
 @bp_main.route("/notifications")
