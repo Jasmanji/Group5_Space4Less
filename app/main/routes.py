@@ -226,3 +226,8 @@ def account():
 def notifications():
     return render_template('notifications.html', title='Notifications')
 
+@bp_main.route("/single_post/<post_id>")
+@login_required
+def single_post(post_id):
+    post=Post.query.get_or_404(post_id)
+    return render_template('single_post.html', title=post.title, post=post)
