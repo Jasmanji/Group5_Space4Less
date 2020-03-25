@@ -12,8 +12,8 @@
                     <p>{{ post.content }}</p>
                     <p><small> Date posted: {{ post.date_posted.strftime('%Y-%m-%d') }}</small></p>
 
-                {% if current_user.roles == 'renter' %}
-                  <a class="btn btn-sm btn-danger"  href="{{ url_for('main.book', postid=post.post_id) }}">BOOK!</a>
+                {% if (current_user.roles == 'renter') %}
+                  <a class="btn btn-sm btn-danger"  href="{{ url_for('main.book', postid = post.post_id) }}">BOOK!</a>
 
                 {% elif (current_user.roles == 'property_owner') and (post.author == current_user) %}
 

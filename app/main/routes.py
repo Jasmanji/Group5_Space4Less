@@ -16,7 +16,6 @@ secret_key = 'sk_test_H8AjWDFHjwYjMkzloMCbE4qA00XSQyhQbS'
 stripe.api_key=secret_key
 
 
-
 # we create an instance of blueprint as main
 bp_main = Blueprint('main', __name__)
 
@@ -211,12 +210,13 @@ def payment():
 @login_required
 def bookings():
     userid = current_user.get_id()
-    bookings = Book.query.filter_by(user_id=userid).all()
-    print(bookings)
-    posts_booked = bookings.post_id
-    print(posts_booked)
+    post_ids_of_bookings = Book.query.with_entities(Book.post_id).filter_by(user_id=userid).all()
+    print(post_ids_of_bookings)
+    posts_booked = []
+    for post_id in post_ids_of_bookings:
+        post_object=Post.query.get_or_404(post_id)
+        posts_booked.append(post_object)
     return render_template('bookings.html', title='Book', bookings=posts_booked)
-
 
 @bp_main.route("/update_account", methods=['GET', 'POST'])
 @login_required
