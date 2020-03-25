@@ -7,18 +7,18 @@
     </form>
 
     {% for post in posts %}
+            <div class="post">
+                <div class="media content-section">
+                    <img class="mr-3 article-image" src="{{ url_for('static', filename='post_pictures/' + post.image, width=5000, height =5000) }}">
 
-            <div class="media content-section">
-                <img class="mr-3 article-image" src="{{ url_for('static', filename='post_pictures/' + post.image, width=5000, height =5000) }}">
-
-                <div class="media-body">
-                    <h4 class="media-heading"><a href="{{ url_for('main.single_post', post_id=post.post_id) }}">{{ post.title }}</a></h4>
-                    <p>Posted by <a href="#">{{ post.author.username }}</a></p>
-                    <p>{{ post.content }}</p>
-                    <small> Date posted: {{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+                    <div class="media-body">
+                        <h4 class="media-heading"><a href="{{ url_for('main.single_post', post_id=post.post_id) }}">{{ post.title }}</a></h4>
+                        <p>Posted by <a href="#">{{ post.author.username }}</a></p>
+                        <p>{{ post.content }}</p>
+                        <small> Date posted: {{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+                    </div>
                 </div>
             </div>
-
         {# <h1>{{ post.title }}</h1>
         <p> Posted by <a href="#">{{ post.author.username }}</a> </p>
         <small> Date posted: {{ post.date_posted.strftime('%Y-%m-%d') }}</small>
