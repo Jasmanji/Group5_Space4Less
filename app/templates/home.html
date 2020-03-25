@@ -9,7 +9,7 @@
     {% for post in posts %}
             <div class="post">
                 <div class="media content-section">
-                    <img class="mr-3 article-image" src="{{ url_for('static', filename='post_pictures/' + post.image, width=5000, height =5000) }}">
+                    <img class="mr-3 article-image post_image" src="{{ url_for('static', filename='post_pictures/' + post.image, width=5000, height =5000) }}">
 
                     <div class="media-body">
                         <h4 class="media-heading"><a href="{{ url_for('main.single_post', post_id=post.post_id) }}">{{ post.title }}</a></h4>
