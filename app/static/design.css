@@ -81,13 +81,14 @@ form {
   position: relative;
 }
 
-.nav > .nav-header {
+/*.nav > .nav-header {
   display: inline;
-}
+}*/
 
 .nav > .nav-header > .nav-title {
-  display: inline-block;
+  /*display: inline-block;*/
   font-size: 22px;
+  font-family: Montserrat, sans-serif;
   color: black;
   padding: 10px 10px 10px 10px;
 }
@@ -100,6 +101,7 @@ form {
   display: inline;
   float: right;
   font-size: 18px;
+  font-family: Montserrat, sans-serif;
 }
 
 .nav > .nav-links > a {
@@ -117,6 +119,7 @@ form {
   display: none;
 }
 
+/* For responsive aspect */
 @media (max-width:600px) {
   .nav > .nav-btn {
     display: inline-block;
@@ -131,8 +134,9 @@ form {
     padding: 13px;
   }
   .nav > .nav-btn > label:hover,.nav  #nav-check:checked ~ .nav-btn > label {
-    background-color: rgba(0, 0, 0, 0.3);
+    color: darkgray;
   }
+
   .nav > .nav-btn > label > span {
     display: block;
     width: 25px;
