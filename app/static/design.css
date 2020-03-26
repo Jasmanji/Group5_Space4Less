@@ -5,9 +5,11 @@
   padding: 10px;
   margin: 5px
 }
+
 .post_image{
-  display:block;
+  width:25%
 }
+
 #profile_picture{
   border: 7px solid black;
 

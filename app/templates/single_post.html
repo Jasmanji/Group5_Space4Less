@@ -4,10 +4,10 @@
 
             <div class="row post">
                 <div class="media">
-                    <div class="col-lg-4 post_image">
+
                         <img class="col-md-2 post_image" src="{{ url_for('static', filename='post_pictures/' + post.image, width=500, height =500) }}">
-                    </div>
-                    <div class="col-md-8">
+
+
                     <div class="media-body">
                         <h4 class="media-heading">{{ post.title }}</h4>
                         <p>Posted by <a href="#">{{ post.author.username }}</a></p>
@@ -23,7 +23,7 @@
                             <a class="btn btn-sm btn-danger" href="#">Delete</a>
 
                     {% endif %}
-                    </div>
+
                 </div>
             </div>
 
