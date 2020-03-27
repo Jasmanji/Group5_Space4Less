@@ -218,6 +218,19 @@ def bookings():
         posts_booked.append(post_object)
     return render_template('bookings.html', title='Book', bookings=posts_booked)
 
+@bp_main.route('/posts')
+@login_required
+def my_posts():
+    userid = current_user.get_id()
+    post_ids = Post.query.with_entities(Post.post_id).filter_by(user_id=userid).all()
+    print(post_ids)
+    my_posts = []
+    for post_id in post_ids:
+        post_object = Post.query.get_or_404(post_id)
+        my_posts.append(post_object)
+    return render_template('my_posts.html', title='My Posts', posts=my_posts)
+
+
 @bp_main.route("/update_account", methods=['GET', 'POST'])
 @login_required
 def update_account():
@@ -267,3 +280,5 @@ def pay():
     )
     flash('you have successfully payed for the property', 'success')
     return redirect(url_for('main.home_page'))
+
+

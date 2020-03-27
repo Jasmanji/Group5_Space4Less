@@ -29,10 +29,12 @@
         </table>
 
 
-        <a class="align_center" href="{{ url_for('main.bookings') }}">BOOKINGS</a>
+        <a class="align_center btn btn-primary" href="{{ url_for('main.bookings') }}">BOOKINGS</a>
+        {% elif current_user.roles == 'property_owner' %}
+        <a class="align_center btn btn-primary" href="{{ url_for('main.my_posts') }}">MY PROPERTIES</a>
     {% endif %}
 
-    <a class="align_center" href="{{ url_for('main.update_account') }}">Update account</a>
+    <a class="align_center btn btn-primary" href="{{ url_for('main.update_account') }}">Update account</a>
 
 
 {% endblock content %}

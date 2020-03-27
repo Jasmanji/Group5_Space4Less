@@ -23,6 +23,7 @@
 
 .align_center{
   text-align: center;
+  margin: auto;
 }
 .form-design{
   font-family: 'Open Sans', cursive;
@@ -133,6 +134,7 @@ form {
     height: 50px;
     padding: 13px;
   }
+
   .nav > .nav-btn > label:hover,.nav  #nav-check:checked ~ .nav-btn > label {
     color: darkgray;
   }

@@ -24,7 +24,16 @@ class Config(object):
     POST_UPLOAD = join(CWD, 'static/post_pictures')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-
+    # Flask-Mail
+    # MAIL_SERVER:'smtp.gmail.com'
+    # MAIL_PORT: 25
+    # MAIL_USE_TLS:False
+    # MAIL_USE_SSL:False
+    # MAIL_USERNAME:None
+    # MAIL_PASSWORD:None
+    # MAIL_DEFAULT_SENDER:None
+    # MAIL_MAX_EMAILS: None
+    # MAIL_ASCII_ATTACHMENTS:False
 
 class ProdConfig(Config):
     DEBUG = False

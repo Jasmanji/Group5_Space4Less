@@ -5,6 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from app import db, login
 from flask_login import UserMixin
+
 # import flask_whooshalchemy as wa
 
 # function to get user by id
@@ -35,6 +36,8 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return "<User('%s', '%s', '%s')>" % (self.username, self.email, self.image_file)
+
+
 
     # for the password to be encrypted:
     # for generating
