@@ -14,6 +14,8 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+
     <style>
     @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
     </style>
@@ -27,67 +29,74 @@
 </head>
 
 <body>
-<header>
-    <!-- Navbar code from codepen-->
-    <nav class="nav">
-        <!-- allows for clicking the navbar icon when the screen is small-->
-        <input type="checkbox" id="nav-check">
+    <header>
+        <!-- Navbar code from codepen-->
+        <nav class="nav">
+            <!-- allows for clicking the navbar icon when the screen is small-->
+            <input type="checkbox" id="nav-check">
 
-        <!-- navbar title on the left -->
+            <!-- navbar title on the left -->
 
-        <div class="nav-header">
-            <div class="nav-title">
-                Space<span style='color: red'>4</span>Less
+            <div class="nav-header">
+                <div class="nav-title">
+                    Space<span style='color: red'>4</span>Less
+                </div>
+
             </div>
-        </div>
 
-        <!-- design of the nav-bar icon when the screen is small-->
-        <div class="nav-btn">
-            <label for="nav-check">
-                <span></span>
-                <span></span>
-                <span></span>
-            </label>
-        </div>
 
-        <!-- navbar content on the right -->
-        <div class="nav-links">
-            <a href="{{ url_for('main.home_page') }}"> Home/Browse</a>
-            {% if current_user.is_authenticated %}
-                {% if current_user.roles == 'property_owner' %}
-                    <a href="{{ url_for('main.post') }}" target="_blank"> Post </a>
-                {#{% else %}
-                    <a href="{{ url_for('main.book') }}" target="_blank"> Book </a>#}
+
+            <!-- design of the nav-bar icon when the screen is small-->
+            <div class="nav-btn">
+                <label for="nav-check">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </label>
+            </div>
+
+            <!-- navbar content on the right -->
+            <div class="nav-links">
+
+                <a href="{{ url_for('main.home_page') }}"> Home/Browse</a>
+                {% if current_user.is_authenticated %}
+                    {% if current_user.roles == 'property_owner' %}
+                        <a href="{{ url_for('main.post') }}" target="_blank"> Post </a>
+                    {#{% else %}
+                        <a href="{{ url_for('main.book') }}" target="_blank"> Book </a>#}
+                    {% endif %}
+                    <a href="{{ url_for('main.logout') }}">Logout</a>
+
+                    <a href="{{ url_for('main.profile') }}">My profile</a>
+                    <a href="{{ url_for('main.notifications') }}"> Notifications</a>
+
+                {% else %}
+                    <a href="{{ url_for('main.signup') }}">Signup</a>
+                    <a href="{{ url_for('main.login') }}">Login </a>
                 {% endif %}
-                <a href="{{ url_for('main.logout') }}">Logout</a>
+                <hr>
+            </div>
 
-                <a href="{{ url_for('main.profile') }}">My profile</a>
-                <a href="{{ url_for('main.notifications') }}"> Notifications</a>
 
-            {% else %}
-                <a href="{{ url_for('main.signup') }}">Signup</a>
-                <a href="{{ url_for('main.login') }}">Login </a>
+        </nav>
+
+    </header>
+
+
+    <div class="main-body">
+        {# in order to display the flash messages, we will put it at the top of each page so that you will see it no matter what page you are on #}
+        {% with messages=get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
             {% endif %}
-        </div>
-    </nav>
+        {% endwith %}
+        {% block content %}{% endblock content %}
+    </div>
 
-</header>
-
-
-<div class="container">
-    {# in order to display the flash messages, we will put it at the top of each page so that you will see it no matter what page you are on #}
-    {% with messages=get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <div class="alert alert-{{ category }}">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-    {% block content %}{% endblock content %}
-</div>
-
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </body>
 </html>

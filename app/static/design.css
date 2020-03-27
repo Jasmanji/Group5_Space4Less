@@ -1,3 +1,8 @@
+
+.main-body{
+  padding: 5%;
+}
+
 .post{
   border: 2px solid black;
   border-radius: 5px;
@@ -12,7 +17,6 @@
 
 #profile_picture{
   border: 7px solid black;
-
   margin: auto;
   display: block;
   max-width:20%;
@@ -25,6 +29,7 @@
   text-align: center;
   margin: auto;
 }
+
 .form-design{
   font-family: 'Open Sans', cursive;
   text-align: center;
@@ -79,16 +84,20 @@ form {
   height: 50px;
   width: 100%;
   background-color: transparent;
-  position: relative;
+  /*position: relative;*/
 }
 
 /*.nav > .nav-header {
   display: inline;
 }*/
+.nav{
+  display: inline-block !important;
+  margin: auto;
+  text-align: center;
+}
 
 .nav > .nav-header > .nav-title {
-  /*display: inline-block;*/
-  font-size: 22px;
+  font-size: 50px;
   font-family: Montserrat, sans-serif;
   color: black;
   padding: 10px 10px 10px 10px;
@@ -100,20 +109,21 @@ form {
 
 .nav > .nav-links {
   display: inline;
-  float: right;
+  /*float: right;*/
   font-size: 18px;
   font-family: Montserrat, sans-serif;
+  color: lightgray;
 }
 
 .nav > .nav-links > a {
   display: inline-block;
   padding: 13px 10px 13px 10px;
   text-decoration: none;
-  color: black;
+  color: lightgray;
 }
 
 .nav > .nav-links > a:hover {
-  background-color: rgba(0, 0, 0, 0.3);
+  color: black;
 }
 
 .nav > #nav-check {
@@ -122,12 +132,18 @@ form {
 
 /* For responsive aspect */
 @media (max-width:600px) {
+
+  .nav > .nav-header > .nav-title {
+    font-size: 30px;
+  }
+
   .nav > .nav-btn {
     display: inline-block;
     position: absolute;
     right: 0;
     top: 0;
   }
+
   .nav > .nav-btn > label {
     display: inline-block;
     width: 50px;
@@ -136,7 +152,7 @@ form {
   }
 
   .nav > .nav-btn > label:hover,.nav  #nav-check:checked ~ .nav-btn > label {
-    color: darkgray;
+    color: black;
   }
 
   .nav > .nav-btn > label > span {
@@ -145,6 +161,7 @@ form {
     height: 10px;
     border-top: 2px solid #eee;
   }
+
   .nav > .nav-links {
     position: absolute;
     display: block;
@@ -156,13 +173,16 @@ form {
     top: 50px;
     left: 0;
   }
+
   .nav > .nav-links > a {
     display: block;
     width: 100%;
   }
+
   .nav > #nav-check:not(:checked) ~ .nav-links {
     height: 0;
   }
+
   .nav > #nav-check:checked ~ .nav-links {
     height: calc(100vh - 50px);
     overflow-y: auto;
