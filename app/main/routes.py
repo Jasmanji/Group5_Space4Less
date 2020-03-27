@@ -211,7 +211,7 @@ def payment():
 def bookings():
     userid = current_user.get_id()
     post_ids_of_bookings = Book.query.with_entities(Book.post_id).filter_by(user_id=userid).all()
-    print(post_ids_of_bookings)
+
     posts_booked = []
     for post_id in post_ids_of_bookings:
         post_object=Post.query.get_or_404(post_id)
@@ -260,13 +260,11 @@ def update_account():
 def notifications():
     return render_template('notifications.html', title='Notifications')
 
-
 @bp_main.route("/single_post/<post_id>")
 @login_required
 def single_post(post_id):
     post = Post.query.get_or_404(post_id)
     return render_template('single_post.html', title=post.title, post=post)
-
 
 @bp_main.route('/pay', methods=['POST'])
 def pay():
