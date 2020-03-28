@@ -68,10 +68,16 @@ class Post(db.Model):
 class Book(db.Model):
     __tablename__ = 'book'
     book_id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, ForeignKey('user.user_id'), nullable=False)
+    renter_user_id = db.Column(db.Integer, ForeignKey('user.user_id'), nullable=False)
     post_id = db.Column(db.Integer, ForeignKey('post.post_id'), nullable=False)
     date_booked = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    
+    status = db.Column(db.String, nullable=False, default='request pending')
+    content = db.Column(db.String, nullable=False, default='I want to rent your space')
+    email = db.Column(db.String(250), nullable=False)
+    price = db.Column(db.Integer, nullable=False, default=0)
+
+
+
 
 
 

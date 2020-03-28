@@ -6,7 +6,7 @@ import secrets
 from app import db
 from PIL import Image
 # we also need to import the forms
-from app.main.forms import LoginForm, RegistrationForm, UpdateAccountForm, PostForm
+from app.main.forms import LoginForm, RegistrationForm, UpdateAccountForm, PostForm, BookingRequestForm, SendInvoiceForm
 from app.models import User, Post, Book
 from flask_login import current_user, login_user, logout_user, login_required
 import stripe
@@ -20,23 +20,6 @@ stripe.api_key=secret_key
 bp_main = Blueprint('main', __name__)
 
 
-# def role_required(required_role):
-#     def has_role(current_user):
-#         return current_user.roles == required_role
-#
-#     def role_decorator(func):
-#         def function_wrapper(*args, **kwargs):
-#             if has_role(current_user):
-#                 func(*args, **kwargs)
-#             else:
-#                 raise Exception(f'not allowed :(. requires role <<{required_role}>>')
-#
-#         return function_wrapper
-#
-#     return role_decorator
-#
-
-
 # route for home page.
 @bp_main.route('/')
 @bp_main.route('/home')
@@ -45,10 +28,6 @@ def home_page():
     return render_template('home.html', title='Home Page', posts=posts)
 
 
-# bp_main.route("/search", methods=['POST'])
-# def search():
-#    query = request.args('search')
-#   return render_template('search.html', title='Search', search=search)
 
 @bp_main.route('/search', methods=['POST', 'GET'])
 def search():
@@ -102,8 +81,7 @@ def signup():
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('main.home_page'))
-    # if current_user.is_authenticated:
-    #   return redirect(url_for('home_page'))
+
     # we create an instance of the form the user inputted
     form_login = LoginForm()
 
@@ -170,15 +148,33 @@ def post():
     return render_template('post.html', title='Post', content='content', image=image, form=form_post)
 
 
-@bp_main.route('/book/<postid>')
+@bp_main.route('/book/<postid>', methods=['GET', 'POST'])
 @login_required
 def book(postid):
-    book = Book(user_id=current_user.get_id() , post_id=postid)
-    db.session.add(book)
-    db.session.commit()
-    flash('you have successfully posted a request for the property')
-    return render_template('home.html')
+    form_request_booking = BookingRequestForm()
+    if form_request_booking.validate_on_submit():
+        content = form_request_booking.content.data
+        email = form_request_booking.email.data
+        book = Book(renter_user_id=current_user.get_id(), post_id=postid, content=content, email=email)
+        db.session.add(book)
+        db.session.commit()
+        flash('you have successfully posted a request for the property', 'success')
+        return redirect(url_for('main.home_page'))
+    return render_template('request_booking.html', form=form_request_booking)
 
+@bp_main.route('/send invoice/<postid>', methods=['GET', 'POST'])
+@login_required
+def send_invoice(postid):
+    form_send_invoice = SendInvoiceForm()
+    book = Book.query.filter_by(post_id=postid).first()
+    if form_send_invoice.validate_on_submit():
+        book.price = form_send_invoice.price.data
+        book.status = 'payment required'
+        db.session.commit()
+        print(book)
+        flash('you have successfully posted a request for the property', 'success')
+        return redirect(url_for('main.home_page'))
+    return render_template('send_invoice.html', form=form_send_invoice)
 
 def saving_pictures(profile_picture):
     hide_name = secrets.token_hex(6)
@@ -194,16 +190,25 @@ def saving_pictures(profile_picture):
 def profile():
     image = url_for('static', filename='profile_pictures/' + current_user.image_file)
     userid = current_user.get_id()
-    bookings = Book.query.join(Post, Book.post_id == Post.post_id) \
-        .join(User, User.user_id == Book.user_id) \
-        .add_columns(User.user_id, User.email, Post.title, Post.content, Book.book_id, Book.date_booked) \
-        .filter_by(user_id=userid).all()
+    bookings=[]
+    if current_user.roles == 'renter':
+        bookings = Book.query.join(Post, Book.post_id == Post.post_id) \
+            .join(User, User.user_id == Book.renter_user_id) \
+            .add_columns(User.user_id, User.email, Post.title, Post.content, Book.book_id, Book.date_booked, Book.status, Book.post_id) \
+            .filter_by(user_id=userid).all()
+    elif current_user.roles == 'property_owner':
+        print(userid)
+        bookings = Book.query.join(Post, Book.post_id == Post.post_id)\
+            .join(User, User.user_id == Post.user_id) \
+            .with_entities(Book.content, Book.email, Book.post_id).filter_by(user_id=userid).all()
     return render_template('profile.html', title='profile', image_file=image, bookings=bookings)
 
-@bp_main.route("/payment", methods=['GET', 'POST'])
+@bp_main.route("/payment/<postid>", methods=['GET', 'POST'])
 @login_required
-def payment():
-    return render_template('payment.html', pub_key=pub_key)
+def payment(postid):
+    invoice = Book.query.with_entities(Book.post_id, Book.price).filter_by(post_id=postid).first()
+    print(invoice)
+    return render_template('payment.html', pub_key=pub_key, invoice=invoice)
 
 
 @bp_main.route('/bookings')
@@ -218,12 +223,11 @@ def bookings():
         posts_booked.append(post_object)
     return render_template('bookings.html', title='Book', bookings=posts_booked)
 
-@bp_main.route('/posts')
+@bp_main.route('/my_posts')
 @login_required
 def my_posts():
     userid = current_user.get_id()
     post_ids = Post.query.with_entities(Post.post_id).filter_by(user_id=userid).all()
-    print(post_ids)
     my_posts = []
     for post_id in post_ids:
         post_object = Post.query.get_or_404(post_id)
@@ -255,9 +259,10 @@ def update_account():
     return render_template('update_account.html', title='account', form=form_account)
 
 
-@bp_main.route("/notifications")
+@bp_main.route("/notifications/<user_id>")
 @login_required
-def notifications():
+def notifications(user_id):
+
     return render_template('notifications.html', title='Notifications')
 
 @bp_main.route("/single_post/<post_id>")
@@ -266,17 +271,17 @@ def single_post(post_id):
     post = Post.query.get_or_404(post_id)
     return render_template('single_post.html', title=post.title, post=post)
 
-@bp_main.route('/pay', methods=['POST'])
-def pay():
-    customer = stripe.Customer.create(email=request.form['stripeEmail'], source=request.form['stripeToken'])
 
+@bp_main.route('/pay/<postid>', methods=['POST'])
+def pay(postid):
+    customer = stripe.Customer.create(email=request.form['stripeEmail'], source=request.form['stripeToken'])
+    book = Book.postid.filter_by(post_id=postid).first()
     charge = stripe.Charge.create(
         customer=customer.id,
-        amount=3000,
+        amount=book.price,
         currency='gbp',
         description='Space4Less renting space'
     )
+
     flash('you have successfully payed for the property', 'success')
     return redirect(url_for('main.home_page'))
-
-
