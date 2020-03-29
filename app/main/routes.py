@@ -9,7 +9,7 @@ from flask_mail import Message
 from app import db, mail
 from PIL import Image
 # we also need to import the forms
-from app.main.forms import LoginForm, RegistrationForm, UpdateAccountForm, PostForm, BookingRequestForm, \
+from app.main.forms import LoginForm, RegistrationForm, UpdateAccountForm, PostForm, UpdatePostForm, BookingRequestForm, \
     SendInvoiceForm, EmailForm, PasswordReset
 from app.models import User, Post, Book
 from flask_login import current_user, login_user, logout_user, login_required
@@ -265,6 +265,23 @@ def update_account():
         form_account.firstname.data = current_user.first_name
     return render_template('update_account.html', title='account', form=form_account)
 
+@bp_main.route("/update_post/<postid>", methods=['GET', 'POST'])
+def update_post(postid):
+    post_obj = Post.query.get(postid)
+    form_updatePost = UpdatePostForm()
+    if form_updatePost.validate_on_submit():
+        if form_updatePost.picture_for_posts.data:
+            file = request.files['picture']
+            pic = saving_pictures(file)
+            post_obj.image = pic
+        post_obj.title = form_updatePost.title.data
+        post_obj.content = form_updatePost.content.data
+        post_obj.location = form_updatePost.location.data
+        post_obj.space_size = form_updatePost.space_size.data
+        db.session.commit()
+        flash('You have successfully updated your post!', 'success')
+        return redirect(url_for('main.my_posts'))
+    return render_template('update_post.html', title='Update a post',form=form_updatePost)
 
 @bp_main.route("/notifications/<user_id>")
 @login_required

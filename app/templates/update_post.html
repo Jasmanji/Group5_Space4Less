@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="content-section">
+        <form method="POST" novalidate enctype="multipart/form-data">
+            {{ form.hidden_tag() }} <!-- we add a CSRF token for protection against furgery attacks -->
+            <fieldset class="form-design">
+                <legend class="border-bottom">Update existing post</legend>
+
+                <div class="form-group">
+                    {{ form.title.label(class="form-control-label") }}
+                     {{ form.title(class="form-control form-control-lg") }}
+                </div>
+                <div class="form-group">
+                    {{ form.content.label(class="form-control-label") }}
+                    {{ form.content(class="form-control form-control-lg") }}
+                </div>
+                <div class="form-group">
+                    {{ form.location.label(class="form-control-label") }}
+                    {{ form.location(class="form-control form-control-lg") }}
+                </div>
+                <div class="dropdownmenu">
+                    {{ form.space_size.label(class="form-control-label") }}
+                    <br>
+                    {{ form.space_size(class="form-control form-control-lg") }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.picture_for_posts.label() }}
+                    {{ form.picture_for_posts(class="form-coltrol-file") }}
+                </div>
+
+                <div class="attempt">
+                    <!-- added this above class and the below id to make the elements easier to target with css -->
+                <p id="signupbutton" >{{ form.submit(class="form-control form-control-lg") }}</p></div>
+
+            </fieldset>
+
+
+        </form>
+    </div>
+{% endblock %}

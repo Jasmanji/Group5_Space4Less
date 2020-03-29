@@ -129,6 +129,20 @@ class PostForm(FlaskForm):
                                   )
     submit = SubmitField('Post')
 
+class UpdatePostForm(FlaskForm):
+    title = StringField('Title',
+                        validators=[DataRequired()])
+    content = TextAreaField('Content',
+                            validators=[DataRequired()])
+    location = TextAreaField('location', validators=[DataRequired()])
+    space_size = SelectField('Space Size', default=('0', 'Select'), choices=[('0', 'Select'), ('Extra Small', 'XS'),
+                                                                       ('Small', 'S'), ('Medium', 'M'),
+                                                                       ('Medium Large', 'ML'), ('Large', 'L'),
+                                                                       ('Extra Large', 'XL')])
+    picture_for_posts = FileField('Post picture',
+                                  validators=[FileAllowed(['jpg', 'png'])]
+                                  )
+    submit = SubmitField('Update')
 
 class BookingRequestForm(FlaskForm):
     email = StringField('Email',
