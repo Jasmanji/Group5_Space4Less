@@ -6,9 +6,9 @@
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
-
+from flask_mail import Mail
 # for configuring the app we will need the DevConfig from our config.py module therefore we import this aswell.
-#from flask_user import UserManager
+# from flask_user import UserManager
 
 from app.config import DevConfig
 # we will also need to do some initialisation (configuration) to our forms module ??????? where
@@ -18,6 +18,7 @@ from app.main.forms import RegistrationForm
 # we start by creating a database instance which we will use in our models.py for creating the database.
 db = SQLAlchemy()
 login = LoginManager()
+mail = Mail()
 
 
 # we then initialise the application:
@@ -26,6 +27,14 @@ login = LoginManager()
 def create_app(config_class=DevConfig):
     # we start by creating an instance of an app.
     app = Flask(__name__)
+    # these just configure flask mail and ensure it always sends from our new email
+    app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+    app.config['MAIL_PORT'] = 587
+    app.config['MAIL_USE_TLS'] = True
+    app.config['MAIL_USERNAME'] = 'space4less54@gmail.com'
+    app.config['MAIL_PASSWORD'] = 'Space4Less'
+    # mail = Mail(app)
+    mail.init_app(app)
 
     # configuring (initialising and stuff):
     app.config.from_object(config_class)

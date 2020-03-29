@@ -1,12 +1,13 @@
-# importing databse instance from __init__ of app
+# importing database instance from __init__ of app
 from sqlalchemy import Column, ForeignKey, Integer, String
 # importing for encryption purposes
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from app import db, login
 from flask_login import UserMixin
+from itsdangerous import TimedJSONWebSignatureSerializer
+from flask import current_app
 
-# import flask_whooshalchemy as wa
 
 # function to get user by id
 @login.user_loader
@@ -29,15 +30,26 @@ class User(db.Model, UserMixin):
     roles = db.Column(db.String(20))
 
     posts = db.relationship('Post', backref='author', lazy=True)
-    bookings= db.relationship('Book')
+    bookings = db.relationship('Book')
 
     def get_id(self):
         return (self.user_id)
 
+    def get_reset_token(self, expires_sec=3600):
+        sig = TimedJSONWebSignatureSerializer(current_app.config['SECRET_KEY'], expires_sec)
+        return sig.dumps({'user_id': str(self.user_id)}).decode('utf-8')
+
+    @staticmethod
+    def verify_reset_token(token):
+        sig = TimedJSONWebSignatureSerializer(current_app.config['SECRET_KEY'])
+        try:
+            user_id = sig.loads(token)['user_id']
+        except:
+            return None
+        return User.query.get(user_id)
+
     def __repr__(self):
         return "<User('%s', '%s', '%s')>" % (self.username, self.email, self.image_file)
-
-
 
     # for the password to be encrypted:
     # for generating
@@ -75,9 +87,3 @@ class Book(db.Model):
     content = db.Column(db.String, nullable=False, default='I want to rent your space')
     email = db.Column(db.String(250), nullable=False)
     price = db.Column(db.Integer, nullable=False, default=0)
-
-
-
-
-
-

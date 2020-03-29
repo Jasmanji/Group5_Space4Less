@@ -121,9 +121,9 @@ class PostForm(FlaskForm):
                             validators=[DataRequired()])
     location = TextAreaField('location', validators=[DataRequired()])
     space_size = SelectField('Space Size', default=('0', 'Select'), choices=[('0', 'Select'), ('Extra Small', 'XS'),
-                                                                       ('Small', 'S'), ('Medium', 'M'),
-                                                                       ('Medium Large', 'ML'), ('Large', 'L'),
-                                                                       ('Extra Large', 'XL')])
+                                                                             ('Small', 'S'), ('Medium', 'M'),
+                                                                             ('Medium Large', 'ML'), ('Large', 'L'),
+                                                                             ('Extra Large', 'XL')])
     picture_for_posts = FileField('Post picture',
                                   validators=[FileAllowed(['jpg', 'png'])]
                                   )
@@ -131,16 +131,45 @@ class PostForm(FlaskForm):
 
 
 class BookingRequestForm(FlaskForm):
-    email= StringField('Email',
+    email = StringField('Email',
                         validators=[DataRequired(), Email()],
                         render_kw={"placeholder": "name@email.com"}
                         )
-    content= TextAreaField('Content',
+    content = TextAreaField('Content',
                             validators=[DataRequired()])
     submit = SubmitField('send request')
+
 
 class SendInvoiceForm(FlaskForm):
     price = IntegerField('price',
                          validators=[DataRequired()]
                          )
     submit = SubmitField('send request')
+
+
+class EmailForm(FlaskForm):
+    email = StringField('Email',
+                        validators=[DataRequired(), Email()],
+                        render_kw={"placeholder": "name@email.com"}
+                        )
+    submit = SubmitField('Send Email')
+
+
+#  def validate_email(self, email):
+#     user = User.query.filter_by(email=email.data).first()
+#    if user is None:
+#       raise ValidationError('This email is not associated with an account')
+
+
+class PasswordReset(FlaskForm):
+    password = PasswordField('Password',
+                             validators=[DataRequired(), Length(min=4, max=20)],
+                             render_kw={"placeholder": "Must be at least 4 characters"}
+                             )
+    # the EqualTo('password') will make sure that it contains the same content as the password field
+    confirm_password = PasswordField('Confirm Password',
+                                     validators=[DataRequired(), EqualTo('password')],
+                                     render_kw={"placeholder": "Re-Enter Password"}
+                                     )
+    submit = SubmitField('Update Password'
+                         '')

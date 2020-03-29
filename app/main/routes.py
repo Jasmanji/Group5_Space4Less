@@ -3,18 +3,21 @@
 from flask import render_template, url_for, redirect, flash, Blueprint, request, app, current_app
 import os
 import secrets
-from app import db
+from werkzeug.security import generate_password_hash
+from wtforms import ValidationError
+from flask_mail import Message
+from app import db, mail
 from PIL import Image
 # we also need to import the forms
-from app.main.forms import LoginForm, RegistrationForm, UpdateAccountForm, PostForm, BookingRequestForm, SendInvoiceForm
+from app.main.forms import LoginForm, RegistrationForm, UpdateAccountForm, PostForm, BookingRequestForm, \
+    SendInvoiceForm, EmailForm, PasswordReset
 from app.models import User, Post, Book
 from flask_login import current_user, login_user, logout_user, login_required
 import stripe
 
 pub_key = 'pk_test_IzPesEUVXnPzY8a4Ecvr3J7C00bikUjRsi'
 secret_key = 'sk_test_H8AjWDFHjwYjMkzloMCbE4qA00XSQyhQbS'
-stripe.api_key=secret_key
-
+stripe.api_key = secret_key
 
 # we create an instance of blueprint as main
 bp_main = Blueprint('main', __name__)
@@ -26,7 +29,6 @@ bp_main = Blueprint('main', __name__)
 def home_page():
     posts = Post.query.all()
     return render_template('home.html', title='Home Page', posts=posts)
-
 
 
 @bp_main.route('/search', methods=['POST', 'GET'])
@@ -162,6 +164,7 @@ def book(postid):
         return redirect(url_for('main.home_page'))
     return render_template('request_booking.html', form=form_request_booking)
 
+
 @bp_main.route('/send invoice/<postid>', methods=['GET', 'POST'])
 @login_required
 def send_invoice(postid):
@@ -175,6 +178,7 @@ def send_invoice(postid):
         flash('you have successfully posted a request for the property', 'success')
         return redirect(url_for('main.home_page'))
     return render_template('send_invoice.html', form=form_send_invoice)
+
 
 def saving_pictures(profile_picture):
     hide_name = secrets.token_hex(6)
@@ -190,18 +194,20 @@ def saving_pictures(profile_picture):
 def profile():
     image = url_for('static', filename='profile_pictures/' + current_user.image_file)
     userid = current_user.get_id()
-    bookings=[]
+    bookings = []
     if current_user.roles == 'renter':
         bookings = Book.query.join(Post, Book.post_id == Post.post_id) \
             .join(User, User.user_id == Book.renter_user_id) \
-            .add_columns(User.user_id, User.email, Post.title, Post.content, Book.book_id, Book.date_booked, Book.status, Book.post_id) \
+            .add_columns(User.user_id, User.email, Post.title, Post.content, Book.book_id, Book.date_booked,
+                         Book.status, Book.post_id) \
             .filter_by(user_id=userid).all()
     elif current_user.roles == 'property_owner':
         print(userid)
-        bookings = Book.query.join(Post, Book.post_id == Post.post_id)\
+        bookings = Book.query.join(Post, Book.post_id == Post.post_id) \
             .join(User, User.user_id == Post.user_id) \
             .with_entities(Book.content, Book.email, Book.post_id).filter_by(user_id=userid).all()
     return render_template('profile.html', title='profile', image_file=image, bookings=bookings)
+
 
 @bp_main.route("/payment/<postid>", methods=['GET', 'POST'])
 @login_required
@@ -219,9 +225,10 @@ def bookings():
 
     posts_booked = []
     for post_id in post_ids_of_bookings:
-        post_object=Post.query.get_or_404(post_id)
+        post_object = Post.query.get_or_404(post_id)
         posts_booked.append(post_object)
     return render_template('bookings.html', title='Book', bookings=posts_booked)
+
 
 @bp_main.route('/my_posts')
 @login_required
@@ -262,8 +269,8 @@ def update_account():
 @bp_main.route("/notifications/<user_id>")
 @login_required
 def notifications(user_id):
-
     return render_template('notifications.html', title='Notifications')
+
 
 @bp_main.route("/single_post/<post_id>")
 @login_required
@@ -285,3 +292,50 @@ def pay(postid):
 
     flash('you have successfully payed for the property', 'success')
     return redirect(url_for('main.home_page'))
+
+
+def send_email(user):
+    token = user.get_reset_token()
+    msg = Message('Password Reset',
+                  sender='space4less54@gmail.com',
+                  recipients=[user.email])
+    msg.body = f'''Click the following link to reset your password.
+    {url_for('main.reset_password', token=token, _external=True)}
+    '''
+    mail.send(msg)
+
+
+def validate_email(email):
+    user = User.query.filter_by(email=email.data).first()
+    if user is None:
+        raise ValidationError('This email is not associated with an account')
+
+
+@bp_main.route('/reset', methods=['GET', 'POST'])
+def reset_email():
+    form_reset = EmailForm()
+    if request.method == 'POST':
+        validate_email(form_reset.email)
+        user = User.query.filter_by(email=form_reset.email.data).first()
+        send_email(user)
+        flash('Email has been sent!')
+        return render_template('home.html', form=form_reset)
+    # else:
+    #  flash('Invalid Email')
+    return render_template('password_reset.html', form=form_reset)
+
+
+@bp_main.route('/update_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    user = User.verify_reset_token(token)
+    # if user is None:
+    #   flash('Token is invalid, please try again', 'warning')
+    #  return redirect(url_for('main.home_page'))
+    form_password = PasswordReset()
+    if form_password.validate_on_submit():
+        hashed_password = generate_password_hash(form_password.password.data)
+        user.password = hashed_password
+        db.session.commit()
+        flash('password has been updated', 'success')
+        return redirect('home_page')
+    return render_template('actual_password_reset.html', form=form_password)

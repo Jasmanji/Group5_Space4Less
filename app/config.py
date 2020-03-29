@@ -1,6 +1,6 @@
 """Flask config class."""
 from os.path import dirname, abspath, join
-
+import os
 
 class Config(object):
     # we also need to set up a secret key for our application.
