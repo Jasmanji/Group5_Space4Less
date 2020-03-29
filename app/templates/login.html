@@ -28,7 +28,8 @@
                     {{ form.remember.label(class="form-control-label") }}
                     {{ form.remember(class="form-control form-control-lg") }}
                 </div>
-
+                 <small class="text-muted ml-2">
+                     <a href="{{ url_for('main.reset_email') }}">Forgot password?</a> </small>
 
                 <div class="attempt">
                     <!-- added this above class and the below id to make the elements easier to target with css -->
