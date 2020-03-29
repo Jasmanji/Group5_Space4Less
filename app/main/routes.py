@@ -299,7 +299,7 @@ def single_post(post_id):
 @bp_main.route('/pay/<postid>', methods=['POST'])
 def pay(postid):
     customer = stripe.Customer.create(email=request.form['stripeEmail'], source=request.form['stripeToken'])
-    book = Book.postid.filter_by(post_id=postid).first()
+    book = Book.query.filter_by(post_id=postid).first()
     charge = stripe.Charge.create(
         customer=customer.id,
         amount=book.price,
