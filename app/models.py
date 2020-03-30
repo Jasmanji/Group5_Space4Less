@@ -31,6 +31,7 @@ class User(db.Model, UserMixin):
 
     posts = db.relationship('Post', backref='author', lazy=True)
     bookings = db.relationship('Book')
+    comments = db.relationship('Comment')
 
     def get_id(self):
         return (self.user_id)
@@ -72,6 +73,7 @@ class Post(db.Model):
     content = db.Column(db.String(30), nullable=False)
     user_id = db.Column(db.Integer, ForeignKey('user.user_id'), nullable=False)
     bookings = db.relationship('Book')
+    comments = db.relationship('Comment')
 
     def __repr__(self):
         return "<User('%s', '%s', '%s')>" % (self.title, self.date_posted, self.image)
@@ -87,3 +89,13 @@ class Book(db.Model):
     content = db.Column(db.String, nullable=False, default='I want to rent your space')
     email = db.Column(db.String(250), nullable=False)
     price = db.Column(db.Integer, nullable=False, default=0)
+
+
+class Comment(db.Model):
+    __tablename__ = 'comment'
+    comment_id=db.Column(db.Integer, primary_key=True)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    question = db.Column(db.String, nullable=False, default='')
+    answer = db.Column(db.String, nullable=False, default='')
+    post_id = db.Column(db.Integer, ForeignKey('post.post_id'), nullable=False)
+    renter_user_id = db.Column(db.Integer, ForeignKey('user.user_id'), nullable=False)

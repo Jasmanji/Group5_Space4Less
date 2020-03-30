@@ -10,8 +10,8 @@ from app import db, mail
 from PIL import Image
 # we also need to import the forms
 from app.main.forms import LoginForm, RegistrationForm, UpdateAccountForm, PostForm, UpdatePostForm, BookingRequestForm, \
-    SendInvoiceForm, EmailForm, PasswordReset
-from app.models import User, Post, Book
+    SendInvoiceForm, EmailForm, PasswordReset, QuestionForm, AnswerForm
+from app.models import User, Post, Book, Comment
 from flask_login import current_user, login_user, logout_user, login_required
 import stripe
 
@@ -221,8 +221,7 @@ def payment(postid):
 @login_required
 def bookings():
     userid = current_user.get_id()
-    post_ids_of_bookings = Book.query.with_entities(Book.post_id).filter_by(user_id=userid).all()
-
+    post_ids_of_bookings = Book.query.with_entities(Book.post_id).filter_by(renter_user_id=userid).all()
     posts_booked = []
     for post_id in post_ids_of_bookings:
         post_object = Post.query.get_or_404(post_id)
@@ -289,17 +288,43 @@ def notifications(user_id):
     return render_template('notifications.html', title='Notifications')
 
 
-@bp_main.route("/single_post/<post_id>")
+@bp_main.route("/single_post/<post_id>",  methods=['GET', 'POST'])
 @login_required
 def single_post(post_id):
     post = Post.query.get_or_404(post_id)
-    return render_template('single_post.html', title=post.title, post=post)
+    user=User.query.get(current_user.get_id())
+    form_question=QuestionForm()
+    comments = Comment.query.filter_by(post_id=post_id)\
+        .join(User, Comment.renter_user_id==User.user_id)\
+        .add_columns(Comment.question, Comment.answer, Comment.date_posted, User.username, User.image_file)\
+        .all()
+    if form_question.validate_on_submit():
+
+        comment = Comment(question=form_question.question.data,  renter_user_id=user.user_id, post_id=post.post_id)
+
+        db.session.add(comment)
+        db.session.commit()
+        flash('you have successfully commented on the post')
+        return redirect(url_for('main.home_page'))
+    return render_template('single_post.html', title=post.title, post=post, form=form_question, comments=comments)
+
+
+@bp_main.route('/answer/<commentid>', methods=['GET','POST'])
+def answer(commentid):
+    answer_form=AnswerForm()
+    comment = Comment.query.filter_by(comment_id=commentid).first()
+    if answer_form.validate_on_submit():
+        comment.answer=answer_form.answer.data
+        db.session.commit()
+        flash('you have successfully posted an answer', 'success')
+        return redirect(url_for('main.home_page'))
+    return render_template('answer.html', form=answer_form)
 
 
 @bp_main.route('/pay/<postid>', methods=['POST'])
 def pay(postid):
     customer = stripe.Customer.create(email=request.form['stripeEmail'], source=request.form['stripeToken'])
-    book = Book.query.filter_by(post_id=postid).first()
+    book=Book.query.filter_by(post_id=postid).first()
     charge = stripe.Charge.create(
         customer=customer.id,
         amount=book.price,

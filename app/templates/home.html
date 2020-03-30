@@ -13,7 +13,7 @@
                 <div class="media content-section">
 
                     <img class="mr-3 article-image post_image" src="{{ url_for('static', filename='post_pictures/' + post.image, width=5000, height =5000) }}">
-
+               <hr width="1" size="500">
                     <div class="media-body">
                         {% if current_user.is_authenticated %}
                             <h4 class="media-heading"><a href="{{ url_for('main.single_post', post_id=post.post_id) }}">{{ post.title }}</a></h4>

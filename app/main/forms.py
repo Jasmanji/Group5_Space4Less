@@ -187,3 +187,16 @@ class PasswordReset(FlaskForm):
                                      )
     submit = SubmitField('Update Password'
                          '')
+
+
+class QuestionForm(FlaskForm):
+    question = TextAreaField('Content',
+                            validators=[DataRequired()])
+    submit = SubmitField('submit question'
+                         '')
+
+
+class AnswerForm(FlaskForm):
+    answer = TextAreaField('Content',
+                                validators=[DataRequired()])
+    submit = SubmitField('submit answer')

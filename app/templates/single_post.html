@@ -26,7 +26,56 @@
 
                         {% endif %}
                     </div>
+
                 </div>
             </div>
+
+
+             <h3>comments</h3>
+
+                {% for comment in comments %}
+                     <div class="post">
+                    <div>
+                        <img id= 'profile_picture' class="rounded-circle" src="{{ comment.image_file }}">
+                        {{ comment.username }} has asked:
+                        <br>
+                        {{ comment.question }}
+                         <p><small> Date posted: {{ comment.date_posted.strftime('%Y-%m-%d') }}</small></p>
+
+                        <hr>
+                        <small>{{ comment.answer }}</small>
+                    </div>
+
+                   {% if (current_user.roles == 'property_owner') and (post.author == current_user) %}
+                       {% if comment.answer=='' %}
+                       <a class="btn btn-primary" href="{{ url_for('main.answer', commentid=comment.comment_id) }}" > post answer </a>
+                        {% else %}
+                           <a class="btn btn-primary" href="{{ url_for('main.answer', commentid=comment.comment_id) }}" > update answer </a>
+                       {% endif %}
+                     {% endif %}
+                </div>
+              {% endfor %}
+
+            {% if (current_user.roles == 'renter') %}
+
+           <form method="POST" novalidate enctype="multipart/form-data">
+                {{ form.hidden_tag() }} <!-- we add a CSRF token for protection against furgery attacks -->
+                <fieldset class="form-design">
+                        <legend class="border-bottom"> please post a question if you have one </legend>
+
+                         <div>
+                            {{ form.question.label(class="form-control-label") }}
+                            {{ form.question(class="form-control form-control-lg") }}
+                        </div>
+
+                        <div>
+                            <p id="signupbutton">{{ form.submit(class="form-control form-control-lg") }}</p>
+                        </div>
+
+                    </fieldset>
+                 </form>
+
+            {% endif %}
+
 
 {% endblock content %}
