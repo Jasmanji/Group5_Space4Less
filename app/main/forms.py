@@ -120,7 +120,7 @@ class PostForm(FlaskForm):
     content = TextAreaField('Content',
                             validators=[DataRequired()])
     location = TextAreaField('location', validators=[DataRequired()])
-    space_size = SelectField('Space Size', default=('0', 'Select'), choices=[('0', 'Select'), ('Extra Small', 'XS'),
+    space_size = SelectField('Space Size', validators=[DataRequired()], default=('0', 'Select'), choices=[('0', 'Select'), ('Extra Small', 'XS'),
                                                                              ('Small', 'S'), ('Medium', 'M'),
                                                                              ('Medium Large', 'ML'), ('Large', 'L'),
                                                                              ('Extra Large', 'XL')])

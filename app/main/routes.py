@@ -135,15 +135,14 @@ def post():
     if form_post.validate_on_submit():
         if form_post.picture_for_posts.data:
             file = request.files['picture_for_posts']
-
             pic = saving_pictures_post(file)
             form_post.picture_for_posts = pic
-            post = Post(title=form_post.title.data, content=form_post.content.data,
+        post = Post(title=form_post.title.data, content=form_post.content.data,
                         image=form_post.picture_for_posts, location=form_post.location.data,
                         space_size=form_post.space_size.data,
                         author=current_user)
-            db.session.add(post)
-            db.session.commit()
+        db.session.add(post)
+        db.session.commit()
         flash('you have successfully posted your property!!', 'success')
         return redirect(url_for('main.home_page'))
     image = url_for('static', filename='post_pictures/' + str(form_post.picture_for_posts))
@@ -270,7 +269,7 @@ def update_post(postid):
     form_updatePost = UpdatePostForm()
     if form_updatePost.validate_on_submit():
         if form_updatePost.picture_for_posts.data:
-            file = request.files['picture']
+            file = request.files['picture_for_posts']
             pic = saving_pictures(file)
             post_obj.image = pic
         post_obj.title = form_updatePost.title.data
@@ -280,6 +279,11 @@ def update_post(postid):
         db.session.commit()
         flash('You have successfully updated your post!', 'success')
         return redirect(url_for('main.my_posts'))
+    elif request.method == 'GET':
+        form_updatePost.title.data = post_obj.title
+        form_updatePost.content.data = post_obj.content
+        form_updatePost.location.data = post_obj.location
+        form_updatePost.space_size.data = post_obj.space_size
     return render_template('update_post.html', title='Update a post',form=form_updatePost)
 
 @bp_main.route("/notifications/<user_id>")
