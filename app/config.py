@@ -2,6 +2,7 @@
 from os.path import dirname, abspath, join
 import os
 
+
 class Config(object):
     # we also need to set up a secret key for our application.
     # This will protect against modifying cookies and cross-site request forgery attacks...
@@ -35,6 +36,7 @@ class Config(object):
     # MAIL_MAX_EMAILS: None
     # MAIL_ASCII_ATTACHMENTS:False
 
+
 class ProdConfig(Config):
     DEBUG = False
     TESTING = False
@@ -42,7 +44,18 @@ class ProdConfig(Config):
 
 class TestConfig(Config):
     TESTING = True
+    DEBUG = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+    #  To allow forms to be submitted from the tests without the CSRF token
+    WTF_CSRF_ENABLED = False
 
 
 class DevConfig(Config):
     DEBUG = True
+
+
+app_config = {
+    'development': DevConfig,
+    'production': ProdConfig,
+    'testing': TestConfig
+}
