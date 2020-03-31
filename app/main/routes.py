@@ -300,7 +300,7 @@ def single_post(post_id):
     form_question=QuestionForm()
     comments = Comment.query.filter_by(post_id=post_id)\
         .join(User, Comment.renter_user_id==User.user_id)\
-        .add_columns(Comment.question, Comment.answer, Comment.date_posted, User.username, User.image_file)\
+        .add_columns(Comment.question, Comment.answer, Comment.date_posted, User.username, User.image_file, Comment.comment_id)\
         .all()
     if form_question.validate_on_submit():
 
