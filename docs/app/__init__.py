@@ -13,7 +13,7 @@ from flask_mail import Mail
 from app.config import DevConfig
 # we will also need to do some initialisation (configuration) to our forms module ??????? where
 # (which is inside app >> main >> forms.py)
-from app.main.forms import RegistrationForm
+from docs.app.main import RegistrationForm
 
 # we start by creating a database instance which we will use in our models.py for creating the database.
 db = SQLAlchemy()
@@ -48,7 +48,6 @@ def create_app(config_class=DevConfig):
 
     # for demonstration purposes:
     # from app.populate import populate_db
-    from app.models import User, Post
     # user_manager = UserManager(app, db, User)
     # creating columns and populating database
     with app.app_context():
@@ -57,7 +56,7 @@ def create_app(config_class=DevConfig):
 
     # somehow i need to initialise the UserManager (which needs 3 inputs- app, db and User
 
-    from app.main.routes import bp_main
+    from docs.app.main import bp_main
     app.register_blueprint(bp_main)
 
     return app
