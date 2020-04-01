@@ -7,7 +7,7 @@ on: [push]
 #every time this yml file runsm it will do the following jobs
 jobs:
   build:
-    runs-on: ubuntu-latest #which kind of system our worklow should run in
+    runs-on: macos-latest #which kind of system our worklow should run in
     #the build job has the following steps-
     steps:
     - uses: actions/checkout@v2 #it will check out the code into the ubntu machine we defined the code runs on
