@@ -4,8 +4,6 @@ import os
 
 
 class Config(object):
-
-
     # we also need to set up a secret key for our application.
     # This will protect against modifying cookies and cross-site request forgery attacks...
     """Set Flask base configuration"""
