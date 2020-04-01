@@ -1,6 +1,6 @@
 # the render template is to help us with returning an html template for a route
 # the url_for is a function within flask that will find the exact location of routes for us
-from flask import render_template, url_for, redirect, flash, Blueprint, request, current_app
+from flask import render_template, url_for, redirect, flash, Blueprint, request, app, current_app
 import os
 import secrets
 from werkzeug.security import generate_password_hash
@@ -9,7 +9,7 @@ from flask_mail import Message
 from app import db, mail
 from PIL import Image
 # we also need to import the forms
-from docs.app.main import LoginForm, RegistrationForm, UpdateAccountForm, PostForm, UpdatePostForm, BookingRequestForm, \
+from app.main.forms import LoginForm, RegistrationForm, UpdateAccountForm, PostForm, UpdatePostForm, BookingRequestForm, \
     SendInvoiceForm, EmailForm, PasswordReset, QuestionForm, AnswerForm
 from app.models import User, Post, Book, Comment
 from flask_login import current_user, login_user, logout_user, login_required
@@ -292,7 +292,7 @@ def update_post(postid):
         form_updatePost.content.data = post_obj.content
         form_updatePost.location.data = post_obj.location
         form_updatePost.space_size.data = post_obj.space_size
-    return render_template('update_post.html', title='Update a post', form=form_updatePost)
+    return render_template('update_post.html', title='Update a post',form=form_updatePost)
 
 @bp_main.route("/notifications/<user_id>")
 @login_required
