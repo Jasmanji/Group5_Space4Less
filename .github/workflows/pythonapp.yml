@@ -1,4 +1,4 @@
-#the name of this workflow is python application. 
+#the name of this workflow is python application.
 name: Python application
 
 #this will run every time we push to the repository
@@ -8,9 +8,11 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest #which kind of system our worklow should run in
-    #the build job has the following steps- 
+    #the build job has the following steps-
     steps:
     - uses: actions/checkout@v2 #it will check out the code into the ubntu machine we defined the code runs on
+    - run: |
+        git fetch --prune --unshallow
     - name: Set up Python 3.8 #we then set up python using a specified github action again, with the specified version of python we define- 3.8.
       uses: actions/setup-python@v1
       with:
@@ -26,13 +28,20 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Test with pytest #finally we will want to run our tests 
-      run: | 
+    - name: Test with pytest #finally we will want to run our tests
+      run: |
         pip install pytest
         export PYTHONPATH=app
         pytest
-      
 
-  
+    - name: Deploy to Heroku  #finally, once testing is complete, we can deploy our app to heroku.
+      env:  #then we specify the environmental variables
+        HEROKU_API_TOKEN: ${{ secrets.HEROKU_API_TOKEN }} #this, (defined in the secrets) is the token in order to access the page. It is in secrets so that its not visible to ppl looking at the code
+        HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }} #and this is the app name
+      if: github.ref == 'refs/heads/master' && job.status == 'success' #we specify that this action will ONLY run if everything up to now is successful- so if theres a fail in the tests, then this will not be deployed.
+      run: |   #and finally, we now want to run the command that will deploy our app to heroku.
+        git remote add heroku https://heroku:$HEROKU_API_TOKEN@git.heroku.com/$HEROKU_APP_NAME.git
+        git push heroku HEAD:master -f
+
   
       
