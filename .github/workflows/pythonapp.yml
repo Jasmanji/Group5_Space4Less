@@ -11,7 +11,6 @@ jobs:
     #the build job has the following steps-
     steps:
     - uses: actions/checkout@v2 #it will check out the code into the ubntu machine we defined the code runs on
-
     - run: |
         git fetch --prune --unshallow
     - name: Set up Python 3.8 #we then set up python using a specified github action again, with the specified version of python we define- 3.8.
@@ -35,19 +34,17 @@ jobs:
         export PYTHONPATH=app
         pytest
 
-    - name: Login to Heroku Container registry  #finally, once testing is complete, we can deploy our app to heroku.
-      env:  #then we specify the environmental variables
-        HEROKU_API_TOKEN: ${{ secrets.HEROKU_API_TOKEN }} #this, (defined in the secrets) is the token in order to access the page. It is in secrets so that its not visible to ppl looking at the code
+    - name: Login to Heroku Container registry
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
       run: heroku container:login
-
     - name: Build and push
       env:
-        HEROKU_API_TOKEN: ${{ secrets.HEROKU_API_TOKEN }}
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
       run: heroku container:push -a ${{ secrets.HEROKU_APP_NAME }} web
-
     - name: Release
       env:
-        HEROKU_API_TOKEN: ${{ secrets.HEROKU_API_TOKEN }}
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
       run: heroku container:release -a ${{ secrets.HEROKU_APP_NAME }} web
 
 
