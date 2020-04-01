@@ -11,6 +11,8 @@ jobs:
     #the build job has the following steps-
     steps:
     - uses: actions/checkout@v2 #it will check out the code into the ubntu machine we defined the code runs on
+    - run: |
+        git fetch --prune --unshallow
     - name: Set up Python 3.8 #we then set up python using a specified github action again, with the specified version of python we define- 3.8.
       uses: actions/setup-python@v1
       with:
