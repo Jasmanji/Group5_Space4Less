@@ -41,14 +41,14 @@ jobs:
       run: heroku container:login
 
     - name: Build and push
-        env:
-          HEROKU_API_TOKEN: ${{ secrets.HEROKU_API_TOKEN }}
-          run: heroku container:push -a ${{ secrets.HEROKU_APP_NAME }} web
+      env:
+        HEROKU_API_TOKEN: ${{ secrets.HEROKU_API_TOKEN }}
+      run: heroku container:push -a ${{ secrets.HEROKU_APP_NAME }} web
 
     - name: Release
-          env:
-            HEROKU_API_TOKEN: ${{ secrets.HEROKU_API_TOKEN }}
-          run: heroku container:release -a ${{ secrets.HEROKU_APP_NAME }} web
+      env:
+        HEROKU_API_TOKEN: ${{ secrets.HEROKU_API_TOKEN }}
+      run: heroku container:release -a ${{ secrets.HEROKU_APP_NAME }} web
 
 
   
