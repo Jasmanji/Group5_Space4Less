@@ -331,7 +331,7 @@ def pay(postid):
     book=Book.query.filter_by(post_id=postid).first()
     charge = stripe.Charge.create(
         customer=customer.id,
-        amount=book.price,
+        amount=book.price * 100,
         currency='gbp',
         description='Space4Less renting space'
     )
