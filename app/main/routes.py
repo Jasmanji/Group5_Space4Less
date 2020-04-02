@@ -269,7 +269,7 @@ def update_post(postid):
     if form_updatePost.validate_on_submit():
         if form_updatePost.picture_for_posts.data:
             file = request.files['picture_for_posts']
-            pic = saving_pictures(file)
+            pic = saving_pictures_post(file)
             post_obj.image = pic
         post_obj.title = form_updatePost.title.data
         post_obj.content = form_updatePost.content.data
