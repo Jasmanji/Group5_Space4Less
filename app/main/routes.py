@@ -120,10 +120,7 @@ def saving_pictures_post(post_picture):
     post_image = hide_name + f_extension
     config = current_app.config
     post_path = os.path.join(config['POST_UPLOAD'], post_image)
-    output_size = (100, 100)
-    final = Image.open(post_picture)
-    final.thumbnail(output_size)
-    final.save(post_path)
+    post_picture.save(post_path)
     return post_image
 
 

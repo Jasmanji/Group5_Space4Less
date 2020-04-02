@@ -6,7 +6,7 @@
         <form method="POST" novalidate enctype="multipart/form-data">
             {{ form.hidden_tag() }} <!-- we add a CSRF token for protection against furgery attacks -->
             <fieldset class="form-design">
-                <legend class="border-bottom">Update existing post</legend>
+                <legend class="border-bottom">Create Post</legend>
                 <div class="form-group">
                     {{ form.title.label(class="form-control-label") }}
                     {% if form.title.errors %}
