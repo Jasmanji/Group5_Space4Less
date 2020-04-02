@@ -133,6 +133,7 @@ form {
 
 .nav > #nav-check {
   display: none;
+  color: #33383b;
 }
 
 /* For responsive aspect */
@@ -160,11 +161,15 @@ form {
     color: red;
   }
 
+  #navigation-menu{
+    padding: 2%;
+  }
+
   .nav > .nav-btn > label > span {
     display: block;
     width: 25px;
     height: 10px;
-    border-top: 2px solid #eee;
+    border-top: 2px solid black;
   }
 
   .nav > .nav-links {
@@ -178,6 +183,7 @@ form {
     overflow-y: hidden;
     top: 50px;
     left: 0;
+    padding-top: 5%;
   }
 
   .nav > .nav-links > a {
