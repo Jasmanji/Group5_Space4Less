@@ -22,7 +22,6 @@ stripe.api_key = secret_key
 # we create an instance of blueprint as main
 bp_main = Blueprint('main', __name__)
 
-
 # route for home page.
 @bp_main.route('/')
 @bp_main.route('/home')
@@ -64,8 +63,8 @@ def signup():
 
         db.session.add(user)
         db.session.commit()
-        flash('congratulations, you have created an account!', 'success')
-        return redirect(url_for('main.home_page'))
+        flash('congratulations, you have created an account! Please log in to continue browsing!', 'success')
+        return redirect(url_for('main.login'))
     return render_template('signup.html', title='signup', form=form_signup)
 
 
