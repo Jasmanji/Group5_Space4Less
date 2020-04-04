@@ -33,15 +33,27 @@ def home_page():
 @bp_main.route('/search', methods=['POST', 'GET'])
 def search():
     if request.method == 'POST':
-        term = request.form['search_term']
-        if term == "":
-            flash("Enter a location/size to search for")
+        term = request.form.get("location")
+        size = request.form.get("size")
+        if term == "" and size == "":
+            flash("Enter a location or size to search for")
             return redirect('/')
-        results = Post.query.filter(Post.location.contains(term)).all()
+        elif term != "" and size == "":
+            results = Post.query.filter(Post.location.contains(term)).all()
+            size_displayed = "all sized spaces"
+            location_displayed = term
+        elif term == "" and size != "":
+            results = Post.query.filter_by(space_size=size).all()
+            size_displayed = size
+            location_displayed = "all locations"
+        elif term != "" and size != "":
+            results = Post.query.filter_by(space_size=size, location=term).all()
+            size_displayed = size
+            location_displayed = term
         if not results:
             flash("No post found matching this data.")
             return redirect('/')
-        return render_template('search.html', results=results)
+        return render_template('search.html', results=results, size_for_display = size_displayed, location_for_display = location_displayed)
     else:
         return redirect(url_for('main.home_page'))
 
