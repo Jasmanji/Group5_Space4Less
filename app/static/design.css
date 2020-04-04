@@ -19,7 +19,7 @@
   margin: 2%
 }
 
-.all-signup{
+/*.all-signup{
     border: #33383b;
     display: table;
     width: 100%;
@@ -53,13 +53,22 @@
     float:right;
 }
 
+*/
 
 .post_image{
   width:25%
 }
 
+.row {
+  display: flex; /* equal height of the children */
+}
 
+.col {
+  flex: 1; /* additionally, equal width */
 
+  padding: 1em;
+  border: 1px solid black;
+}
 
 #profile_picture{
   border: 7px solid black;
@@ -95,7 +104,7 @@ h1{
 main{
   text-align: center;
 }
- /* below is the styling for the forms specifially the sign up button and log in page elements*/
+ /* below is the styling for the forms specifically the sign up button and log in page elements*/
 #signupbutton {
   padding-top: 5%;
   width: 200px;
@@ -379,10 +388,6 @@ section {
 	.footer-distributed form button{
 		padding: 10px 35px;
 	}
-
-
-
-
 
 
 }
