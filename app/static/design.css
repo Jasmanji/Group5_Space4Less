@@ -3,6 +3,9 @@
     background-color: coral;
 }
 
+.logo{
+    width: 25%;
+}
 
 .main-body{
   padding: 5%;
@@ -16,9 +19,47 @@
   margin: 2%
 }
 
+.all-signup{
+    border: #33383b;
+    display: table;
+    width: 100%;
+}
+
+
+.signup-left{
+    display: table-cell;
+    width: 50%;
+    background: coral;
+    float:left;
+    border: 2px solid black;
+
+
+}
+
+.signup-image{
+    width:100%;
+    background: #33383b;
+}
+
+.signup-content{
+    padding: 10%;
+    width: 100%;
+}
+
+.signup-right{
+    display: table-cell;
+
+    width: 50%;
+    float:right;
+}
+
+
 .post_image{
   width:25%
 }
+
+
+
 
 #profile_picture{
   border: 7px solid black;
@@ -164,7 +205,11 @@ form {
     display: block;
     width: 25px;
     height: 10px;
-    border-top: 2px solid #eee;
+    border-top: 2px solid black;
+  }
+
+  .menu-small{
+      padding: 1.5%;
   }
 
   .nav > .nav-links {
@@ -239,9 +284,9 @@ section {
 	color:  #5383d3;
 }
 
-img {
-  border-radius: 55%;
-}
+
+
+
 /* Footer links */
 
 .footer-distributed .footer-links{
@@ -302,7 +347,18 @@ img {
     font-size: 18px;
 }
 
+@media (max-width: 1000px) {
+    .signup-right .signup-left{
+        float: none;
+        }
+    .signup-right{
+       display: none ;
+    }
 
+    .signup-left{
+       width:100%;
+    }
+}
 /* to make sure its responsive */
 
 @media (max-width: 1000px) {
@@ -323,6 +379,11 @@ img {
 	.footer-distributed form button{
 		padding: 10px 35px;
 	}
+
+
+
+
+
 
 }
 
@@ -354,4 +415,6 @@ img {
 	.footer-distributed form button{
 		float: none;
 	}
+
+
 }
