@@ -33,7 +33,6 @@
     float:left;
     border: 2px solid black;
 
-
 }
 
 .signup-image{
@@ -65,10 +64,10 @@
 
 .col {
   flex: 1; /* additionally, equal width */
-
   padding: 1em;
-  border: 1px solid black;
+  border: solid ;
 }
+
 
 #profile_picture{
   border: 7px solid black;
@@ -360,7 +359,7 @@ section {
     .signup-right .signup-left{
         float: none;
         }
-    .signup-right{
+    .signup-image{
        display: none ;
     }
 

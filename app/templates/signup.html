@@ -7,18 +7,15 @@
 
 
 
-<div class="row">
-   <div class="col">
-        <img class="signup-image"  alt="ready to join us?!" src= "{{ url_for('static', filename='signup-image.png') }}">
-   </div>
+    <div class="row">
 
 
-    <div class="col">
+        <div class="col">
 
-    <!--  creating the list of input required for sign up page -->
-    <!-- we want the method to be POST and action we set as an empty string so that it goes back to the same route
-     once the method is POST. -->
-            <div class="content-section signup-image">
+            <!--  creating the list of input required for sign up page -->
+            <!-- we want the method to be POST and action we set as an empty string so that it goes back to the same route
+             once the method is POST. -->
+            <div class="content-section ">
                 <form method="POST" novalidate>
                     {{ form.hidden_tag() }} <!-- we add a CSRF token for protection against furgery attacks -->
                     <fieldset class="form-design">
@@ -132,7 +129,8 @@
                             <!-- added this above class and the below id to make the elements easier to target with css -->
                             <p id="signupbutton">{{ form.submit(class="form-control form-control-lg") }}</p></div>
                         <br>
-                        <small class="text-muted">Already have an account? <a href="{{ url_for('main.login') }}">Log In</a>
+                        <small class="text-muted">Already have an account? <a href="{{ url_for('main.login') }}">Log
+                            In</a>
                         </small>
                     </fieldset>
 
@@ -140,6 +138,10 @@
                 </form>
             </div>
         </div>
+        <div class="col">
+            <img class="signup-image" alt="ready to join us?!"
+                 src="{{ url_for('static', filename='signup-image.png') }}">
+        </div>
     </div>
-    </div>
+
 {% endblock content %}
