@@ -151,7 +151,7 @@ def post():
                         author=current_user)
         db.session.add(post)
         db.session.commit()
-        flash('you have successfully posted your property!!', 'success')
+        flash('you have successfully posted your space!!', 'success')
         return redirect(url_for('main.home_page'))
     image = url_for('static', filename='post_pictures/' + str(form_post.picture_for_posts))
     return render_template('post.html', title='Post', content='content', image=image, form=form_post)
@@ -167,8 +167,8 @@ def book(postid):
         book = Book(renter_user_id=current_user.get_id(), post_id=postid, content=content, email=email)
         db.session.add(book)
         db.session.commit()
-        flash('you have successfully posted a request for the property', 'success')
-        return redirect(url_for('main.home_page'))
+        flash('you have successfully posted a request for the property! You can track your booking in your profile page!', 'success')
+        return redirect(url_for('main.profile'))
     return render_template('request_booking.html', form=form_request_booking)
 
 
@@ -182,7 +182,7 @@ def send_invoice(postid):
         book.status = 'payment required'
         db.session.commit()
         print(book)
-        flash('you have successfully posted a request for the property', 'success')
+        flash('you have successfully sent an invoice!', 'success')
         return redirect(url_for('main.home_page'))
     return render_template('send_invoice.html', form=form_send_invoice)
 
@@ -220,7 +220,7 @@ def profile():
 @login_required
 def payment(postid):
     invoice = Book.query.with_entities(Book.post_id, Book.price).filter_by(post_id=postid).first()
-    print(invoice)
+
     return render_template('payment.html', pub_key=pub_key, invoice=invoice)
 
 
@@ -263,7 +263,7 @@ def update_account():
         current_user.email = form_account.email.data
         db.session.commit()
         flash('your account has been updated successfully!', 'success')
-        return redirect(url_for('main.update_account'))
+        return redirect(url_for('main.profile'))
     elif request.method == 'GET':
         form_account.email.data = current_user.email
         form_account.username.data = current_user.username

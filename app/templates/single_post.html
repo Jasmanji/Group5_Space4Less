@@ -2,13 +2,14 @@
 {% block content %}
 
             <div class="row post">
-                <div class="media">
+                <div>
+                    <h4 class="media-heading">{{ post.title }}</h4>
 
-                        <img class="col-md-2 post_image" src="{{ url_for('static', filename='post_pictures/' + post.image, width=500, height =500) }}">
-
+                    <img class=" post_image" src="{{ url_for('static', filename='post_pictures/' + post.image) }}">
 
                     <div class="media-body">
-                        <h4 class="media-heading">{{ post.title }}</h4>
+
+
                         <p>Posted by <a href="#">{{ post.author.username }}</a></p>
                         <p>{{ post.content }}</p>
                         <p><small> Date posted: {{ post.date_posted.strftime('%Y-%m-%d') }}</small></p>
@@ -21,7 +22,8 @@
                         {% elif (current_user.roles == 'property_owner') and (post.author == current_user) %}
 
                                 <a class="btn btn-sm btn-primary" href="{{ url_for('main.update_post', postid = post.post_id) }}">Update</a>
-                                <a class="btn btn-sm btn-danger" href="#">Delete</a>
+
+                            <a class="btn btn-sm btn-danger" href="#">Delete</a>
                         {% else %}
 
                         {% endif %}
