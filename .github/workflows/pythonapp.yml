@@ -43,12 +43,3 @@ jobs:
     - name: Deploy to Heroku
       run: |
         git push heroku HEAD:master -f
-
-#    - name: Deploy to Heroku  #finally, once testing is complete, we can deploy our app to heroku.
-#      env:  #then we specify the environmental variables
-#        HEROKU_API_TOKEN: ${{ secrets.HEROKU_API_TOKEN }} #this, (defined in the secrets) is the token in order to access the page. It is in secrets so that its not visible to ppl looking at the code
-#        HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }} #and this is the app name
-#      if: github.ref == 'refs/heads/master' && job.status == 'success' #we specify that this action will ONLY run if everything up to now is successful- so if theres a fail in the tests, then this will not be deployed.
-#      run: |   #and finally, we now want to run the command that will deploy our app to heroku.
-#        git remote add heroku https://heroku:$HEROKU_API_TOKEN@git.heroku.com/$HEROKU_APP_NAME.git
-#        git push heroku HEAD:master -f
