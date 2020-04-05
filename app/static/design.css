@@ -64,10 +64,33 @@
 
 .col {
   flex: 1; /* additionally, equal width */
-  padding: 1em;
-  border: solid ;
+  padding: 0% !important;
 }
 
+
+.signup-left{
+    border-top: solid black;
+  border-bottom: solid black;
+  border-left: solid black;
+}
+
+.signup-right{
+    border-top: solid black;
+  border-bottom: solid black;
+  border-right: solid black;
+}
+
+.signup-image {
+    width: 100%;
+    min-height: 100%;
+    min-width: 100%;
+
+}
+
+.signup-right{
+
+
+}
 
 #profile_picture{
   border: 7px solid black;
@@ -356,16 +379,17 @@ section {
 }
 
 @media (max-width: 1000px) {
-    .signup-right .signup-left{
-        float: none;
-        }
-    .signup-image{
+
+
+
+    .signup-right{
        display: none ;
     }
 
     .signup-left{
        width:100%;
     }
+
 }
 /* to make sure its responsive */
 
