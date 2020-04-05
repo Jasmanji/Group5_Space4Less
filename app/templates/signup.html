@@ -5,8 +5,6 @@
     <!--  title of registration -->
 
 
-
-
     <div class="row">
 
 
@@ -15,7 +13,7 @@
             <!--  creating the list of input required for sign up page -->
             <!-- we want the method to be POST and action we set as an empty string so that it goes back to the same route
              once the method is POST. -->
-            <div class="content-section ">
+            <div class="content-section  signup-content ">
                 <form method="POST" novalidate>
                     {{ form.hidden_tag() }} <!-- we add a CSRF token for protection against furgery attacks -->
                     <fieldset class="form-design">

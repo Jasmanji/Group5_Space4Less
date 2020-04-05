@@ -29,6 +29,7 @@
 
 <body>
     <header>
+
         <!-- Navbar code from codepen-->
         <nav class="nav">
             <!-- allows for clicking the navbar icon when the screen is small-->
@@ -72,14 +73,12 @@
                     <a href="{{ url_for('main.signup') }}">Signup</a>
                     <a href="{{ url_for('main.login') }}">Login </a>
                 {% endif %}
-                <hr>
+
             </div>
 
-
         </nav>
-
     </header>
-
+<hr>
 
     <div class="main-body">
         {# in order to display the flash messages, we will put it at the top of each page so that you will see it no matter what page you are on #}

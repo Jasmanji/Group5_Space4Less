@@ -58,8 +58,10 @@
   width:25%
 }
 
+
 .row {
   display: flex; /* equal height of the children */
+    box-shadow: 10px 10px 5px grey;
 }
 
 .col {
@@ -84,12 +86,12 @@
     width: 100%;
     min-height: 100%;
     min-width: 100%;
-
 }
 
-.signup-right{
-
-
+.signup-content{
+    width: 100%;
+    min-height: 100%;
+    min-width: 100%;
 }
 
 #profile_picture{
@@ -152,15 +154,28 @@ form {
 }
 
 /* Navbar CSS */
+
+
 * {
   box-sizing: border-box;
+
 }
+
+
+/*nav{
+    background-image: url("nav-bar-image.png");
+    opacity: 0.5%;
+    background-size: cover;
+    min-height: 500px;
+}*/
 
 .nav {
   justify-content: space-between;
   height: 50px;
   width: 100%;
   background-color: transparent;
+  opacity: 1;
+
   /*position: relative;*/
 }
 
@@ -194,7 +209,7 @@ form {
 
 .nav > .nav-links > a {
   display: inline-block;
-  padding: 13px 10px 13px 10px;
+  padding: 400px 10px 13px 10px;
   text-decoration: none;
   color: black;
 }
@@ -381,13 +396,13 @@ section {
 @media (max-width: 1000px) {
 
 
-
     .signup-right{
        display: none ;
     }
 
     .signup-left{
        width:100%;
+        border-right: solid black;
     }
 
 }
