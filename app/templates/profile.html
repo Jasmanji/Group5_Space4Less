@@ -6,9 +6,12 @@
     <h2 class="align_center">{{ current_user.username }}</h2>
     <h3 class="align_center">{{ current_user.email }}</h3>
 
+    <div class="center">
+
+
     {% if current_user.roles == 'renter' %}
         <h3>Booking History:</h3>
-        <table>
+        <table class="table">
         <tr>
             <th> Date booked </th>
             <th> Post title </th>
@@ -48,14 +51,14 @@
             <p>{{request.content}}</p>
             <p>You may now talk to them and arrange a date and price
             email: {{ request.email }}</p>
-            {% if booking.status == 'request pending' %}
+            {% if request.status == 'request pending' %}
                 <a class="btn btn-success" href="{{ url_for('main.send_invoice', postid=request.post_id) }}">Send Invoice Request</a>
-            {% elif booking.status == 'payment required' %}
+            {% elif request.status == 'payment required' %}
                 <p>payment pending</p>
             {% endif %}
         {% endfor %}
     {% endif %}
 
-
+</div>
 
 {% endblock content %}
