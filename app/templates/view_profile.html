@@ -1,0 +1,55 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    <img class="profile_picture"
+         src="{{ url_for('static', filename='profile_pictures/' + user.image_file, width=50, height =50) }}">
+    <h1>{{ user.first_name }} {{ user.last_name }}</h1>
+    <h2 class="align_center">{{ user.username }}</h2>
+
+
+    <h3>reviews</h3>
+
+    {% for review in reviews %}
+
+            <div>
+                <div id="align">
+                    <img class="comment-profile-pic" class="rounded-circle"
+                         src="{{ url_for('static', filename='profile_pictures/' + review.image_file, width=50, height =50) }}">
+                    <h4 id="comment-title">{{ review.username }} has said:</h4>
+                </div>
+
+
+                <br>
+                {{ review.content }}
+                <p><small> Date posted: {{ review.date_posted.strftime('%Y-%m-%d') }}</small></p>
+
+                <hr>
+            score: {{ review.stars }}
+
+                    {% for star in range(review.stars) %}
+                        <span class="fa fa-star checked"></span>
+                    {% endfor %}
+
+                     {% for star in range(5 - review.stars)%}
+                        <span class="fa fa-star"></span>
+                    {% endfor %}
+
+
+
+
+                    </div>
+
+
+
+
+    {% endfor %}
+
+
+    {% if current_user.roles == 'renter' %}
+        <p class="btn btn-primary"><a href="{{ url_for('main.rate', property_owner_user_id=user.user_id) }}"> post a
+            review </a></p>
+
+    {% endif %}
+
+{% endblock content %}

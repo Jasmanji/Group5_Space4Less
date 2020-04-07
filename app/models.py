@@ -32,6 +32,7 @@ class User(db.Model, UserMixin):
     posts = db.relationship('Post', backref='author', lazy=True)
     bookings = db.relationship('Book')
     comments = db.relationship('Comment')
+    reviews= db.relationship('Review')
 
     def get_id(self):
         return (self.user_id)
@@ -93,9 +94,18 @@ class Book(db.Model):
 
 class Comment(db.Model):
     __tablename__ = 'comment'
-    comment_id=db.Column(db.Integer, primary_key=True)
+    comment_id = db.Column(db.Integer, primary_key=True)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     question = db.Column(db.String, nullable=False, default='')
     answer = db.Column(db.String, nullable=False, default='')
     post_id = db.Column(db.Integer, ForeignKey('post.post_id'), nullable=False)
+    renter_user_id = db.Column(db.Integer, ForeignKey('user.user_id'), nullable=False)
+
+class Review(db.Model):
+    __tablename__ = 'review'
+    review_id = db.Column(db.Integer, primary_key=True)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    content = db.Column(db.String, nullable=False, default='')
+    stars = db.Column(db.Integer)
+    property_owner_user_id = db.Column(db.Integer, nullable=False)
     renter_user_id = db.Column(db.Integer, ForeignKey('user.user_id'), nullable=False)

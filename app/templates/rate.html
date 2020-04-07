@@ -1,0 +1,75 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+                <form method="POST" novalidate>
+                {{ form.hidden_tag() }} <!-- we add a CSRF token for protection against furgery attacks -->
+                <fieldset class="form-design">
+                    <legend class="border-bottom"> Rate </legend>
+
+                    <div class="form-group">
+                        {{ form.content.label(class="form-control-label") }}
+                         {{ form.content(class="form-control form-control-lg") }}
+                    </div>
+
+<div class="stars" data-rating="3">
+        <span class="star">&nbsp;</span>
+        <span class="star">&nbsp;</span>
+        <span class="star">&nbsp;</span>
+        <span class="star">&nbsp;</span>
+        <span class="star">&nbsp;</span>
+</div>
+
+
+<input  type="hidden" id="rating-value" {{ form.number(class="form-control form-control-lg") }}>
+
+
+                    <div>
+                        <!-- added this above class and the below id to make the elements easier to target with css -->
+                    <p id="signupbutton" >{{ form.submit(class="form-control form-control-lg") }}</p>
+                    </div>
+
+                </fieldset>
+
+
+            </form>
+
+
+    <script>
+        const ratingValue= document.querySelector("#rating-value");
+
+        //initial setup
+        document.addEventListener('DOMContentLoaded', function(){
+            let stars = document.querySelectorAll('.star');
+            stars.forEach(function(star){
+                star.addEventListener('click', setRating);
+            });
+
+            let rating = parseInt(document.querySelector('.stars').getAttribute('data-rating'));
+            let target = stars[rating - 1];
+            target.dispatchEvent(new MouseEvent('click'));
+        });
+
+        function setRating(ev){
+            let span = ev.currentTarget;
+            let stars = document.querySelectorAll('.star');
+            let match = false;
+            let num = 0;
+            stars.forEach(function(star, index){
+                if(match){
+                    star.classList.remove('rated');
+                }else{
+                    star.classList.add('rated');
+                }
+                //are we currently looking at the span that was clicked
+                if(star === span){
+                    match = true;
+                    num = index + 1;
+                }
+            });
+             document.querySelector('.stars').setAttribute('data-rating', num);
+             ratingValue.value= num;
+        }
+
+    </script>
+
+{% endblock content %}

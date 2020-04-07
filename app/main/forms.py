@@ -190,7 +190,7 @@ class PasswordReset(FlaskForm):
 
 
 class QuestionForm(FlaskForm):
-    question = TextAreaField('Content',
+    question = TextAreaField('ask question here',
                             validators=[DataRequired()])
     submit = SubmitField('submit question'
                          '')
@@ -200,3 +200,12 @@ class AnswerForm(FlaskForm):
     answer = TextAreaField('Content',
                                 validators=[DataRequired()])
     submit = SubmitField('submit answer')
+
+class ReviewForm(FlaskForm):
+    content = TextAreaField('add review here',
+                               validators=[DataRequired()])
+    number= IntegerField('Rating',
+                         validators=[DataRequired()]
+                         )
+    
+    submit = SubmitField('submit review')

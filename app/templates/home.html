@@ -31,7 +31,8 @@
                             <h4 class="media-heading"> {{ post.title }}</h4>
 
                         {% endif %}
-                        <p>Posted by <a href="#">{{ post.author.username }}</a></p>
+
+                        <p>Posted by <a href="{{ url_for('main.view_profile', userid=post.author.user_id)  }}">{{ post.author.username }}</a></p>
                         <p>{{ post.content }}</p>
                         <small> Date posted: {{ post.date_posted.strftime('%Y-%m-%d') }}</small>
                     </div>

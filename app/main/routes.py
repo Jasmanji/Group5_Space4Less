@@ -10,8 +10,8 @@ from app import db, mail
 from PIL import Image
 # we also need to import the forms
 from app.main.forms import LoginForm, RegistrationForm, UpdateAccountForm, PostForm, UpdatePostForm, BookingRequestForm, \
-    SendInvoiceForm, EmailForm, PasswordReset, QuestionForm, AnswerForm
-from app.models import User, Post, Book, Comment
+    SendInvoiceForm, EmailForm, PasswordReset, QuestionForm, AnswerForm, ReviewForm
+from app.models import User, Post, Book, Comment, Review
 from flask_login import current_user, login_user, logout_user, login_required
 import stripe
 
@@ -50,7 +50,7 @@ def search():
             results = Post.query.filter_by(space_size=size, location=term).all()
             size_displayed = size
             location_displayed = term
-        if not results:
+        else:
             flash("No post found matching this data.")
             return redirect('/')
         return render_template('search.html', results=results, size_for_display = size_displayed, location_for_display = location_displayed)
@@ -209,18 +209,30 @@ def profile():
                          Book.status, Book.post_id) \
             .filter_by(user_id=userid).all()
     elif current_user.roles == 'property_owner':
-        print(userid)
         bookings = Book.query.join(Post, Book.post_id == Post.post_id) \
             .join(User, User.user_id == Post.user_id) \
             .with_entities(Book.content, Book.email, Book.post_id).filter_by(user_id=userid).all()
     return render_template('profile.html', title='profile', image_file=image, bookings=bookings)
 
 
+@bp_main.route("/profile/<userid>", methods=['GET', 'POST'])
+def view_profile(userid):
+    user=User.query.get(userid)
+    reviews = Review.query.filter_by(property_owner_user_id=userid) \
+        .join(User, Review.renter_user_id == User.user_id) \
+        .add_columns(Review.content, Review.stars, Review.date_posted, User.username, User.image_file,
+                     Review.review_id) \
+        .all()
+    print(reviews)
+
+    return render_template('view_profile.html', user=user, reviews=reviews)
+
+
+
 @bp_main.route("/payment/<postid>", methods=['GET', 'POST'])
 @login_required
 def payment(postid):
     invoice = Book.query.with_entities(Book.post_id, Book.price).filter_by(post_id=postid).first()
-
     return render_template('payment.html', pub_key=pub_key, invoice=invoice)
 
 
@@ -311,12 +323,11 @@ def single_post(post_id):
         .add_columns(Comment.question, Comment.answer, Comment.date_posted, User.username, User.image_file, Comment.comment_id)\
         .all()
     if form_question.validate_on_submit():
-
         comment = Comment(question=form_question.question.data,  renter_user_id=user.user_id, post_id=post.post_id)
 
         db.session.add(comment)
         db.session.commit()
-        flash('you have successfully commented on the post')
+        flash('you have successfully commented on the post', 'success')
         return redirect(url_for('main.home_page'))
     return render_template('single_post.html', title=post.title, post=post, form=form_question, comments=comments)
 
@@ -343,7 +354,8 @@ def pay(postid):
         currency='gbp',
         description='Space4Less renting space'
     )
-
+    book.status = 'payed'
+    db.session.commit()
     flash('you have successfully payed for the property', 'success')
     return redirect(url_for('main.home_page'))
 
@@ -393,3 +405,18 @@ def reset_password(token):
         flash('password has been updated', 'success')
         return redirect('home_page')
     return render_template('actual_password_reset.html', form=form_password)
+
+
+@bp_main.route('/rating/<property_owner_user_id>', methods=['GET', 'POST'])
+def rate(property_owner_user_id):
+    review_form = ReviewForm()
+    user = User.query.get(current_user.get_id())
+
+    if review_form.validate_on_submit():
+        review = Review(content=review_form.content.data, stars=review_form.number.data , renter_user_id=user.user_id, property_owner_user_id=property_owner_user_id)
+        db.session.add(review)
+        db.session.commit()
+        flash('you have successfully posted a review!', 'success')
+        return redirect(url_for('main.home_page'))
+    return render_template('rate.html', form=review_form)
+

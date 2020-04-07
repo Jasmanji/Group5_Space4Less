@@ -94,15 +94,44 @@
     min-width: 100%;
 }
 
-#profile_picture{
-  border: 7px solid black;
+
+.comment-profile-pic{
+    border: 2px solid black;
+
+
+  max-width:5%;
+  max-height:5%;
+  width: auto;
+  height: auto;
+
+}
+
+#comment-title{
+    padding-left: 5%;
+}
+
+#align {
+   display: flex;
+   align-items:center;
+
+}
+
+
+
+
+
+.profile_picture{
+  border: 5px solid black;
   margin: auto;
   display: block;
   max-width:20%;
   max-height:20%;
   width: auto;
   height: auto;
+
 }
+
+
 
 .align_center{
   text-align: center;
@@ -460,5 +489,43 @@ section {
 		float: none;
 	}
 
+}
 
+
+
+
+.star{
+          color: goldenrod;
+          font-size: 2.0rem;
+          padding: 0 1rem; /* space out the stars */
+        }
+.star::before{
+          content: '\2606';    /* star outline */
+          cursor: pointer;
+        }
+.star.rated::before{
+          /* the style for a selected star */
+          content: '\2605';  /* filled star */
+        }
+
+.stars{
+            counter-reset: rateme 0;
+            font-size: 2.0rem;
+            font-weight: 900;
+            margin:0 auto
+        }
+.star.rated{
+            counter-increment: rateme 1;
+        }
+
+.stars::after{
+            content: counter(rateme) '/5';
+        }
+
+.fa {
+  font-size: 25px;
+}
+
+.checked {
+  color: orange;
 }

@@ -15,11 +15,14 @@ from app.config import DevConfig
 # (which is inside app >> main >> forms.py)
 from app.main.forms import RegistrationForm
 
-# we start by creating a database instance which we will use in our models.py for creating the database.
+
+
 db = SQLAlchemy()
 login = LoginManager()
 mail = Mail()
 
+# we start by creating a database instance which we will use in our models.py for creating the database.
+from app.populate import populate_db
 
 # we then initialise the application:
 # config_class ->> under this variable we need to input the DevConfig
@@ -53,7 +56,7 @@ def create_app(config_class=DevConfig):
     # creating columns and populating database
     with app.app_context():
         db.create_all()  # creates table structure for each imported user
-        # populate_db()  # adding dummy data
+        populate_db()  # adding dummy data
 
     # somehow i need to initialise the UserManager (which needs 3 inputs- app, db and User
 

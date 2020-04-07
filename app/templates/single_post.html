@@ -38,16 +38,20 @@
                 {% for comment in comments %}
                      <div class="post">
                     <div>
-                        <img id= 'profile_picture' class="rounded-circle" src="{{ comment.image_file }}">
-                        {{ comment.username }} has asked:
-                        <br>
+                        <div id="align">
+                            <img class="comment-profile-pic" class="rounded-circle" src="{{ url_for('static', filename='profile_pictures/' + comment.image_file, width=50, height =50) }}">
+                            <h4 id="comment-title">{{ comment.username }} has asked:</h4>
+                        </div>
+
+
+                        <br >
                         {{ comment.question }}
                          <p><small> Date posted: {{ comment.date_posted.strftime('%Y-%m-%d') }}</small></p>
 
                         <hr>
                         <small>{{ comment.answer }}</small>
                     </div>
-
+                    <br >
                    {% if (current_user.roles == 'property_owner') and (post.author == current_user) %}
                        {% if comment.answer=='' %}
                        <a class="btn btn-primary" href="{{ url_for('main.answer', commentid=comment.comment_id) }}" > post answer </a>
