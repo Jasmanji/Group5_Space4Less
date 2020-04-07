@@ -1,19 +1,29 @@
 {% extends 'layout.html' %}
 {% block content %}
     <form method="POST" novalidate enctype="multipart/form-data">
-                {{ form.hidden_tag() }} <!-- we add a CSRF token for protection against furgery attacks -->
-                <fieldset class="form-design">
-                    <legend class="border-bottom"> answer </legend>
-
-                     <div>
-                        {{ form.answer.label(class="form-control-label") }}
-                        {{ form.answer(class="form-control form-control-lg") }}
+        {{ form.hidden_tag() }} <!-- we add a CSRF token for protection against furgery attacks -->
+        <fieldset class="form-design">
+            <legend class="border-bottom"> answer</legend>
+            <div class="form-group">
+                {{ form.answer.label(class="form-control-label") }}
+                {% if form.answer.errors %}
+                    <br>
+                    {{ form.answer(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.answer.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
                     </div>
+                {% else %}
+                    <br>
+                    {{ form.answer(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
 
-                    <div>
-                    <p id="signupbutton">{{ form.submit(class="form-control form-control-lg") }}</p>
-                    </div>
-                </fieldset>
+            <div>
+                <p id="signupbutton">{{ form.submit(class="form-control form-control-lg") }}</p>
+            </div>
+        </fieldset>
 
-        </form>
+    </form>
 {% endblock content %}

@@ -1,25 +1,48 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<div class="content-section">
+    <div class="content-section">
         <form method="POST" novalidate>
             {{ form.hidden_tag() }} <!-- we add a CSRF token for protection against furgery attacks -->
             <fieldset class="form-design">
-                <legend class="border-bottom"> Request Booking </legend>
-
+                <legend class="border-bottom"> Request Booking</legend>
                 <div class="form-group">
                     {{ form.email.label(class="form-control-label") }}
-                     {{ form.email(class="form-control form-control-lg") }}
+                    {% if form.email.errors %}
+                        <br>
+                        {{ form.email(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.email.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <br>
+                        {{ form.email(class="form-control form-control-lg") }}
+                    {% endif %}
                 </div>
+
 
                 <div class="form-group">
                     {{ form.content.label(class="form-control-label") }}
-                    {{ form.content(class="form-control form-control-lg") }}
+                    {% if form.content.errors %}
+                        <br>
+                        {{ form.content(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.content.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <br>
+                        {{ form.content(class="form-control form-control-lg") }}
+                    {% endif %}
                 </div>
+
 
                 <div class="attempt">
                     <!-- added this above class and the below id to make the elements easier to target with css -->
-                <p id="signupbutton" >{{ form.submit(class="form-control form-control-lg") }}</p></div>
+                    <p id="signupbutton">{{ form.submit(class="form-control form-control-lg") }}</p></div>
 
             </fieldset>
 

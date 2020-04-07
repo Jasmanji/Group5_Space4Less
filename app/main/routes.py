@@ -417,7 +417,7 @@ def reset_email():
             flash('Email has been sent!')
         return render_template('home.html', form=form_reset)
 
-    return render_template('password_reset.html', form=form_reset)
+    return render_template('email_password_reset.html', form=form_reset)
 
 
 @bp_main.route('/update_password/<token>', methods=['GET', 'POST'])
