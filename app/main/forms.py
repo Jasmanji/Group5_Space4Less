@@ -6,8 +6,8 @@ from wtforms import StringField, PasswordField, SubmitField, BooleanField, Selec
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 
 
-# from app.models import User
 # creating the class for the sign up form, which will inherit from the class FlaskForm to be representative of our form
+# from app.models import User
 
 
 class RegistrationForm(FlaskForm):
@@ -54,18 +54,19 @@ class RegistrationForm(FlaskForm):
     # we also need a submit button to send the information
     submit = SubmitField('Sign Up')
 
-    # checking there are no same usernames as the one you chose
-    # def validate_username(self, username):
-    #     user = User.query.filter_by(username=username.data).first()
-    #     if user:
-    #         raise ValidationError('This username is already taken! please choose another username')
-    #
-    #
-    # # we also want the email to be unique
-    # def validate_email(self, email):
-    #     user = User.query.filter_by(username=email.data).first()
-    #     if user:
-    #         raise ValidationError('An account has already been created with this email.')
+    # checking username is unique
+
+
+#    def validate_username(self, username):
+#       user = User.query.filter_by(username=username.data).first()
+#      if user:
+#         raise ValidationError('This username is already taken! please choose another username')
+
+# ensuring email is unique
+#  def validate_email(self, email):
+#     user = User.query.filter_by(username=email.data).first()
+#    if user:
+#       raise ValidationError('An account has already been created with this email.')
 
 
 # creating the LoginForm class
