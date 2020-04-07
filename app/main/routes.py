@@ -22,6 +22,7 @@ stripe.api_key = secret_key
 # we create an instance of blueprint as main
 bp_main = Blueprint('main', __name__)
 
+
 # route for home page.
 @bp_main.route('/')
 @bp_main.route('/home')
@@ -53,7 +54,8 @@ def search():
         else:
             flash("No post found matching this data.")
             return redirect('/')
-        return render_template('search.html', results=results, size_for_display = size_displayed, location_for_display = location_displayed)
+        return render_template('search.html', results=results, size_for_display=size_displayed,
+                               location_for_display=location_displayed)
     else:
         return redirect(url_for('main.home_page'))
 
@@ -126,6 +128,16 @@ def logout():
     return redirect(url_for('main.home_page'))
 
 
+@bp_main.route('/aboutme')
+def aboutme():
+    return render_template('about_me.html')
+
+
+@bp_main.route('/faq')
+def faq():
+    return render_template('FAQ.html')
+
+
 def saving_pictures_post(post_picture):
     hide_name = secrets.token_hex(6)
     _, f_extension = os.path.splitext(post_picture.filename)
@@ -146,9 +158,9 @@ def post():
             pic = saving_pictures_post(file)
             form_post.picture_for_posts = pic
         post = Post(title=form_post.title.data, content=form_post.content.data,
-                        image=form_post.picture_for_posts, location=form_post.location.data,
-                        space_size=form_post.space_size.data,
-                        author=current_user)
+                    image=form_post.picture_for_posts, location=form_post.location.data,
+                    space_size=form_post.space_size.data,
+                    author=current_user)
         db.session.add(post)
         db.session.commit()
         flash('you have successfully posted your space!!', 'success')
@@ -167,7 +179,9 @@ def book(postid):
         book = Book(renter_user_id=current_user.get_id(), post_id=postid, content=content, email=email)
         db.session.add(book)
         db.session.commit()
-        flash('you have successfully posted a request for the property! You can track your booking in your profile page!', 'success')
+        flash(
+            'you have successfully posted a request for the property! You can track your booking in your profile page!',
+            'success')
         return redirect(url_for('main.profile'))
     return render_template('request_booking.html', form=form_request_booking)
 
@@ -217,7 +231,7 @@ def profile():
 
 @bp_main.route("/profile/<userid>", methods=['GET', 'POST'])
 def view_profile(userid):
-    user=User.query.get(userid)
+    user = User.query.get(userid)
     reviews = Review.query.filter_by(property_owner_user_id=userid) \
         .join(User, Review.renter_user_id == User.user_id) \
         .add_columns(Review.content, Review.stars, Review.date_posted, User.username, User.image_file,
@@ -226,7 +240,6 @@ def view_profile(userid):
     print(reviews)
 
     return render_template('view_profile.html', user=user, reviews=reviews)
-
 
 
 @bp_main.route("/payment/<postid>", methods=['GET', 'POST'])
@@ -283,6 +296,7 @@ def update_account():
         form_account.firstname.data = current_user.first_name
     return render_template('update_account.html', title='account', form=form_account)
 
+
 @bp_main.route("/update_post/<postid>", methods=['GET', 'POST'])
 def update_post(postid):
     post_obj = Post.query.get(postid)
@@ -304,7 +318,8 @@ def update_post(postid):
         form_updatePost.content.data = post_obj.content
         form_updatePost.location.data = post_obj.location
         form_updatePost.space_size.data = post_obj.space_size
-    return render_template('update_post.html', title='Update a post',form=form_updatePost)
+    return render_template('update_post.html', title='Update a post', form=form_updatePost)
+
 
 @bp_main.route("/notifications/<user_id>")
 @login_required
@@ -312,18 +327,19 @@ def notifications(user_id):
     return render_template('notifications.html', title='Notifications')
 
 
-@bp_main.route("/single_post/<post_id>",  methods=['GET', 'POST'])
+@bp_main.route("/single_post/<post_id>", methods=['GET', 'POST'])
 @login_required
 def single_post(post_id):
     post = Post.query.get_or_404(post_id)
-    user=User.query.get(current_user.get_id())
-    form_question=QuestionForm()
-    comments = Comment.query.filter_by(post_id=post_id)\
-        .join(User, Comment.renter_user_id==User.user_id)\
-        .add_columns(Comment.question, Comment.answer, Comment.date_posted, User.username, User.image_file, Comment.comment_id)\
+    user = User.query.get(current_user.get_id())
+    form_question = QuestionForm()
+    comments = Comment.query.filter_by(post_id=post_id) \
+        .join(User, Comment.renter_user_id == User.user_id) \
+        .add_columns(Comment.question, Comment.answer, Comment.date_posted, User.username, User.image_file,
+                     Comment.comment_id) \
         .all()
     if form_question.validate_on_submit():
-        comment = Comment(question=form_question.question.data,  renter_user_id=user.user_id, post_id=post.post_id)
+        comment = Comment(question=form_question.question.data, renter_user_id=user.user_id, post_id=post.post_id)
 
         db.session.add(comment)
         db.session.commit()
@@ -332,12 +348,12 @@ def single_post(post_id):
     return render_template('single_post.html', title=post.title, post=post, form=form_question, comments=comments)
 
 
-@bp_main.route('/answer/<commentid>', methods=['GET','POST'])
+@bp_main.route('/answer/<commentid>', methods=['GET', 'POST'])
 def answer(commentid):
-    answer_form=AnswerForm()
+    answer_form = AnswerForm()
     comment = Comment.query.filter_by(comment_id=commentid).first()
     if answer_form.validate_on_submit():
-        comment.answer=answer_form.answer.data
+        comment.answer = answer_form.answer.data
         db.session.commit()
         flash('you have successfully posted an answer', 'success')
         return redirect(url_for('main.home_page'))
@@ -347,7 +363,7 @@ def answer(commentid):
 @bp_main.route('/pay/<postid>', methods=['POST'])
 def pay(postid):
     customer = stripe.Customer.create(email=request.form['stripeEmail'], source=request.form['stripeToken'])
-    book=Book.query.filter_by(post_id=postid).first()
+    book = Book.query.filter_by(post_id=postid).first()
     charge = stripe.Charge.create(
         customer=customer.id,
         amount=book.price * 100,
@@ -371,23 +387,19 @@ def send_email(user):
     mail.send(msg)
 
 
-def validate_email(email):
-    user = User.query.filter_by(email=email.data).first()
-    if user is None:
-        raise ValidationError('This email is not associated with an account')
-
-
 @bp_main.route('/reset', methods=['GET', 'POST'])
 def reset_email():
     form_reset = EmailForm()
     if request.method == 'POST':
-        validate_email(form_reset.email)
+        # validate_email(form_reset.email)
         user = User.query.filter_by(email=form_reset.email.data).first()
-        send_email(user)
-        flash('Email has been sent!')
+        if user is None:
+            flash('This email is not associated with an account')
+        else:
+            send_email(user)
+            flash('Email has been sent!')
         return render_template('home.html', form=form_reset)
-    # else:
-    #  flash('Invalid Email')
+
     return render_template('password_reset.html', form=form_reset)
 
 
@@ -413,10 +425,10 @@ def rate(property_owner_user_id):
     user = User.query.get(current_user.get_id())
 
     if review_form.validate_on_submit():
-        review = Review(content=review_form.content.data, stars=review_form.number.data , renter_user_id=user.user_id, property_owner_user_id=property_owner_user_id)
+        review = Review(content=review_form.content.data, stars=review_form.number.data, renter_user_id=user.user_id,
+                        property_owner_user_id=property_owner_user_id)
         db.session.add(review)
         db.session.commit()
         flash('you have successfully posted a review!', 'success')
         return redirect(url_for('main.home_page'))
     return render_template('rate.html', form=review_form)
-

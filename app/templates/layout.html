@@ -73,6 +73,7 @@
                 {% else %}
                     <a href="{{ url_for('main.signup') }}">Signup</a>
                     <a href="{{ url_for('main.login') }}">Login </a>
+                    <a href="{{ url_for('main.aboutme') }}">About Us </a>
                 {% endif %}
 
             </div>
@@ -101,11 +102,11 @@
 				<span><img class="logo" src="../static/logo.jpg" alt=" " ></span>
 
 				<p class="footer-links">
-					<a href="#">Home</a>
+					<a href="{{ url_for('main.home_page') }}">Home</a>
 					·
-					<a href="#">About</a>
+					<a href="{{ url_for('main.aboutme') }}">About</a>
 					·
-					<a href="#">FAQ</a>
+					<a href="{{ url_for('main.faq') }}">FAQ</a>
 					·
 					<a href="#">Contact</a>
 				</p>

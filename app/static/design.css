@@ -20,8 +20,30 @@
 
 }
 
+.about-me-content {
+    font-family: Montserrat, sans-serif;
+}
+
+
+.logo-aboutme {
+    text-align: center;
+
+}
+
+#about-me-logo {
+  margin: auto;
+  display: block;
+  max-width:20%;
+  max-height:20%;
+  width: auto;
+  height: auto;
+}
+iframe {
+    margin: auto;
+    display: block;
+}
 /*.all-signup{
-    border: #33383b;
+    border: #33383b; align-self: center;
     display: table;
     width: 100%;
 }
@@ -350,7 +372,7 @@ section {
 	float: left;
 }
 
-/* The company logo */
+
 
 .footer-distributed h3{
 	color:  #ffffff;

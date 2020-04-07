@@ -120,14 +120,16 @@ class PostForm(FlaskForm):
     content = TextAreaField('Content',
                             validators=[DataRequired()])
     location = TextAreaField('location', validators=[DataRequired()])
-    space_size = SelectField('Space Size', validators=[DataRequired()], default=('0', 'Select'), choices=[('0', 'Select'), ('Extra Small', 'XS'),
-                                                                             ('Small', 'S'), ('Medium', 'M'),
-                                                                             ('Medium Large', 'ML'), ('Large', 'L'),
-                                                                             ('Extra Large', 'XL')])
+    space_size = SelectField('Space Size', validators=[DataRequired()], default=('0', 'Select'),
+                             choices=[('0', 'Select'), ('Extra Small', 'XS'),
+                                      ('Small', 'S'), ('Medium', 'M'),
+                                      ('Medium Large', 'ML'), ('Large', 'L'),
+                                      ('Extra Large', 'XL')])
     picture_for_posts = FileField('Post picture',
                                   validators=[FileAllowed(['jpg', 'png'])]
                                   )
     submit = SubmitField('Post')
+
 
 class UpdatePostForm(FlaskForm):
     title = StringField('Title',
@@ -136,13 +138,14 @@ class UpdatePostForm(FlaskForm):
                             validators=[DataRequired()])
     location = TextAreaField('location', validators=[DataRequired()])
     space_size = SelectField('Space Size', default=('0', 'Select'), choices=[('0', 'Select'), ('Extra Small', 'XS'),
-                                                                       ('Small', 'S'), ('Medium', 'M'),
-                                                                       ('Medium Large', 'ML'), ('Large', 'L'),
-                                                                       ('Extra Large', 'XL')])
+                                                                             ('Small', 'S'), ('Medium', 'M'),
+                                                                             ('Medium Large', 'ML'), ('Large', 'L'),
+                                                                             ('Extra Large', 'XL')])
     picture_for_posts = FileField('Post picture',
                                   validators=[FileAllowed(['jpg', 'png'])]
                                   )
     submit = SubmitField('Update')
+
 
 class BookingRequestForm(FlaskForm):
     email = StringField('Email',
@@ -169,12 +172,6 @@ class EmailForm(FlaskForm):
     submit = SubmitField('Send Email')
 
 
-#  def validate_email(self, email):
-#     user = User.query.filter_by(email=email.data).first()
-#    if user is None:
-#       raise ValidationError('This email is not associated with an account')
-
-
 class PasswordReset(FlaskForm):
     password = PasswordField('Password',
                              validators=[DataRequired(), Length(min=4, max=20)],
@@ -191,21 +188,22 @@ class PasswordReset(FlaskForm):
 
 class QuestionForm(FlaskForm):
     question = TextAreaField('ask question here',
-                            validators=[DataRequired()])
+                             validators=[DataRequired()])
     submit = SubmitField('submit question'
                          '')
 
 
 class AnswerForm(FlaskForm):
     answer = TextAreaField('Content',
-                                validators=[DataRequired()])
+                           validators=[DataRequired()])
     submit = SubmitField('submit answer')
+
 
 class ReviewForm(FlaskForm):
     content = TextAreaField('add review here',
-                               validators=[DataRequired()])
-    number= IntegerField('Rating',
-                         validators=[DataRequired()]
-                         )
-    
+                            validators=[DataRequired()])
+    number = IntegerField('Rating',
+                          validators=[DataRequired()]
+                          )
+
     submit = SubmitField('submit review')
