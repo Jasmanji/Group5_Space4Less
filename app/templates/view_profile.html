@@ -8,7 +8,79 @@
     <h2 class="align_center">{{ user.username }}</h2>
 
 
+
     <h3>reviews</h3>
+
+
+<p>{{ average }} average based on {{ star_number['total'] }} reviews.</p>
+<hr style="border:3px solid #f1f1f1">
+
+<div class="row">
+  <div class="side">
+
+    5 star:
+  </div>
+  <div class="middle">
+    <div class="bar-container">
+      <div style="width:  {{ (star_number[5]/star_number['total']) *100 }}% ; height: 18px; background-color: #4CAF50;"></div>
+    </div>
+  </div>
+  <div class="side right">
+    {{ star_number[5] }}
+  </div>
+  <div class="side">
+
+    4 star:
+  </div>
+  <div class="middle">
+    <div class="bar-container">
+      <div style="width:  {{ (star_number[4]/star_number['total']) *100 }}% ; height: 18px; background-color: #4CAF50;"></div>
+    </div>
+  </div>
+  <div class="side right">
+    {{ star_number[4] }}
+  </div>
+  <div class="side">
+
+    3 star:
+  </div>
+  <div class="middle">
+    <div class="bar-container">
+      <div style="width:  {{ (star_number[3]/star_number['total']) *100 }}% ; height: 18px; background-color: #4CAF50;"></div>
+    </div>
+  </div>
+  <div class="side right">
+    {{ star_number[3] }}
+  </div>
+  <div class="side">
+
+    2 star:
+  </div>
+  <div class="middle">
+    <div class="bar-container">
+      <div style="width:  {{ (star_number[2]/star_number['total']) *100 }}% ; height: 18px; background-color: #4CAF50;"></div>
+    </div>
+  </div>
+  <div class="side right">
+    {{ star_number[2] }}
+  </div>
+  <div class="side">
+
+    1 star:
+  </div>
+  <div class="middle">
+    <div class="bar-container">
+      <div style="width:  {{ (star_number[1]/star_number['total']) *100 }}% ; height: 18px; background-color: #4CAF50;"></div>
+    </div>
+  </div>
+  <div class="side right">
+    {{ star_number[1] }}
+  </div>
+</div>
+
+
+<br>
+
 
     {% for review in reviews %}
 
@@ -24,7 +96,7 @@
                 {{ review.content }}
                 <p><small> Date posted: {{ review.date_posted.strftime('%Y-%m-%d') }}</small></p>
 
-                <hr>
+
             score: {{ review.stars }}
 
                     {% for star in range(review.stars) %}
@@ -35,20 +107,14 @@
                         <span class="fa fa-star"></span>
                     {% endfor %}
 
-
-
-
                     </div>
-
-
-
-
+        <hr>
     {% endfor %}
 
 
     {% if current_user.roles == 'renter' %}
-        <p class="btn btn-primary"><a href="{{ url_for('main.rate', property_owner_user_id=user.user_id) }}"> post a
-            review </a></p>
+        <a class="btn btn-primary" href="{{ url_for('main.rate', property_owner_user_id=user.user_id) }}"> post a
+            review </a>
 
     {% endif %}
 
