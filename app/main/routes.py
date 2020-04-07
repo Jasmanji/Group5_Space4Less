@@ -65,20 +65,24 @@ def signup():
     if current_user.is_authenticated:
         return redirect(url_for('main.home_page'))
     form_signup = RegistrationForm()
-    if form_signup.validate_on_submit():  # this will tell us if the for was valid when
-        # submitted
-        user = User(username=form_signup.username.data,
+    if form_signup.validate_on_submit():  # this will tell us if the for was valid when submitted
+        user_username = User.query.filter_by(username=form_signup.username.data).first()
+        user_email = User.query.filter_by(username=form_signup.email.data).first()
+        if user_username or user_email is not None:
+            raise ValidationError('This username is already taken! please choose another username')
+        else:
+            user = User(username=form_signup.username.data,
                     first_name=form_signup.firstname.data,
                     last_name=form_signup.surname.data,
                     email=form_signup.email.data,
                     roles=form_signup.role.data)
-        user.set_password(form_signup.password.data)
+            user.set_password(form_signup.password.data)
         # adding the role of the user- property_owner or renter
 
-        db.session.add(user)
-        db.session.commit()
-        flash('congratulations, you have created an account! Please log in to continue browsing!', 'success')
-        return redirect(url_for('main.login'))
+            db.session.add(user)
+            db.session.commit()
+            flash('congratulations, you have created an account! Please log in to continue browsing!', 'success')
+            return redirect(url_for('main.login'))
     return render_template('signup.html', title='signup', form=form_signup)
 
 
@@ -237,22 +241,22 @@ def view_profile(userid):
         .add_columns(Review.content, Review.stars, Review.date_posted, User.username, User.image_file,
                      Review.review_id) \
         .all()
-    sum=0
-    number_of_reviews=0
-    star_number_tot={1:0, 2:0, 3:0, 4:0, 5:0, 'total':0}
+    sum = 0
+    number_of_reviews = 0
+    star_number_tot = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 'total': 0}
     if len(reviews) == 0:
-        average= 'there are no reviews at this time'
+        average = 'there are no reviews at this time'
     else:
         for review in reviews:
             for star_number in star_number_tot.keys():
-                if star_number==review.stars:
-                    star_number_tot[review.stars]+=1
+                if star_number == review.stars:
+                    star_number_tot[review.stars] += 1
                     star_number_tot['total'] += 1
-            sum= sum + review.stars
-            number_of_reviews= number_of_reviews +1
-        average=sum/number_of_reviews
-    return render_template('view_profile.html', user=user, reviews=reviews, average=average, star_number=star_number_tot)
-
+            sum = sum + review.stars
+            number_of_reviews = number_of_reviews + 1
+        average = sum / number_of_reviews
+    return render_template('view_profile.html', user=user, reviews=reviews, average=average,
+                           star_number=star_number_tot)
 
 
 @bp_main.route("/payment/<postid>", methods=['GET', 'POST'])
