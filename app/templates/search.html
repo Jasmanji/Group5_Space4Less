@@ -28,7 +28,7 @@
            <hr width="1" size="500">
                 <div class="media-body">
                     {% if current_user.is_authenticated %}
-                        <h4 class="media-heading"><a href="{{ url_for('main.single_post', post_id=result.post_id) }}">{{ result.title }}</a></h4>
+                        <h4 class="media-heading"><a href="{{ url_for('posts.single_post', post_id=result.post_id) }}">{{ result.title }}</a></h4>
                     {% else %}
                         <h4 class="media-heading"> {{ result.title }}</h4>
 
