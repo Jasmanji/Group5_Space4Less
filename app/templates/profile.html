@@ -25,10 +25,10 @@
                     <td> request pending </td>
 
                 {% elif booking.status == 'payment required' %}
-                    <td> <a class="btn btn-primary" href="{{ url_for('main.payment', postid=booking.post_id) }}">MAKE PAYMENT</a> </td>
+                    <td> <a class="btn btn-primary" href="{{ url_for('booking.payment', bookid = booking.book_id) }}">MAKE PAYMENT</a> </td>
                 {% elif booking.status == 'payed' %}
 
-                    <td> payed </td>
+                    <td> payed {{ booking.price }}</td>
 
                 {% else %}
 
@@ -39,7 +39,7 @@
         </table>
 
 
-        <a class="align_center btn btn-primary" href="{{ url_for('main.bookings') }}">BOOKINGS</a>
+        <a class="align_center btn btn-primary" href="{{ url_for('booking.bookings') }}">BOOKINGS</a>
                 <a class="align_center btn btn-primary" href="{{ url_for('main.update_account') }}">Update account</a>
     {% elif current_user.roles == 'property_owner' %}
 
@@ -52,8 +52,8 @@
             <p>You may now talk to them and arrange a date and price
             email: {{ request.email }}</p>
             {% if request.status == 'request pending' %}
-                <a class="btn btn-success" href="{{ url_for('main.send_invoice', postid=request.post_id) }}">Send Invoice Request</a>
-            {% elif request.status == 'payment required' %}
+                <a class="btn btn-success" href="{{ url_for('booking.send_invoice', bookid=request.book_id) }}">Send Invoice Request</a>
+            {% elif request.status == 'booking required' %}
                 <p>payment pending</p>
             {% endif %}
         {% endfor %}

@@ -1,34 +1,37 @@
 # the render template is to help us with returning an html template for a route
 # the url_for is a function within flask that will find the exact location of routes for us
-from flask import render_template, url_for, redirect, flash, Blueprint, request, app, current_app
+from flask import render_template, url_for, redirect, flash, Blueprint, request, current_app
 import os
 import secrets
 from werkzeug.security import generate_password_hash
 from wtforms import ValidationError
 from flask_mail import Message
 from app import db, mail
-from PIL import Image
 # we also need to import the forms
-from app.main.forms import LoginForm, RegistrationForm, UpdateAccountForm, PostForm, UpdatePostForm, BookingRequestForm, \
-    SendInvoiceForm, EmailForm, PasswordReset, QuestionForm, AnswerForm, ReviewForm
+from app.main.forms import LoginForm, RegistrationForm, UpdateAccountForm, PostForm, UpdatePostForm, EmailForm, PasswordReset, QuestionForm, AnswerForm, ReviewForm
 from app.models import User, Post, Book, Comment, Review
 from flask_login import current_user, login_user, logout_user, login_required
+
 import stripe
 
+#for stripe booking
 pub_key = 'pk_test_IzPesEUVXnPzY8a4Ecvr3J7C00bikUjRsi'
 secret_key = 'sk_test_H8AjWDFHjwYjMkzloMCbE4qA00XSQyhQbS'
 stripe.api_key = secret_key
 
+
 # we create an instance of blueprint as main
 bp_main = Blueprint('main', __name__)
 
-
 # route for home page.
+# this is where all the posts are displayed
+# we select all posts to pass them in the home page.
 @bp_main.route('/')
 @bp_main.route('/home')
 def home_page():
     posts = Post.query.all()
     return render_template('home.html', title='Home Page', posts=posts)
+
 
 
 @bp_main.route('/search', methods=['POST', 'GET'])
@@ -60,6 +63,16 @@ def search():
         return redirect(url_for('main.home_page'))
 
 
+# route for the signup:
+# lines before form instance are a way to ensure if a user is ALREADY logged in
+# they will just be redirected back to the home page if they attempt to go to this route.
+# If the user sends a POST request of the RegistrationForm(),
+# We query all users to check there's not such email or username already taken.
+# Otherwise, if the email and username don't exist, we create a user row in the database,
+# with all the form details the user entered. We also create the user's password by running the
+# function that hashes it.
+# We then add this user to the database and commit the session.
+# We then return the user to the login page where they are now able to log in.
 @bp_main.route("/signup", methods=['GET', 'POST'])
 def signup():
     if current_user.is_authenticated:
@@ -69,7 +82,7 @@ def signup():
         user_username = User.query.filter_by(username=form_signup.username.data).first()
         user_email = User.query.filter_by(username=form_signup.email.data).first()
         if user_username or user_email is not None:
-            raise ValidationError('This username is already taken! please choose another username')
+            raise ValidationError('This username is already taken! please choose another username', 'danger')
         else:
             user = User(username=form_signup.username.data,
                     first_name=form_signup.firstname.data,
@@ -77,8 +90,6 @@ def signup():
                     email=form_signup.email.data,
                     roles=form_signup.role.data)
             user.set_password(form_signup.password.data)
-        # adding the role of the user- property_owner or renter
-
             db.session.add(user)
             db.session.commit()
             flash('congratulations, you have created an account! Please log in to continue browsing!', 'success')
@@ -88,7 +99,7 @@ def signup():
 
 # route for the login
 # lines before form instance are a way to ensure if a user is ALREADY logged in
-# they will just be redirected back to the home page
+# they will just be redirected back to the home page.
 # the user query is where they are actually logged in, and the first() is used
 # bc we just want one result (for the username) and then when the username is identified
 # the check password checks the password input against that which exists in the database
@@ -173,38 +184,6 @@ def post():
     return render_template('post.html', title='Post', content='content', image=image, form=form_post)
 
 
-@bp_main.route('/book/<postid>', methods=['GET', 'POST'])
-@login_required
-def book(postid):
-    form_request_booking = BookingRequestForm()
-    if form_request_booking.validate_on_submit():
-        content = form_request_booking.content.data
-        email = form_request_booking.email.data
-        book = Book(renter_user_id=current_user.get_id(), post_id=postid, content=content, email=email)
-        db.session.add(book)
-        db.session.commit()
-        flash(
-            'you have successfully posted a request for the property! You can track your booking in your profile page!',
-            'success')
-        return redirect(url_for('main.profile'))
-    return render_template('request_booking.html', form=form_request_booking)
-
-
-@bp_main.route('/send invoice/<postid>', methods=['GET', 'POST'])
-@login_required
-def send_invoice(postid):
-    form_send_invoice = SendInvoiceForm()
-    book = Book.query.filter_by(post_id=postid).first()
-    if form_send_invoice.validate_on_submit():
-        book.price = form_send_invoice.price.data
-        book.status = 'payment required'
-        db.session.commit()
-        print(book)
-        flash('you have successfully sent an invoice!', 'success')
-        return redirect(url_for('main.home_page'))
-    return render_template('send_invoice.html', form=form_send_invoice)
-
-
 def saving_pictures(profile_picture):
     hide_name = secrets.token_hex(6)
     _, f_extension = os.path.splitext(profile_picture.filename)
@@ -229,7 +208,7 @@ def profile():
     elif current_user.roles == 'property_owner':
         bookings = Book.query.join(Post, Book.post_id == Post.post_id) \
             .join(User, User.user_id == Post.user_id) \
-            .with_entities(Book.content, Book.email, Book.post_id).filter_by(user_id=userid).all()
+            .with_entities(Book.content, Book.email, Book.book_id, Book.status, Book.price).filter_by(user_id=userid).all()
     return render_template('profile.html', title='profile', image_file=image, bookings=bookings)
 
 
@@ -257,25 +236,6 @@ def view_profile(userid):
         average = sum / number_of_reviews
     return render_template('view_profile.html', user=user, reviews=reviews, average=average,
                            star_number=star_number_tot)
-
-
-@bp_main.route("/payment/<postid>", methods=['GET', 'POST'])
-@login_required
-def payment(postid):
-    invoice = Book.query.with_entities(Book.post_id, Book.price).filter_by(post_id=postid).first()
-    return render_template('payment.html', pub_key=pub_key, invoice=invoice)
-
-
-@bp_main.route('/bookings')
-@login_required
-def bookings():
-    userid = current_user.get_id()
-    post_ids_of_bookings = Book.query.with_entities(Book.post_id).filter_by(renter_user_id=userid).all()
-    posts_booked = []
-    for post_id in post_ids_of_bookings:
-        post_object = Post.query.get_or_404(post_id)
-        posts_booked.append(post_object)
-    return render_template('bookings.html', title='Book', bookings=posts_booked)
 
 
 @bp_main.route('/my_posts')
@@ -375,22 +335,6 @@ def answer(commentid):
         flash('you have successfully posted an answer', 'success')
         return redirect(url_for('main.home_page'))
     return render_template('answer.html', form=answer_form)
-
-
-@bp_main.route('/pay/<postid>', methods=['POST'])
-def pay(postid):
-    customer = stripe.Customer.create(email=request.form['stripeEmail'], source=request.form['stripeToken'])
-    book = Book.query.filter_by(post_id=postid).first()
-    charge = stripe.Charge.create(
-        customer=customer.id,
-        amount=book.price * 100,
-        currency='gbp',
-        description='Space4Less renting space'
-    )
-    book.status = 'payed'
-    db.session.commit()
-    flash('you have successfully payed for the property', 'success')
-    return redirect(url_for('main.home_page'))
 
 
 def send_email(user):

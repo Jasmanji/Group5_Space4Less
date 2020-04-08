@@ -148,21 +148,21 @@ class UpdatePostForm(FlaskForm):
     submit = SubmitField('Update')
 
 
-class BookingRequestForm(FlaskForm):
-    email = StringField('Email',
-                        validators=[DataRequired(), Email()],
-                        render_kw={"placeholder": "name@email.com"}
-                        )
-    content = TextAreaField('Content',
-                            validators=[DataRequired()])
-    submit = SubmitField('send request')
-
-
-class SendInvoiceForm(FlaskForm):
-    price = IntegerField('price',
-                         validators=[DataRequired()]
-                         )
-    submit = SubmitField('send request')
+# class BookingRequestForm(FlaskForm):
+#     email = StringField('Email',
+#                         validators=[DataRequired(), Email()],
+#                         render_kw={"placeholder": "name@email.com"}
+#                         )
+#     content = TextAreaField('Content',
+#                             validators=[DataRequired()])
+#     submit = SubmitField('send request')
+#
+#
+# class SendInvoiceForm(FlaskForm):
+#     price = IntegerField('price',
+#                          validators=[DataRequired()]
+#                          )
+#     submit = SubmitField('send request')
 
 
 class EmailForm(FlaskForm):
