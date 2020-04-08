@@ -29,7 +29,7 @@ def book(postid):
         flash(
             'you have successfully posted a request for the property! You can track your booking in your profile page!',
             'success')
-        return redirect(url_for('main.profile'))
+        return redirect(url_for('user.profile'))
     return render_template('request_booking.html', form=form_request_booking)
 
 
@@ -55,17 +55,6 @@ def payment(bookid):
     invoice = Book.query.with_entities(Book.book_id, Book.price).filter_by(book_id=bookid).first()
     return render_template('payment.html', pub_key=pub_key, invoice=invoice)
 
-
-@bp_booking.route('/bookings')
-@login_required
-def bookings():
-    userid = current_user.get_id()
-    post_ids_of_bookings = Book.query.with_entities(Book.post_id).filter_by(renter_user_id=userid).all()
-    posts_booked = []
-    for post_id in post_ids_of_bookings:
-        post_object = Post.query.get_or_404(post_id)
-        posts_booked.append(post_object)
-    return render_template('bookings.html', title='Book', bookings=posts_booked)
 
 
 @bp_booking.route('/pay/<bookid>', methods=['POST'])

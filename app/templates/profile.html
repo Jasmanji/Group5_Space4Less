@@ -39,12 +39,12 @@
         </table>
 
 
-        <a class="align_center btn btn-primary" href="{{ url_for('booking.bookings') }}">BOOKINGS</a>
-                <a class="align_center btn btn-primary" href="{{ url_for('main.update_account') }}">Update account</a>
+        <a class="align_center btn btn-primary" href="{{ url_for('user.my_bookings') }}">BOOKINGS</a>
+                <a class="align_center btn btn-primary" href="{{ url_for('user.update_account') }}">Update account</a>
     {% elif current_user.roles == 'property_owner' %}
 
-            <a class="align_center btn btn-primary" href="{{ url_for('main.my_posts') }}">MY PROPERTIES</a>
-            <a class="align_center btn btn-primary" href="{{ url_for('main.update_account') }}">Update account</a>
+            <a class="align_center btn btn-primary" href="{{ url_for('user.my_posts') }}">MY PROPERTIES</a>
+            <a class="align_center btn btn-primary" href="{{ url_for('user.update_account') }}">Update account</a>
 
         <p>booking requests</p>
         {% for request in bookings %}

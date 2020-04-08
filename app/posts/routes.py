@@ -92,7 +92,7 @@ def update_post(postid):
         post_obj.space_size = form_updatePost.space_size.data
         db.session.commit()
         flash('You have successfully updated your post!', 'success')
-        return redirect(url_for('main.my_posts'))
+        return redirect(url_for('user.my_posts'))
     elif request.method == 'GET':
         form_updatePost.title.data = post_obj.title
         form_updatePost.content.data = post_obj.content

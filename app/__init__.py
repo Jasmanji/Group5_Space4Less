@@ -63,9 +63,11 @@ def create_app(config_class=DevConfig):
     from app.booking.routes import bp_booking
     from app.auth.routes import bp_auth
     from app.posts.routes import bp_posts
+    from app.user.routes import bp_user
     app.register_blueprint(bp_main)
     app.register_blueprint(bp_booking)
     app.register_blueprint(bp_auth)
     app.register_blueprint(bp_posts)
+    app.register_blueprint(bp_user)
 
     return app
