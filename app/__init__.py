@@ -13,7 +13,6 @@ from flask_mail import Mail
 from app.config import DevConfig
 # we will also need to do some initialisation (configuration) to our forms module ??????? where
 # (which is inside app >> main >> forms.py)
-from app.main.forms import RegistrationForm
 
 
 
@@ -61,8 +60,10 @@ def create_app(config_class=DevConfig):
     # somehow i need to initialise the UserManager (which needs 3 inputs- app, db and User
 
     from app.main.routes import bp_main
-    app.register_blueprint(bp_main)
     from app.booking.routes import bp_booking
+    from app.auth.routes import bp_auth
+    app.register_blueprint(bp_main)
     app.register_blueprint(bp_booking)
+    app.register_blueprint(bp_auth)
 
     return app
