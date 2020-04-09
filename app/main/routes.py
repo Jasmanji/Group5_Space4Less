@@ -1,13 +1,3 @@
-# next_page = request.args.get(
-#                     'next')  # will get the page the user wanted to go to before they were redirected to login
-#                 return redirect(next_page) if next_page else redirect(url_for(
-#                     'main.home_page'))  # will redirect user to the page they requested before they tried to log in,
-#                 # otherwise they will be redirected to home.
-#
-#
-
-
-
 # the render template is to help us with returning an html template for a route
 # the url_for is a function within flask that will find the exact location of routes for us
 from flask import render_template, url_for, redirect, flash, Blueprint, request
@@ -16,10 +6,28 @@ from app import db
 from app.main.forms import ReviewForm
 from app.models import User, Post, Review
 from flask_login import current_user, login_required
-
+from functools import wraps
 
 # we create an instance of blueprint as main
 bp_main = Blueprint('main', __name__)
+
+
+# creating role required decorator to stop certain pages from being accessed depending on your role
+# with help from Victor!!
+def role_required(required_role):
+    def has_role(current_user):
+        return current_user.roles == required_role
+
+    def role_decorator(func):
+        @wraps(func)
+        def function_wrapper(*args, **kwargs):
+            if has_role(current_user):
+                func(*args, **kwargs)
+                return func(*args, **kwargs)
+            else:
+                return render_template('role.html', required_role=required_role)
+        return function_wrapper
+    return role_decorator
 
 # route for home page.
 # this is where all the posts are displayed
@@ -73,13 +81,14 @@ def faq():
     return render_template('FAQ.html')
 
 
-@bp_main.route("/notifications/<user_id>")
-@login_required
-def notifications(user_id):
-    return render_template('notifications.html', title='Notifications')
+# @bp_main.route("/notifications/<user_id>")
+# @login_required
+# def notifications(user_id):
+#     return render_template('notifications.html', title='Notifications')
 
 
 @bp_main.route('/rating/<property_owner_user_id>', methods=['GET', 'POST'])
+@role_required('renter')
 def rate(property_owner_user_id):
     review_form = ReviewForm()
     user = User.query.get(current_user.get_id())

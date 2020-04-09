@@ -5,7 +5,9 @@ from flask_login import login_required, current_user
 from app import db
 from app.booking.forms import BookingRequestForm, SendInvoiceForm
 
-from app.models import Book, Post
+from app.models import Book
+
+from app.main.routes import role_required
 
 #for stripe booking
 pub_key = 'pk_test_IzPesEUVXnPzY8a4Ecvr3J7C00bikUjRsi'
@@ -16,8 +18,11 @@ stripe.api_key = secret_key
 # we create an instance of blueprint as main
 bp_booking = Blueprint('booking', __name__)
 
+
+
 @bp_booking.route('/book/<postid>', methods=['GET', 'POST'])
 @login_required
+@role_required('renter')
 def book(postid):
     form_request_booking = BookingRequestForm()
     if form_request_booking.validate_on_submit():
@@ -35,6 +40,7 @@ def book(postid):
 
 @bp_booking.route('/send invoice/<bookid>', methods=['GET', 'POST'])
 @login_required
+@role_required('property_owner')
 def send_invoice(bookid):
     form_send_invoice = SendInvoiceForm()
     book = Book.query.filter_by(book_id=bookid).first()
@@ -51,6 +57,7 @@ def send_invoice(bookid):
 
 @bp_booking.route("/booking/<bookid>", methods=['GET', 'POST'])
 @login_required
+@role_required('renter')
 def payment(bookid):
     invoice = Book.query.with_entities(Book.book_id, Book.price).filter_by(book_id=bookid).first()
     return render_template('payment.html', pub_key=pub_key, invoice=invoice)
@@ -58,6 +65,8 @@ def payment(bookid):
 
 
 @bp_booking.route('/pay/<bookid>', methods=['POST'])
+@login_required
+@role_required('renter')
 def pay(bookid):
     customer = stripe.Customer.create(email=request.form['stripeEmail'], source=request.form['stripeToken'])
     book = Book.query.filter_by(book_id=bookid).first()

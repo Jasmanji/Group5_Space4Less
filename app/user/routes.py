@@ -5,6 +5,7 @@ from flask import current_app, url_for, render_template, request, flash, redirec
 from flask_login import login_required, current_user
 
 from app import db
+from app.main.routes import role_required
 from app.user.forms import UpdateAccountForm
 
 from app.models import Book, Post, User, Review
@@ -46,6 +47,7 @@ def profile():
 
 @bp_user.route('/my_posts')
 @login_required
+@role_required('property_owner')
 def my_posts():
     userid = current_user.get_id()
     post_ids = Post.query.with_entities(Post.post_id).filter_by(user_id=userid).all()
@@ -58,6 +60,7 @@ def my_posts():
 
 @bp_user.route('/bookings')
 @login_required
+@role_required('renter')
 def my_bookings():
     userid = current_user.get_id()
     post_ids_of_bookings = Book.query.with_entities(Book.post_id).filter_by(renter_user_id=userid).all()

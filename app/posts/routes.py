@@ -5,9 +5,11 @@ from flask import current_app, request, flash, redirect, url_for, render_templat
 from flask_login import login_required, current_user
 
 from app import db
+from app.main.routes import role_required
 from app.posts.forms import PostForm, QuestionForm, AnswerForm, UpdatePostForm
 
 from app.models import Post, User, Comment
+
 
 # we create an instance of blueprint as main
 bp_posts = Blueprint('posts', __name__)
@@ -25,6 +27,7 @@ def saving_pictures_post(post_picture):
 
 @bp_posts.route('/post', methods=['GET', 'POST'])
 @login_required
+@role_required('property_owner')
 def post():
     form_post = PostForm()
     if form_post.validate_on_submit():
@@ -66,6 +69,7 @@ def single_post(post_id):
 
 
 @bp_posts.route('/answer/<commentid>', methods=['GET', 'POST'])
+@role_required('property_owner')
 def answer(commentid):
     answer_form = AnswerForm()
     comment = Comment.query.filter_by(comment_id=commentid).first()
@@ -78,6 +82,7 @@ def answer(commentid):
 
 
 @bp_posts.route("/update_post/<postid>", methods=['GET', 'POST'])
+@role_required('property_owner')
 def update_post(postid):
     post_obj = Post.query.get(postid)
     form_updatePost = UpdatePostForm()

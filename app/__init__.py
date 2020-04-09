@@ -45,8 +45,8 @@ def create_app(config_class=DevConfig):
     db.init_app(app)
     # initialising the login function
     login.init_app(app)
-    login.login_view = 'login'
-    login.login_message_category = 'info'
+    login.login_view = 'auth.login' # redirecting user to login page if they are trying to access a page they cannot access unless theyre logged in
+    login.login_message_category = 'info' # flash message will be of type 'info'
 
     # for demonstration purposes:
     # from app.populate import populate_db
