@@ -5,6 +5,7 @@ from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, TextAreaField, IntegerField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 
+
 class BookingRequestForm(FlaskForm):
     email = StringField('Email',
                         validators=[DataRequired(), Email()],

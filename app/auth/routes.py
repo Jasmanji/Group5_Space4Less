@@ -12,6 +12,7 @@ from app.models import User
 # we create an instance of blueprint as main
 bp_auth = Blueprint('auth', __name__)
 
+
 # route for the signup:
 # lines before form instance are a way to ensure if a user is ALREADY logged in
 # they will just be redirected back to the home page if they attempt to go to this route.
@@ -34,10 +35,10 @@ def signup():
             raise ValidationError('This username is already taken! please choose another username', 'danger')
         else:
             user = User(username=form_signup.username.data,
-                    first_name=form_signup.firstname.data,
-                    last_name=form_signup.surname.data,
-                    email=form_signup.email.data,
-                    roles=form_signup.role.data)
+                        first_name=form_signup.firstname.data,
+                        last_name=form_signup.surname.data,
+                        email=form_signup.email.data,
+                        roles=form_signup.role.data)
             user.set_password(form_signup.password.data)
             db.session.add(user)
             db.session.commit()

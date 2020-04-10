@@ -1,12 +1,12 @@
 {% extends 'layout.html' %}
 {% block content %}
-    you are making a payment of £ {{invoice.price}}
+    you are making a payment of £ {{ invoice.price }}
 
     <form action="{{ url_for('booking.pay', bookid=invoice.book_id) }}" method="POST">
         <script
                 src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                 data-key="{{ pub_key }}"
-                data-amount="{{invoice.price *100 }}"
+                data-amount="{{ invoice.price *100 }}"
                 data-name="Space4less"
                 data-description="Widget"
                 data-image="https://stripe.com/img/documentation/checkout/marketplace.png"

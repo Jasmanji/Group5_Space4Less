@@ -32,7 +32,7 @@ class User(db.Model, UserMixin):
     posts = db.relationship('Post', backref='author', lazy=True)
     bookings = db.relationship('Book')
     comments = db.relationship('Comment')
-    reviews= db.relationship('Review')
+    reviews = db.relationship('Review')
 
     def get_id(self):
         return (self.user_id)
@@ -100,6 +100,7 @@ class Comment(db.Model):
     answer = db.Column(db.String, nullable=False, default='')
     post_id = db.Column(db.Integer, ForeignKey('post.post_id'), nullable=False)
     renter_user_id = db.Column(db.Integer, ForeignKey('user.user_id'), nullable=False)
+
 
 class Review(db.Model):
     __tablename__ = 'review'

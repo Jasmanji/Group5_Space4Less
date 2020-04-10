@@ -2,5 +2,6 @@
 {% block content %}
     <img style="width:40%; float: left" src="{{ url_for('static', filename='error_image.jpg') }}">
 
-    <h2 style="width:60%; float: right">You do not have access to this functionality. You need to be a {{ required_role }} to access this functionality. </h2>
+    <h2 style="width:60%; float: right">You do not have access to this functionality. You need to be
+        a {{ required_role }} to access this functionality. </h2>
 {% endblock content %}

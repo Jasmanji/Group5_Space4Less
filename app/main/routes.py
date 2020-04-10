@@ -26,8 +26,11 @@ def role_required(required_role):
                 return func(*args, **kwargs)
             else:
                 return render_template('role.html', required_role=required_role)
+
         return function_wrapper
+
     return role_decorator
+
 
 # route for home page.
 # this is where all the posts are displayed
@@ -37,7 +40,6 @@ def role_required(required_role):
 def home_page():
     posts = Post.query.all()
     return render_template('home.html', title='Home Page', posts=posts)
-
 
 
 @bp_main.route('/search', methods=['POST', 'GET'])
@@ -69,10 +71,8 @@ def search():
         return redirect(url_for('main.home_page'))
 
 
-
-
 @bp_main.route('/aboutme')
-def aboutme():
+def about_me():
     return render_template('about_me.html')
 
 
@@ -101,6 +101,7 @@ def rate(property_owner_user_id):
         flash('you have successfully posted a review!', 'success')
         return redirect(url_for('main.home_page'))
     return render_template('rate.html', form=review_form)
+
 
 @bp_main.route("/profile/<userid>", methods=['GET', 'POST'])
 def view_profile(userid):

@@ -9,15 +9,13 @@ from app.models import Book
 
 from app.main.routes import role_required
 
-#for stripe booking
+# for stripe booking
 pub_key = 'pk_test_IzPesEUVXnPzY8a4Ecvr3J7C00bikUjRsi'
 secret_key = 'sk_test_H8AjWDFHjwYjMkzloMCbE4qA00XSQyhQbS'
 stripe.api_key = secret_key
 
-
 # we create an instance of blueprint as main
 bp_booking = Blueprint('booking', __name__)
-
 
 
 @bp_booking.route('/book/<postid>', methods=['GET', 'POST'])
@@ -61,7 +59,6 @@ def send_invoice(bookid):
 def payment(bookid):
     invoice = Book.query.with_entities(Book.book_id, Book.price).filter_by(book_id=bookid).first()
     return render_template('payment.html', pub_key=pub_key, invoice=invoice)
-
 
 
 @bp_booking.route('/pay/<bookid>', methods=['POST'])

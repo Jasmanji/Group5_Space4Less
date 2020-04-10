@@ -5,6 +5,7 @@ from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, TextAreaField, IntegerField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 
+
 #
 # # creating the class for the sign up form, which will inherit from the class FlaskForm to be representative of our form
 # # from app.models import User
@@ -85,8 +86,6 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationE
 #     # again, we will need a submit button
 #     submit = SubmitField('Log In')
 #
-
-
 
 
 class ReviewForm(FlaskForm):

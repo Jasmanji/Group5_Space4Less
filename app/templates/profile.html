@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 {% block content %}
 
-    <img class= 'profile_picture rounded-circle' src="{{ image_file }}">
+    <img class='profile_picture rounded-circle' src="{{ image_file }}">
     <h1>{{ current_user.first_name }} {{ current_user.last_name }}</h1>
     <h2 class="align_center">{{ current_user.username }}</h2>
     <h3 class="align_center">{{ current_user.email }}</h3>
@@ -9,56 +9,59 @@
     <div class="center">
 
 
-    {% if current_user.roles == 'renter' %}
-        <h3>Booking History:</h3>
-        <table class="table">
-        <tr>
-            <th> Date booked </th>
-            <th> Post title </th>
-            <th> status </th>
-        </tr>
-        {% for booking in bookings %}
-            <tr>
-                <td> {{ booking.date_booked.strftime('%Y-%m-%d')}} </td>
-                <td> {{ booking.title }} </td>
-                {% if booking.status == 'request pending' %}
-                    <td> request pending </td>
+        {% if current_user.roles == 'renter' %}
+            <h3>Booking History:</h3>
+            <table class="table">
+                <tr>
+                    <th> Date booked</th>
+                    <th> Post title</th>
+                    <th> status</th>
+                </tr>
+                {% for booking in bookings %}
+                    <tr>
+                        <td> {{ booking.date_booked.strftime('%Y-%m-%d') }} </td>
+                        <td> {{ booking.title }} </td>
+                        {% if booking.status == 'request pending' %}
+                            <td> request pending</td>
 
-                {% elif booking.status == 'payment required' %}
-                    <td> <a class="btn btn-primary" href="{{ url_for('booking.payment', bookid = booking.book_id) }}">MAKE PAYMENT</a> </td>
-                {% elif booking.status == 'payed' %}
+                        {% elif booking.status == 'payment required' %}
+                            <td><a class="btn btn-primary"
+                                   href="{{ url_for('booking.payment', bookid = booking.book_id) }}">MAKE PAYMENT</a>
+                            </td>
+                        {% elif booking.status == 'payed' %}
 
-                    <td> payed {{ booking.price }}</td>
+                            <td> payed {{ booking.price }}</td>
 
-                {% else %}
+                        {% else %}
 
-                {% endif %}
-            </tr>
-        {% endfor %}
+                        {% endif %}
+                    </tr>
+                {% endfor %}
 
-        </table>
+            </table>
 
 
-        <a class="align_center btn btn-primary" href="{{ url_for('user.my_bookings') }}">BOOKINGS</a>
-                <a class="align_center btn btn-primary" href="{{ url_for('user.update_account') }}">Update account</a>
-    {% elif current_user.roles == 'property_owner' %}
+            <a class="align_center btn btn-primary" href="{{ url_for('user.my_bookings') }}">BOOKINGS</a>
+            <a class="align_center btn btn-primary" href="{{ url_for('user.update_account') }}">Update account</a>
+        {% elif current_user.roles == 'property_owner' %}
 
             <a class="align_center btn btn-primary" href="{{ url_for('user.my_posts') }}">MY PROPERTIES</a>
             <a class="align_center btn btn-primary" href="{{ url_for('user.update_account') }}">Update account</a>
 
-        <p>booking requests</p>
-        {% for request in bookings %}
-            <p>{{request.content}}</p>
-            <p>You may now talk to them and arrange a date and price
-            email: {{ request.email }}</p>
-            {% if request.status == 'request pending' %}
-                <a class="btn btn-success" href="{{ url_for('booking.send_invoice', bookid=request.book_id) }}">Send Invoice Request</a>
-            {% elif request.status == 'booking required' %}
-                <p>payment pending</p>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
+            <p>booking requests</p>
+            {% for request in bookings %}
+                <p>{{ request.content }}</p>
+                <p>You may now talk to them and arrange a date and price
+                    email: {{ request.email }}</p>
+                {% if request.status == 'request pending' %}
+                    <a class="btn btn-success" href="{{ url_for('booking.send_invoice', bookid=request.book_id) }}">Send
+                        Invoice Request</a>
+                {% elif request.status == 'booking required' %}
+                    <p>payment pending</p>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
 
-</div>
+    </div>
 
 {% endblock content %}

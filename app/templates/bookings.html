@@ -3,28 +3,31 @@
 
     <h1>{{ current_user.username }}'s bookings</h1>
     {% if bookings == [] %}
-    you currently have no bookings
+        you currently have no bookings
     {% else %}
-    {% for post in bookings %}
+        {% for post in bookings %}
 
 
 
             <div class="post">
-            <div class="media content-section">
-                <img class="mr-3 article-image post_image" src="{{ url_for('static', filename='post_pictures/' + post.image, width=50, height =50) }}">
+                <div class="media content-section">
+                    <img class="mr-3 article-image post_image"
+                         src="{{ url_for('static', filename='post_pictures/' + post.image, width=50, height =50) }}">
 
-                <div class="media-body">
-                    <h4 class="media-heading"><a href="{{ url_for('posts.single_post', post_id=post.post_id) }}">{{ post.title }}</a></h4>
-                    <p>Posted by <a href="#">{{ post.username }}</a></p>
-                    <p>{{ post.content }}</p>
-                    <small> Date posted: {{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+                    <div class="media-body">
+                        <h4 class="media-heading"><a
+                                href="{{ url_for('posts.single_post', post_id=post.post_id) }}">{{ post.title }}</a>
+                        </h4>
+                        <p>Posted by <a href="#">{{ post.username }}</a></p>
+                        <p>{{ post.content }}</p>
+                        <small> Date posted: {{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+                    </div>
                 </div>
             </div>
-        </div>
 
 
 
-    {% endfor %}
+        {% endfor %}
     {% endif %}
 
 {% endblock %}

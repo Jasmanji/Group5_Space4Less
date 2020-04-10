@@ -10,10 +10,8 @@ from app.user.forms import UpdateAccountForm
 
 from app.models import Book, Post, User, Review
 
-
 # we create an instance of blueprint as main
 bp_user = Blueprint('user', __name__)
-
 
 
 def saving_pictures(profile_picture):
@@ -40,9 +38,9 @@ def profile():
     elif current_user.roles == 'property_owner':
         bookings = Book.query.join(Post, Book.post_id == Post.post_id) \
             .join(User, User.user_id == Post.user_id) \
-            .with_entities(Book.content, Book.email, Book.book_id, Book.status, Book.price).filter_by(user_id=userid).all()
+            .with_entities(Book.content, Book.email, Book.book_id, Book.status, Book.price).filter_by(
+            user_id=userid).all()
     return render_template('profile.html', title='profile', image_file=image, bookings=bookings)
-
 
 
 @bp_user.route('/my_posts')

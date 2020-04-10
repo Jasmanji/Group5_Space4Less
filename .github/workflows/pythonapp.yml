@@ -13,33 +13,33 @@ jobs:
     runs-on: macos-latest #which kind of system our worklow should run in
     #the build job has the following steps-
     steps:
-    - uses: actions/checkout@v2 #it will check out the code into the ubntu machine we defined the code runs on
-    - run: |
-        git fetch --prune --unshallow
-    - name: Set up Python 3.8 #we then set up python using a specified github action again, with the specified version of python we define- 3.8.
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.8
-    - name: Install dependencies #the next step is we install the dependencies (so ones in the requirements.txt)
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: Lint with flake8 #this will check the python code for syntax errors/editing errors
-      run: |
-        pip install flake8
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Test with pytest #finally we will want to run our tests
-      run: |
-        pip install pytest
-        export PYTHONPATH=app
-        pytest
-    - name: Add remote origin
-      if: github.ref == 'refs/heads/master' && job.status == 'success' #we specify that this action will ONLY run if everything up to now is successful- so if theres a fail in the tests, then this will not be deployed.
-      run: |
-        git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/${{ secrets.HEROKU_APP_NAME }}.git
-    - name: Deploy to Heroku
-      run: |
-        git push heroku HEAD:master -f
+      - uses: actions/checkout@v2 #it will check out the code into the ubntu machine we defined the code runs on
+      - run: |
+          git fetch --prune --unshallow
+      - name: Set up Python 3.8 #we then set up python using a specified github action again, with the specified version of python we define- 3.8.
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+      - name: Install dependencies #the next step is we install the dependencies (so ones in the requirements.txt)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Lint with flake8 #this will check the python code for syntax errors/editing errors
+        run: |
+          pip install flake8
+          # stop the build if there are Python syntax errors or undefined names
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      - name: Test with pytest #finally we will want to run our tests
+        run: |
+          pip install pytest
+          export PYTHONPATH=app
+          pytest
+      - name: Add remote origin
+        if: github.ref == 'refs/heads/master' && job.status == 'success' #we specify that this action will ONLY run if everything up to now is successful- so if theres a fail in the tests, then this will not be deployed.
+        run: |
+          git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/${{ secrets.HEROKU_APP_NAME }}.git
+      - name: Deploy to Heroku
+        run: |
+          git push heroku HEAD:master -f

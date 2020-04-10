@@ -1,4 +1,4 @@
-{% extends 'layout.html'%}
+{% extends 'layout.html' %}
 {% block content %}
 
     <div class="content-section">
@@ -79,8 +79,8 @@
 
                     {% if form.picture.errors %}
                         {% for error in form.picture.errors %}
-                                <span class="text-danger">{{ error }}</span>
-                            {% endfor %}
+                            <span class="text-danger">{{ error }}</span>
+                        {% endfor %}
                     {% endif %}
                 </div>
 

@@ -10,7 +10,6 @@ from app.posts.forms import PostForm, QuestionForm, AnswerForm, UpdatePostForm
 
 from app.models import Post, User, Comment
 
-
 # we create an instance of blueprint as main
 bp_posts = Blueprint('posts', __name__)
 

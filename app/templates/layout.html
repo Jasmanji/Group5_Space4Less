@@ -7,21 +7,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- link to font -->
     <link href="https://fonts.googleapis.com/css?family=Sriracha&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Mr+Dafoe" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Mr+Dafoe"/>
     <!--The link to our stylesheet -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='design.css') }}">
-   <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
 
     {# the title of the head will change depending on the page we are at. We can do this with an if statement #}
-    <link rel="stylesheet"  href=" https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href=" https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
     <!-- Add icon library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     {% if title %}
-        <title> {{title}} </title>
+        <title> {{ title }} </title>
     {% else %}
         <title> {{ space4less }}</title>
     {% endif %}
@@ -29,113 +30,122 @@
 </head>
 
 <body>
-    <header>
+<header>
 
-        <!-- Navbar code from codepen-->
-        <nav class="nav">
-            <!-- allows for clicking the navbar icon when the screen is small-->
-            <input type="checkbox" id="nav-check">
+    <!-- Navbar code from codepen-->
+    <nav class="nav">
+        <!-- allows for clicking the navbar icon when the screen is small-->
+        <input type="checkbox" id="nav-check">
 
-            <!-- navbar title on the left -->
+        <!-- navbar title on the left -->
 
-            <div class="nav-header">
-                <div class="nav-title">
-                    Space<span style='color: red; font-family: "Mr Dafoe"; font-size: 50px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 26.4px; '> 4 </span> Less
-                </div>
-
+        <div class="nav-header">
+            <div class="nav-title">
+                Space<span
+                    style='color: red; font-family: "Mr Dafoe"; font-size: 50px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 26.4px; '> 4 </span>
+                Less
             </div>
 
+        </div>
 
-            <!-- design of the nav-bar icon when the screen is small-->
-            <div class="nav-btn menu-small">
-                <label for="nav-check">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </label>
-            </div>
 
-            <!-- navbar content on the right -->
-            <div class="nav-links">
+        <!-- design of the nav-bar icon when the screen is small-->
+        <div class="nav-btn menu-small">
+            <label for="nav-check">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+        </div>
 
-                <a href="{{ url_for('main.home_page') }}"> Home/Browse</a>
-                {% if current_user.is_authenticated %}
-                    {% if current_user.roles == 'property_owner' %}
-                        <a href="{{ url_for('posts.post') }}" target="_blank"> Post </a>
+        <!-- navbar content on the right -->
+        <div class="nav-links">
+
+            <a href="{{ url_for('main.home_page') }}"> Home/Browse</a>
+            {% if current_user.is_authenticated %}
+                {% if current_user.roles == 'property_owner' %}
+                    <a href="{{ url_for('posts.post') }}" target="_blank"> Post </a>
 
                     {#{% else %}
                         <a href="{{ url_for('main.book') }}" target="_blank"> Book </a>#}
-                    {% endif %}
-                    <a href="{{ url_for('auth.logout') }}">Logout</a>
-                    <a href="{{ url_for('user.profile') }}">My profile</a>
-
-
-                {% else %}
-                    <a href="{{ url_for('auth.signup') }}">Signup</a>
-                    <a href="{{ url_for('auth.login') }}">Login </a>
-                    <a href="{{ url_for('main.aboutme') }}">About Us </a>
                 {% endif %}
+                <a href="{{ url_for('auth.logout') }}">Logout</a>
+                <a href="{{ url_for('user.profile') }}">My profile</a>
 
-            </div>
 
-        </nav>
-    </header>
+            {% else %}
+                <a href="{{ url_for('auth.signup') }}">Signup</a>
+                <a href="{{ url_for('auth.login') }}">Login </a>
+                <a href="{{ url_for('main.aboutme') }}">About Us </a>
+            {% endif %}
+
+        </div>
+
+    </nav>
+</header>
 <hr>
 
-    <div class="main-body">
-        {# in order to display the flash messages, we will put it at the top of each page so that you will see it no matter what page you are on #}
-        {% with messages=get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-        {% block content %}{% endblock content %}
-    </div>
+<div class="main-body">
+    {# in order to display the flash messages, we will put it at the top of each page so that you will see it no matter what page you are on #}
+    {% with messages=get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock content %}
+</div>
 
 
 <footer class="footer-distributed">
 
-			<div class="footer-left">
+    <div class="footer-left">
 
-				<span><img class="logo" src="../static/logo.jpg" alt=" " ></span>
+        <span><img class="logo" src="../static/logo.jpg" alt=" "></span>
 
-				<p class="footer-links">
-					<a href="{{ url_for('main.home_page') }}">Home</a>
-					·
-					<a href="{{ url_for('main.aboutme') }}">About</a>
-					·
-					<a href="{{ url_for('main.faq') }}">FAQ</a>
-					·
-					<a href="#">Contact</a>
-				</p>
+        <p class="footer-links">
+            <a href="{{ url_for('main.home_page') }}">Home</a>
+            ·
+            <a href="{{ url_for('main.aboutme') }}">About</a>
+            ·
+            <a href="{{ url_for('main.faq') }}">FAQ</a>
+            ·
+            <a href="#">Contact</a>
+        </p>
 
-				<p class="footer-company-name">Space4Less © 2020</p>
+        <p class="footer-company-name">Space4Less © 2020</p>
 
-				<div class="footer-icons">
+        <div class="footer-icons">
 
-					<a href="https://www.facebook.com"><i class="fa fa-facebook"></i></a>
-					<a href="https://twitter.com"><i class="fa fa-twitter"></i></a>
-					<a href="https://www.linkedin.com"><i class="fa fa-linkedin"></i></a>
-					<a href="https://github.com"><i class="fa fa-github"></i></a>
+            <a href="https://www.facebook.com"><i class="fa fa-facebook"></i></a>
+            <a href="https://twitter.com"><i class="fa fa-twitter"></i></a>
+            <a href="https://www.linkedin.com"><i class="fa fa-linkedin"></i></a>
+            <a href="https://github.com"><i class="fa fa-github"></i></a>
 
-				</div>
+        </div>
 
-			</div>
+    </div>
 
-			<div class="footer-right">
+    <div class="footer-right">
 
-				<p>Contact Us</p>
-                <br> <p>space4less54@gmail.com</p>
-			</div>
+        <p>Contact Us</p>
+        <br>
+        <p>space4less54@gmail.com</p>
+    </div>
 
-		</footer>
+</footer>
 
 
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
 
 </body>
 </html>
