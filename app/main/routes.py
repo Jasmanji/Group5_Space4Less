@@ -38,12 +38,16 @@ def role_required(required_role):
 @bp_main.route('/')
 @bp_main.route('/home')
 def home_page():
-    posts = Post.query.all()
+    # ensures we always begin with page 1 and only integers are allowed as a page number
+    page = request.args.get('page', 1, type=int)
+    # per page defines how many posts are allowed in a single page and ensuring latest posts turn up first
+    posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=2)
     return render_template('home.html', title='Home Page', posts=posts)
 
 
 @bp_main.route('/search', methods=['POST', 'GET'])
 def search():
+    page = request.args.get('page', 1, type=int)
     if request.method == 'POST':
         term = request.form.get("location")
         size = request.form.get("size")
@@ -51,15 +55,18 @@ def search():
             flash("Enter a location or size to search for")
             return redirect('/')
         elif term != "" and size == "":
-            results = Post.query.filter(Post.location.contains(term)).all()
+            results = Post.query.filter(Post.location.contains(term)).order_by(Post.date_posted.desc()).paginate(
+                page=page, per_page=2)
             size_displayed = "all sized spaces"
             location_displayed = term
         elif term == "" and size != "":
-            results = Post.query.filter_by(space_size=size).all()
+            results = Post.query.filter_by(space_size=size).order_by(Post.date_posted.desc()).paginate(
+                page=page, per_page=2)
             size_displayed = size
             location_displayed = "all locations"
         elif term != "" and size != "":
-            results = Post.query.filter_by(space_size=size, location=term).all()
+            results = Post.query.filter_by(space_size=size, location=term).order_by(Post.date_posted.desc()).paginate(
+                page=page, per_page=2)
             size_displayed = size
             location_displayed = term
         else:

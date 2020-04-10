@@ -17,8 +17,8 @@
         </form>
     </div>
 
-
-    {% for post in posts %}
+    {# the posts are now paginate items thus posts.items is required #}
+    {% for post in posts.items %}
         <div class="post">
             <div class="media content-section">
 
@@ -46,5 +46,20 @@
 
 
     {% endfor %}
+    {% for page_num in posts.iter_pages() %}
+        {% if page_num %}
+            {% if posts.page == page_num %}
+                <a class="btn btn-info mb-4" href="{{ url_for('main.home_page', page=page_num) }}">{{ page_num }}</a>
+            {% else %}
+                <a class="btn btn-outline-info mb-4"
+                   href="{{ url_for('main.home_page', page=page_num) }}">{{ page_num }}</a>
+            {% endif %}
+
+        {% else %}
+            ...
+        {% endif %}
+
+    {% endfor %}
+
 
 {% endblock content %}
