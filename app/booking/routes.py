@@ -30,7 +30,7 @@ def book(postid):
         db.session.add(book)
         db.session.commit()
         flash(
-            'you have successfully posted a request for the property! You can track your booking in your profile page!',
+            'You have successfully posted a request for the property! You can track your booking in your profile page!',
             'success')
         return redirect(url_for('user.profile'))
     return render_template('request_booking.html', form=form_request_booking)
@@ -48,7 +48,7 @@ def send_invoice(bookid):
         book.status = 'payment required'
         db.session.commit()
 
-        flash('you have successfully sent an invoice!', 'success')
+        flash('You have successfully sent an invoice!', 'success')
         return redirect(url_for('main.home_page'))
     return render_template('send_invoice.html', form=form_send_invoice)
 

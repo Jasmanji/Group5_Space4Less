@@ -94,6 +94,18 @@ class BaseCase(TestCase):
                               roles='property_owner', password='pass')
     post_data = dict(title='property1', content='this is some content', location='earth', space_size='M')
 
+    def test_adding_a_post_success(self):
+        response = self.client.post(url_for('posts.post'), data=dict(
+            title=self.post_data.get('property1'),
+            content=self.post_data.get('this is some content'),
+            location= self.post_data.get('earth'),
+            space_size= self.post_data.get('M')
+        ), follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+
+    def booking_is_a_success(self):
+        response = self.client.book(url_for('booking.'))
+
 
 if __name__ == '__main__':
     unittest.main()
