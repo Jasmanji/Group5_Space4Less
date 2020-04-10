@@ -75,7 +75,7 @@ class BaseCase(TestCase):
 
     def test_registration_valid_details(self):
         count = User.query.count()
-        response = self.client.post(url_for('main.signup'), data=dict(
+        response = self.client.post(url_for('auth.signup'), data=dict(
             username=self.renter_data.get('Luna'),
             first_name=self.renter_data.get('rent'),
             last_name=self.renter_data.get('er'),
