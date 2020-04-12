@@ -1,21 +1,19 @@
-# we want to import wtforms to help us with the validation
+# we want to import wt-forms to help us with the validation
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileAllowed
 # we need to import all the form fields as-well
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, TextAreaField, IntegerField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 
-
-# creating the class for the sign up form, which will inherit from the class FlaskForm to be representative of our form
-# from app.models import User
+# creating the class for the sign up form, which will inherit from the class
+# FlaskForm to be representative of our form
+from app.models import User
 
 
 class RegistrationForm(FlaskForm):
     # we will create form fields to validate specific things
     # the username is going to be a string field.
     # the first input is 'Username' which is the name of the filed. This will be used as the label in our HTML.
-    # We then want to put some limits, we do this using validators: which will be a list of validations we want
-    # to check.
+    # We then want to put some limits, we do this using validators: a list of validations we want to check.
     # the DataRequired validator will be used to check the user put an input.
     # the length gives a min and max amount the username can be.
     # the render_kw are there to add the placeholders for the string field type entries but the same is not applicatble
@@ -56,17 +54,16 @@ class RegistrationForm(FlaskForm):
 
     # checking username is unique
 
+    def validate_username(self, username):
+       user = User.query.filter_by(username=username.data).first()  # checking if username is already in the database
+       if user:  # user will be none if there's no username in the query ran before. Only then it will raise an error.
+         raise ValidationError('This username is already taken! please choose another username')
 
-#    def validate_username(self, username):
-#       user = User.query.filter_by(username=username.data).first()
-#      if user:
-#         raise ValidationError('This username is already taken! please choose another username')
-
-# ensuring email is unique
-#  def validate_email(self, email):
-#     user = User.query.filter_by(username=email.data).first()
-#    if user:
-#       raise ValidationError('An account has already been created with this email.')
+    # ensuring email is unique
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user:
+           raise ValidationError('An account has already been created with this email. Please choose another email, or reset your password!')
 
 
 # creating the LoginForm class
