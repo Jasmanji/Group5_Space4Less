@@ -33,8 +33,8 @@ def create_app(config_class=DevConfig):
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'
     app.config['MAIL_PORT'] = 587
     app.config['MAIL_USE_TLS'] = True
-    app.config['MAIL_USERNAME'] = 'space4less54@gmail.com'
-    app.config['MAIL_PASSWORD'] = 'Space4Less'
+    app.config['MAIL_USERNAME'] = 'spaceforlessproject@gmail.com'
+    app.config['MAIL_PASSWORD'] = '8538dc77bed892718711652bdbb3a58366effdf84316'
     # mail = Mail(app)
     mail.init_app(app)
 
