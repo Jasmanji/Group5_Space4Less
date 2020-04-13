@@ -39,10 +39,10 @@
     {% for comment in comments %}
         <div class="post">
             <div>
-                <div id="align">
+                <div class="align">
                     <img class="comment-profile-pic" class="rounded-circle"
                          src="{{ url_for('static', filename='profile_pictures/' + comment.image_file, width=50, height =50) }}">
-                    <h4 id="comment-title">{{ comment.username }} has asked:</h4>
+                    <h4 class="comment-title">{{ comment.username }} has asked:</h4>
                 </div>
 
 

@@ -64,10 +64,12 @@ def create_app(config_class=DevConfig):
     from app.auth.routes import bp_auth
     from app.posts.routes import bp_posts
     from app.user.routes import bp_user
+    from app.errors.handlers import bp_errors
     app.register_blueprint(bp_main)
     app.register_blueprint(bp_booking)
     app.register_blueprint(bp_auth)
     app.register_blueprint(bp_posts)
     app.register_blueprint(bp_user)
+    app.register_blueprint(bp_errors)
 
     return app

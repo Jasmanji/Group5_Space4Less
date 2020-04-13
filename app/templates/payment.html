@@ -1,5 +1,6 @@
 {% extends 'layout.html' %}
 {% block content %}
+
     you are making a payment of £ {{ invoice.price }}
 
     <form action="{{ url_for('booking.pay', bookid=invoice.book_id) }}" method="POST">

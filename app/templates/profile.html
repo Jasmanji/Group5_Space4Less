@@ -47,18 +47,24 @@
 
             <a class="align_center btn btn-primary" href="{{ url_for('user.my_posts') }}">MY PROPERTIES</a>
             <a class="align_center btn btn-primary" href="{{ url_for('user.update_account') }}">Update account</a>
+            <a class="align_center btn btn-primary" href="{{ url_for('main.view_profile', userid=current_user.get_id() ) }}">reviews</a>
 
             <p>booking requests</p>
             {% for request in bookings %}
-                <p>{{ request.content }}</p>
+                <div>
+                    <p>{{ request.content }}</p>
                 <p>You may now talk to them and arrange a date and price
                     email: {{ request.email }}</p>
-                {% if request.status == 'request pending' %}
-                    <a class="btn btn-success" href="{{ url_for('booking.send_invoice', bookid=request.book_id) }}">Send
+                    {% if request.status == 'request pending' %}
+                        <a class="btn btn-success" href="{{ url_for('booking.send_invoice', bookid=request.book_id) }}">Send
                         Invoice Request</a>
-                {% elif request.status == 'booking required' %}
-                    <p>payment pending</p>
-                {% endif %}
+                    {% elif request.status == 'booking required' %}
+                        <p style="color: red"> PAYMENT PENDING </p>
+                    {% elif request.status == 'payed' %}
+                        <p style="color: red"> PROCESS COMPLETE </p>
+                    {% endif %}
+                </div>
+
             {% endfor %}
         {% endif %}
 

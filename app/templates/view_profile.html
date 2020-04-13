@@ -2,24 +2,39 @@
 
 {% block content %}
 
-    <img class="profile_picture"
-         src="{{ url_for('static', filename='profile_pictures/' + user.image_file, width=50, height =50) }}">
+    {# showing main things of PO profile, like image, name and username #}
     <h1>{{ user.first_name }} {{ user.last_name }}</h1>
     <h2 class="align_center">{{ user.username }}</h2>
+    <img class="profile_picture"
+         src="{{ url_for('static', filename='profile_pictures/' + user.image_file, width=50, height =50) }}">
+
+    {# showing all ratings of PO #}
 
 
-
-    <h3>reviews</h3>
-
+    {# if the user has no ratings, the total number of stars would be 0, so we wouldnt show anything #}
     {% if star_number['total']== 0 %}
-        this user has no reviews. Be the first one to leave one!
+        <h3>reviews</h3>
+        this user has no reviews.
     {% else %}
+        <div class="align_center">
+            {# we show the average of the user #}
+
+            {% for star in range(average|round|int) %}
+                    <span class="fa fa-star checked"></span>
+            {% endfor %}
+            {% for star in range(5 - average|round|int) %}
+                    <span class="fa fa-star"></span>
+            {% endfor %}
+            <p>{{ average }} average based on {{ star_number['total'] }} reviews.</p>
+        </div>
 
 
-        <p>{{ average }} average based on {{ star_number['total'] }} reviews.</p>
+
+        {# star rating score card modified from w3schools at https://www.w3schools.com/howto/howto_css_user_rating.asp #}
+
         <hr style="border:3px solid #f1f1f1">
 
-        <div class="row">
+        <div class="row review_row">
 
             <div class="side">5 star:</div>
             <div class="middle">
@@ -65,30 +80,39 @@
     {% endif %}
 
 
-    <br>
+
+    <h3 class="align_center">reviews</h3>
+    <hr>
     {% for review in reviews %}
-        <div>
-            <div id="align">
-                <img class="comment-profile-pic" class="rounded-circle"
+
+
+
+                <img class="rating-profile-pic" class="rounded-circle"
                      src="{{ url_for('static', filename='profile_pictures/' + review.image_file, width=50, height =50) }}">
-                <h4 id="comment-title">{{ review.username }} has said:</h4>
-            </div>
+                <div>
 
-            <br>
-            {{ review.content }}
-            <p><small> Date posted: {{ review.date_posted.strftime('%Y-%m-%d') }}</small></p>
 
-            score: {{ review.stars }}
+                <div class="star-average">
+                    <div class="score">
+                        score: {{ review.stars }}
+                    </div>
 
-            {% for star in range(review.stars) %}
-                <span class="fa fa-star checked"></span>
-            {% endfor %}
 
-            {% for star in range(5 - review.stars) %}
-                <span class="fa fa-star"></span>
-            {% endfor %}
+                        {% for star in range(review.stars) %}
+                            <span class="fa fa-star checked"></span>
+                        {% endfor %}
 
-        </div>
+                        {% for star in range(5 - review.stars) %}
+                            <span class="fa fa-star"></span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+
+                    <h3 class="review-title">{{ review.username }} said:</h3>
+                    <p class="rating-content"> {{ review.content }} </p>
+                    <p><small> Date posted: {{ review.date_posted.strftime('%Y-%m-%d') }}</small></p>
+
         <hr>
     {% endfor %}
 

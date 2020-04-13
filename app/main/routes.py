@@ -1,12 +1,13 @@
 # the render template is to help us with returning an html template for a route
 # the url_for is a function within flask that will find the exact location of routes for us
+import functools
 from flask import render_template, url_for, redirect, flash, Blueprint, request
 from app import db
 # we also need to import the forms
 from app.main.forms import ReviewForm
 from app.models import User, Post, Review
 from flask_login import current_user, login_required
-from functools import wraps
+
 
 # we create an instance of blueprint as main
 bp_main = Blueprint('main', __name__)
@@ -15,16 +16,14 @@ bp_main = Blueprint('main', __name__)
 # creating role required decorator to stop certain pages from being accessed depending on your role
 # with help from Victor!!
 def role_required(required_role):
-    def has_role(current_user):
-        return current_user.roles == required_role
-
-    def role_decorator(func):
-        @wraps(func)
-        def function_wrapper(*args, **kwargs):
-            if has_role(current_user):
-                func(*args, **kwargs)
-                return func(*args, **kwargs)
-            else:
+    def role_decorator(func):                        # this is the decorator we are writing. The function we want to run is named 'func'
+        @functools.wraps(func)                       # preserve information about the original function
+        def function_wrapper(*args,
+                             **kwargs):              # since the decorator needs to take argument 'role', we add the *args, kwargs
+            if current_user.roles == required_role:  # if the user has the role required to access the page, we run the function.
+                res = func(*args, **kwargs)
+                return res                           # we need to return the arguments aswell as the function.
+            else:                                    # if the user doesnt have the required role, we dont run the function.
                 return render_template('role.html', required_role=required_role)
 
         return function_wrapper
@@ -95,6 +94,7 @@ def faq():
 
 
 @bp_main.route('/rating/<property_owner_user_id>', methods=['GET', 'POST'])
+@login_required
 @role_required('renter')
 def rate(property_owner_user_id):
     review_form = ReviewForm()
@@ -111,6 +111,7 @@ def rate(property_owner_user_id):
 
 
 @bp_main.route("/profile/<userid>", methods=['GET', 'POST'])
+@login_required
 def view_profile(userid):
     user = User.query.get(userid)
     reviews = Review.query.filter_by(property_owner_user_id=userid) \

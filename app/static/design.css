@@ -84,7 +84,11 @@ iframe {
 
 .row {
   display: flex; /* equal height of the children */
-    box-shadow: 10px 10px 5px grey;
+  box-shadow: 10px 10px 5px grey;
+}
+
+.review_row{
+   box-shadow: none !important;
 }
 
 .col {
@@ -120,28 +124,40 @@ iframe {
 
 .comment-profile-pic{
     border: 2px solid black;
-
-
   max-width:5%;
   max-height:5%;
   width: auto;
   height: auto;
-
 }
 
-#comment-title{
+.comment-title{
     padding-left: 5%;
 }
 
-#align {
+.align {
    display: flex;
    align-items:center;
 
 }
 
+.rating-profile-pic{
+    max-width:10%;
+    float: left;
+    padding-right: 1%;
+}
 
+.star-average{
+    float: right;
 
+}
 
+.rating-content{
+    size: 15px;
+}
+
+.score{
+    font-size: 20px;
+}
 
 .profile_picture{
   border: 5px solid black;
@@ -151,6 +167,8 @@ iframe {
   max-height:20%;
   width: auto;
   height: auto;
+  margin-top: 2%;
+    margin-bottom: 2%;
 
 }
 
@@ -512,6 +530,17 @@ section {
 		float: none;
 	}
 
+
+    .score{
+        visibility: hidden;
+    }
+    .rating-profile-pic  {
+
+        max-width: 20%;
+        padding-right: 4%;
+    }
+
+
 }
 
 
@@ -547,7 +576,7 @@ section {
 
 
 .fa {
-  font-size: 25px;
+  font-size:200% !important;
 }
 
 .checked {
