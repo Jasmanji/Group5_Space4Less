@@ -1,0 +1,13 @@
+<!-- Contributed to by: Aure, Ariel -->
+
+{% extends 'layout.html' %}
+{% block content %}
+
+    <!-- Error description -->
+    <h1>Unauthorised</h1>
+    <p class="align_center">Sorry, the request you sent requires authentication which you don't have.</p>
+    <div class="align_center">
+        <a href="{{ url_for('main.home_page') }}">Return to home page</a>
+    </div>
+
+{% endblock content %}
