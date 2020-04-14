@@ -68,7 +68,7 @@ class Post(db.Model):
     post_id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(30), nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    image = db.Column(db.String(30), nullable=True, default='default.png')
+    image = db.Column(db.String(30), nullable=False)#, default='default.png')
     location = db.Column(db.String(50), nullable=False)
     space_size = db.Column(db.String(15), nullable=False)
     content = db.Column(db.String(30), nullable=False)
