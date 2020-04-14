@@ -1,8 +1,13 @@
+<!-- Contributed to by: Aure, Ariel -->
+
 {% extends 'layout.html' %}
 {% block content %}
 
-  <h1>Page Not Found</h1>
-  <p>What you were looking for is just not there.
-  <p><a href="{{ url_for('main.home_page') }}">go back home</a>
+    <!-- Error description -->
+    <h1>Page Not Found</h1>
+    <p class="align_center">Sorry, what you were looking for is just not there</p>
+    <div class="align_center">
+        <a href="{{ url_for('main.home_page') }}">Return to home page</a>
+    </div>
 
 {% endblock content %}
