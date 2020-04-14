@@ -1,4 +1,5 @@
 # importing database instance from __init__ of app
+# Contributors:
 from sqlalchemy import Column, ForeignKey, Integer, String
 # importing for encryption purposes
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -7,6 +8,7 @@ from app import db, login
 from flask_login import UserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer
 from flask import current_app
+from ukpostcodeutils import validation
 
 
 # function to get user by id

@@ -2,8 +2,14 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 # we need to import all the form fields as-well
+from ukpostcodeutils import validation
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, TextAreaField, IntegerField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+
+
+def post_code_validator(form, field):
+    if not validation.is_valid_postcode(field.data):
+        raise ValidationError('Invalid UK Post Code')
 
 
 class PostForm(FlaskForm):
@@ -11,7 +17,8 @@ class PostForm(FlaskForm):
                         validators=[DataRequired()])
     content = TextAreaField('Content',
                             validators=[DataRequired()])
-    location = TextAreaField('location', validators=[DataRequired()])
+    location = StringField('Postcode', validators=[DataRequired(), post_code_validator])
+
     space_size = SelectField('Space Size', validators=[DataRequired()], default=('0', 'Select'),
                              choices=[('0', 'Select'), ('Extra Small', 'XS'),
                                       ('Small', 'S'), ('Medium', 'M'),

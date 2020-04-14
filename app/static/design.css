@@ -42,6 +42,18 @@ iframe {
     margin: auto;
     display: block;
 }
+.hover-info-space-size {
+    display: none;
+}
+
+#hover-icon:hover + .hover-info-space-size {
+    display: block;
+
+}
+.list-of-space-sizes {
+    list-style-type: none;
+}
+
 /*.all-signup{
     border: #33383b; align-self: center;
     display: table;

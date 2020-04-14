@@ -39,6 +39,7 @@
                             href="{{ url_for('main.view_profile', userid=post.author.user_id) }}">{{ post.author.username }}</a>
                     </p>
                     <p>{{ post.content }}</p>
+                    <p> {{ post.location }}</p>
                     <small> Date posted: {{ post.date_posted.strftime('%Y-%m-%d') }}</small>
                 </div>
             </div>

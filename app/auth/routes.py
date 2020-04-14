@@ -42,7 +42,7 @@ def signup():
             user.set_password(form_signup.password.data)
             db.session.add(user)
             db.session.commit()
-            flash('congratulations, you have created an account! Please log in to continue browsing!', 'success')
+            flash('Congratulations, you have created an account! Please log in to continue browsing!', 'success')
             return redirect(url_for('auth.login'))
     return render_template('signup.html', title='signup', form=form_signup)
 

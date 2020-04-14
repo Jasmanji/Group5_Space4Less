@@ -40,13 +40,17 @@ def home_page():
     # ensures we always begin with page 1 and only integers are allowed as a page number
     page = request.args.get('page', 1, type=int)
     # per page defines how many posts are allowed in a single page and ensuring latest posts turn up first
-    posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=2)
+    posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=10)
     return render_template('home.html', title='Home Page', posts=posts)
+
+# the pagination included here to restrict the number of results that appear per page and maintain the order such that
+# the most recent posts turn up first
 
 
 @bp_main.route('/search', methods=['POST', 'GET'])
 def search():
-    page = request.args.get('page', 1, type=int)
+    page = request.args.get('page', 1, type=int) # ensures the page begins at page 1 and pages are identified by
+    # integers only
     if request.method == 'POST':
         term = request.form.get("location")
         size = request.form.get("size")
@@ -55,17 +59,17 @@ def search():
             return redirect('/')
         elif term != "" and size == "":
             results = Post.query.filter(Post.location.contains(term)).order_by(Post.date_posted.desc()).paginate(
-                page=page, per_page=2)
+                page=page, per_page=10)
             size_displayed = "all sized spaces"
             location_displayed = term
         elif term == "" and size != "":
             results = Post.query.filter_by(space_size=size).order_by(Post.date_posted.desc()).paginate(
-                page=page, per_page=2)
+                page=page, per_page=10)
             size_displayed = size
             location_displayed = "all locations"
         elif term != "" and size != "":
             results = Post.query.filter_by(space_size=size, location=term).order_by(Post.date_posted.desc()).paginate(
-                page=page, per_page=2)
+                page=page, per_page=10)
             size_displayed = size
             location_displayed = term
         else:
@@ -76,6 +80,8 @@ def search():
     else:
         return redirect(url_for('main.home_page'))
 
+# the following two routes allow for the about me and FAQ pages to be rendered since they are only meant to be viewed
+# as no interaction with the user is required
 
 @bp_main.route('/aboutme')
 def about_me():

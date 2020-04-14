@@ -63,10 +63,23 @@
                             {% endfor %}
                         </div>
                     {% else %}
-                        <br>
+
+                        <button type="button" class="btn btn-light" id="hover-icon">Info</button>
+                        <div class="hover-info-space-size">
+                            <ul class="list-of-space-sizes">
+                                <li>XS - 50m X 70m</li>
+                                <li>S - 150m x 170m</li>
+                                <li> M - 250m x 270m</li>
+                                <li> ML - 350m x 370m</li>
+                                <li> L - 450m x 470m</li>
+                                <li> XL - 550m x 570m +</li>
+                            </ul>
+                        </div>
                         {{ form.space_size(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
+                <br>
+                <br>
                 <div class="form-group">
                     {{ form.picture_for_posts.label() }}
                     {% if form.picture_for_posts.errors %}
