@@ -5,9 +5,9 @@
         <form method="POST" novalidate>
             {{ form.hidden_tag() }} <!-- we add a CSRF token for protection against furgery attacks -->
             <fieldset class="form-design">
-                <legend class="border-bottom"> Send invoice</legend>
+                <legend class="border-bottom"> Send invoice in pounds </legend>
                 <div class="form-group">
-                    {{ form.price.label(class="form-control-label") }}
+                    {{ form.price.label(class="form-control-label") }}£
                     {% if form.price.errors %}
                         <br>
                         {{ form.price(class="form-control form-control-lg is-invalid") }}

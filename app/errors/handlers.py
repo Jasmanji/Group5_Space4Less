@@ -2,6 +2,8 @@
 
 from flask import Blueprint, render_template
 
+from app import db
+
 bp_errors = Blueprint('errors', __name__)
 
 # reference: Error handler structure view and controller structure adapted from https://flask.palletsprojects.com/en/1.1.x/patterns/errorpages/ on 13/04/2020
@@ -44,4 +46,5 @@ def page_gone(error):
 # For internal server errors
 @bp_errors.app_errorhandler(500)
 def server_side_error(error):
+    db.session.rollback()
     return render_template('errors/500.html', title='Server side error'), 500

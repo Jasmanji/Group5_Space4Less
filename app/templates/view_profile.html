@@ -116,11 +116,10 @@
         <hr>
     {% endfor %}
 
-
-    {% if current_user.roles == 'renter' %}
-        <a class="btn btn-primary" href="{{ url_for('main.rate', property_owner_user_id=user.user_id) }}"> post a
-            review </a>
-
-    {% endif %}
+{##}
+{#    {% if current_user.roles == 'renter' %}#}
+{#        <a class="btn btn-primary" href="{{ url_for('main.rate', property_owner_user_id=user.user_id) }}"> post a#}
+{#            review </a>#}
+{#    {% endif %}#}
 
 {% endblock content %}

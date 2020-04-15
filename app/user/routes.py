@@ -32,8 +32,8 @@ def profile():
     if current_user.roles == 'renter':
         bookings = Book.query.join(Post, Book.post_id == Post.post_id) \
             .join(User, User.user_id == Book.renter_user_id) \
-            .add_columns(User.user_id, User.email, Post.title, Post.content, Book.book_id, Book.date_booked,
-                         Book.status, Book.post_id) \
+            .add_columns( User.email, Post.title, Post.content,  Post.user_id, Book.book_id, Book.date_booked,
+                         Book.status, Book.post_id, Book.price) \
             .filter_by(user_id=userid).all()
     elif current_user.roles == 'property_owner':
         bookings = Book.query.join(Post, Book.post_id == Post.post_id) \

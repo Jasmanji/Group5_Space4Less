@@ -18,6 +18,7 @@ class BookingRequestForm(FlaskForm):
 
 class SendInvoiceForm(FlaskForm):
     price = IntegerField('price',
-                         validators=[DataRequired()]
+                         validators=[DataRequired()],
+                         render_kw={"placeholder": "price in pounds eg. 60"}
                          )
     submit = SubmitField('send request')

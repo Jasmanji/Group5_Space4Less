@@ -1,0 +1,9 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <h1> Role required error</h1>
+    <p class="align_center"> You do not have access to this functionality. You need to be
+        a {{ required_role }} to access this functionality. </p>
+    <div class="align_center">
+        <a href="{{ url_for('main.home_page') }}">Return to home page</a>
+    </div>
+{% endblock content %}

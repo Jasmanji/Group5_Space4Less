@@ -1,8 +1,10 @@
 import unittest
 
 from flask import url_for
+from flask_login import login_user, current_user
 from flask_testing import TestCase
 from app import create_app, db
+
 from app.models import User
 from app.config import TestConfig
 
@@ -46,7 +48,7 @@ class BaseCase(TestCase):
             follow_redirects=True
         )
 
-    def signup(self, username, last_name, first_name, role, email, password, roles):
+    def signup(self, username, last_name, first_name,  email, password, roles):
         return self.client.post(
             '/signup',
             data=dict(username=username, first_name=first_name, last_name=last_name, email=email, password=password,
@@ -54,12 +56,7 @@ class BaseCase(TestCase):
             follow_redirects=True
         )
 
-    def post(self, title, content, location, space_size):
-        return self.client.post(
-            '/post',
-            data=dict(title=title, content=content, location=location, space_size=space_size),
-            follow_redirects=True
-        )
+
 
     def test_login_fails_with_invalid_details(self):
         response = self.login(email='atlas@gmail.com', password='password')
@@ -94,14 +91,17 @@ class BaseCase(TestCase):
                               roles='property_owner', password='pass')
     post_data = dict(title='property1', content='this is some content', location='earth', space_size='M')
 
+
+
     def test_adding_a_post_success(self):
-        response = self.client.post(url_for('posts.post'), data=dict(
-            title=self.post_data.get('property1'),
-            content=self.post_data.get('this is some content'),
-            location= self.post_data.get('earth'),
-            space_size= self.post_data.get('M')
-        ), follow_redirects=True)
-        self.assertEqual(response.status_code, 200)
+        with self.client:
+            self.login(self.propertyowner.email, self.propertyowner.password)
+            response = self.client.post(
+                '/post',
+                data=dict(title='post1', content='content', location='location', space_size='M', current_user=current_user),
+                follow_redirects=True
+            )
+            self.assertEqual(response.status_code, 200)
 
     def booking_is_a_success(self):
         response = self.client.book(url_for('booking.'))

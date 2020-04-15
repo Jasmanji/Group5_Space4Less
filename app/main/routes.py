@@ -5,7 +5,7 @@ from flask import render_template, url_for, redirect, flash, Blueprint, request
 from app import db
 # we also need to import the forms
 from app.main.forms import ReviewForm
-from app.models import User, Post, Review
+from app.models import User, Post, Review, Book
 from flask_login import current_user, login_required
 
 
@@ -24,7 +24,7 @@ def role_required(required_role):
                 res = func(*args, **kwargs)
                 return res                           # we need to return the arguments aswell as the function.
             else:                                    # if the user doesnt have the required role, we dont run the function.
-                return render_template('role.html', required_role=required_role)
+                return render_template('errors/role.html', required_role=required_role)
 
         return function_wrapper
 
@@ -99,17 +99,24 @@ def faq():
 #     return render_template('notifications.html', title='Notifications')
 
 
-@bp_main.route('/rating/<property_owner_user_id>', methods=['GET', 'POST'])
+@bp_main.route('/rating/<bookid>', methods=['GET', 'POST'])
 @login_required
 @role_required('renter')
-def rate(property_owner_user_id):
+def rate(bookid):
     review_form = ReviewForm()
+    property_owner_user_id = Book.query.filter_by(book_id=bookid).join(Post, Post.post_id==Book.post_id)\
+        .with_entities(Post.user_id)
     user = User.query.get(current_user.get_id())
-
+    book=Book.query.filter_by(book_id=bookid)
+    print(book.status)
     if review_form.validate_on_submit():
+        book.status = 'booking complete'
+        db.session.commit()
+        print(book.status)
         review = Review(content=review_form.content.data, stars=review_form.number.data, renter_user_id=user.user_id,
                         property_owner_user_id=property_owner_user_id)
         db.session.add(review)
+
         db.session.commit()
         flash('you have successfully posted a review!', 'success')
         return redirect(url_for('main.home_page'))
