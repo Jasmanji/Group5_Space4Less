@@ -1,3 +1,4 @@
+# Contributors: Kowther, Aure
 # we want to import wt-forms to help us with the validation
 from flask_wtf import FlaskForm
 # we need to import all the form fields as-well
@@ -55,15 +56,17 @@ class RegistrationForm(FlaskForm):
     # checking username is unique
 
     def validate_username(self, username):
-       user = User.query.filter_by(username=username.data).first()  # checking if username is already in the database
-       if user:  # user will be none if there's no username in the query ran before. Only then it will raise an error.
-         raise ValidationError('This username is already taken! please choose another username')
+        user = User.query.filter_by(username=username.data).first()  # checking if username is already in the database
+        if user:  # user will be none if there's no username in the query ran before. Only then it will raise an error.
+            raise ValidationError('This username is already taken! please choose another username')
 
     # ensuring email is unique
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if user:
-           raise ValidationError('An account has already been created with this email. Please choose another email, or reset your password!')
+            raise ValidationError(
+                'An account has already been created with this email. Please choose another email, or reset your '
+                'password!')
 
 
 # creating the LoginForm class
@@ -83,14 +86,18 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Log In')
 
 
+# the email form requires only one bit of email as it is the form used to collect the email which enables password reset
 class EmailForm(FlaskForm):
     email = StringField('Email',
                         validators=[DataRequired(), Email()],
                         render_kw={"placeholder": "name@email.com"}
                         )
+    # again, we will need a submit button
     submit = SubmitField('Send Email')
 
 
+# this form is for the password reset page thus requires input of password and for that password to be confirmed
+# the password has a limit with respect to length as the password must be at least 4 characters and max 20 characters
 class PasswordReset(FlaskForm):
     password = PasswordField('Password',
                              validators=[DataRequired(), Length(min=4, max=20)],
@@ -101,5 +108,6 @@ class PasswordReset(FlaskForm):
                                      validators=[DataRequired(), EqualTo('password')],
                                      render_kw={"placeholder": "Re-Enter Password"}
                                      )
+    # again, we will need a submit button
     submit = SubmitField('Update Password'
                          '')

@@ -1,3 +1,4 @@
+# Contributors: Kowther, Aure
 import os
 import secrets
 
@@ -14,6 +15,12 @@ from app.models import Book, Post, User, Review
 bp_user = Blueprint('user', __name__)
 
 
+# this is the function created to allow for pictures that a property owner uploads as part of the post to be saved.
+# this function essentially creates a hex and attaches it onto the file extension (either jpg or png) and uses an OS
+# join to save the route to the picture to the database as the image itself cannot be saved the image itself is saved
+# in the UPLOAD_FOLDER route (which is configured in the config.py) which  basically means the pictures themselves are
+# saved to the static/profile_pictures folder.
+# Finally the path to the image is saved to the database and the post_image is returned
 def saving_pictures(profile_picture):
     hide_name = secrets.token_hex(6)
     _, f_extension = os.path.splitext(profile_picture.filename)
@@ -32,13 +39,13 @@ def profile():
     if current_user.roles == 'renter':
         bookings = Book.query.join(Post, Book.post_id == Post.post_id) \
             .join(User, User.user_id == Book.renter_user_id) \
-            .add_columns( User.email, Post.title, Post.content,  Post.user_id, Book.book_id, Book.date_booked,
+            .add_columns(User.email, Post.title, Post.content, Post.user_id, Book.book_id, Book.date_booked,
                          Book.status, Book.post_id, Book.price) \
             .filter_by(user_id=userid).all()
     elif current_user.roles == 'property_owner':
         bookings = Book.query.join(Post, Book.post_id == Post.post_id) \
             .join(User, User.user_id == Post.user_id) \
-            .with_entities(Book.content, Book.email, Book.book_id, Book.status, Book.price, Book.renter_user_id)\
+            .with_entities(Book.content, Book.email, Book.book_id, Book.status, Book.price, Book.renter_user_id) \
             .filter_by(user_id=userid).all()
     return render_template('profile.html', title='profile', image_file=image, bookings=bookings)
 
@@ -68,7 +75,9 @@ def my_bookings():
         posts_booked.append(post_object)
     return render_template('bookings.html', title='Book', bookings=posts_booked)
 
-
+# beginning on the form_account.picture_for_posts.data line, the picture is requested from the user after which the
+# saving_pictures_post() function created above is called to save the image to the folder and the path to the image
+# is saved to the database replacing the current image.
 @bp_user.route("/update_account", methods=['GET', 'POST'])
 @login_required
 def update_account():

@@ -1,3 +1,4 @@
+# Contributors: Kowther, Ariel, Aure
 # the render template is to help us with returning an html template for a route
 # the url_for is a function within flask that will find the exact location of routes for us
 import functools
@@ -16,14 +17,18 @@ bp_main = Blueprint('main', __name__)
 # your role.
 # with help from Victor!! Modified from: https://gist.github.com/VictorDarvariu/243773079e4e954bbda85ab505ebc270
 def role_required(required_role):
-    def role_decorator(func):                        # this is the decorator we are writing. The function we want to run is named 'func'
+    def role_decorator(func):                        # this is the decorator we are writing. The function we want to
+                                                     # run is named 'func'
         @functools.wraps(func)                       # preserve information about the original function
         def function_wrapper(*args,
-                             **kwargs):              # since the decorator needs to take argument 'role', we add the *args, kwargs
-            if current_user.roles == required_role:  # if the user has the role required to access the page, we run the function.
+                             **kwargs):              # since the decorator needs to take argument 'role', we add the
+                                                     # *args, kwargs
+            if current_user.roles == required_role:  # if the user has the role required to access the page, we run
+                                                     # the function.
                 res = func(*args, **kwargs)
                 return res                           # we need to return the arguments aswell as the function.
-            else:                                    # if the user doesnt have the required role, we dont run the function.
+            else:                                    # if the user doesnt have the required role, we dont run the
+                                                     # function.
                 return render_template('errors/role.html', required_role=required_role)
         return function_wrapper
     return role_decorator

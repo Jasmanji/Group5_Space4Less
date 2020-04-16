@@ -1,3 +1,4 @@
+# Contributors: Aure
 import stripe # for payment
 from flask import flash, redirect, url_for, render_template, request, Blueprint
 from flask_login import login_required, current_user
