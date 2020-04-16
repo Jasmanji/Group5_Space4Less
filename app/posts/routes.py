@@ -34,8 +34,8 @@ def saving_pictures_post(post_picture):
 # saving_pictures_post() function created above is called to save the image to the folder and the path to the image
 # is saved to the database
 @bp_posts.route('/post', methods=['GET', 'POST'])
-@role_required('property_owner')
 @login_required
+@role_required('property_owner')
 def post():
     form_post = PostForm()
     if form_post.validate_on_submit():
