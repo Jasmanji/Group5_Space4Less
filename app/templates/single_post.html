@@ -1,6 +1,11 @@
+{# DESCRIPTION: This is to show a single post in more detail. Here is where things like
+updating a post or requesting to book the space is possible. #}
+{# CONTRIBUTORS: Aure Enkaoua #}
+
 {% extends 'layout.html' %}
 {% block content %}
-
+    {# first we display the actual post of the space like before but also including a
+    postcode #}
     <div class="row post">
         <div>
             <h4 class="media-heading">{{ post.title }}</h4>
@@ -15,12 +20,13 @@
                 <p> {{ post.location }}</p>
                 <p><small> Date posted: {{ post.date_posted.strftime('%Y-%m-%d') }}</small></p>
             </div>
-
+            {# As a renter, inside the post there will be an option for you to request a booking. #}
             <div>
                 {% if (current_user.roles == 'renter') %}
                     <a class="btn btn-sm btn-danger" href="{{ url_for('booking.book', postid = post.post_id) }}">Request
                         Booking!</a>
-
+                    {# As a PO, inside the post there will be an option for you to Update or delete the post.
+                    Note the functionality of delete hasn't been added.#}
                 {% elif (current_user.roles == 'property_owner') and (post.author == current_user) %}
 
                     <a class="btn btn-sm btn-primary" href="{{ url_for('posts.update_post', postid = post.post_id) }}">Update</a>
@@ -34,9 +40,9 @@
         </div>
     </div>
 
-
+    {# The comments section is where the user can ask any questions if they are a renter.
+    As a property owner, if you own this space, you are able to answer questions if there are any. #}
     <h3>comments</h3>
-
     {% for comment in comments %}
         <div class="post">
             <div>
@@ -46,7 +52,6 @@
                     <h4 class="comment-title">{{ comment.username }} has asked:</h4>
                 </div>
 
-
                 <br>
                 {{ comment.question }}
                 <p><small> Date posted: {{ comment.date_posted.strftime('%Y-%m-%d') }}</small></p>
@@ -55,6 +60,8 @@
                 <small>{{ comment.answer }}</small>
             </div>
             <br>
+            {# if you are a PO that owns the space, for every question there will be a place for you to answer.
+            If you've already answered, you will be able to update your answer.#}
             {% if (current_user.roles == 'property_owner') and (post.author == current_user) %}
                 {% if comment.answer=='' %}
                     <a class="btn btn-primary" href="{{ url_for('posts.answer', commentid=comment.comment_id) }}"> post
@@ -66,7 +73,8 @@
             {% endif %}
         </div>
     {% endfor %}
-
+    {# If you are a renter, there will be a form for you to ask any quetsions or put any comments at
+    the end of the page. #}
     {% if (current_user.roles == 'renter') %}
 
         <form method="POST" novalidate enctype="multipart/form-data">

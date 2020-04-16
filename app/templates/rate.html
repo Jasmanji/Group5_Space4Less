@@ -1,3 +1,6 @@
+{# DESCRIPTION: Form for adding a review- has content and star rating as inputs #}
+{# CONTRIBUTORS: Aure Enkaoua #}
+
 {% extends 'layout.html' %}
 {% block content %}
 
@@ -7,7 +10,7 @@
             <legend class="border-bottom"> Rate</legend>
             <div class="form-group">
                 {{ form.content.label(class="form-control-label") }}
-
+                {# for giving useful feedback of errors #}
                 {% if form.content.errors %}
                     <br>
                     {{ form.content(class="form-control form-control-lg is-invalid") }}
@@ -22,6 +25,7 @@
                 {% endif %}
             </div>
 
+            {# stars for the rating #}
             <div class="stars" data-rating="3">
                 <span class="star">&nbsp;</span>
                 <span class="star">&nbsp;</span>
@@ -30,9 +34,7 @@
                 <span class="star">&nbsp;</span>
             </div>
 
-
             <input type="hidden" id="rating-value" {{ form.number(class="form-control form-control-lg") }}>
-
 
             <div>
                 <!-- added this above class and the below id to make the elements easier to target with css -->
@@ -43,9 +45,10 @@
 
 
     </form>
-
-
+    {# JS for the star rating system #}
+    {# adapted from https://gist.github.com/prof3ssorSt3v3/29e623d441e8174ffaef17741a1bba14 #}
     <script>
+        // we define ratingValue as the star rating selected on click.
         const ratingValue = document.querySelector("#rating-value");
 
         //initial setup
@@ -59,12 +62,16 @@
             let target = stars[rating - 1];
             target.dispatchEvent(new MouseEvent('click'));
         });
-
+        // this is the setRating function, which will happen when the user clicks on the specific
+        // star (as defined in the initial setup above).
         function setRating(ev) {
-            let span = ev.currentTarget;
+            let span = ev.currentTarget; // span will be all stars till the star number we've clicked on.
             let stars = document.querySelectorAll('.star');
             let match = false;
             let num = 0;
+            // we will look at each star and see if it matches the span. If it does, match will be true,
+            // in which case we will add the class rated so that the star is filled with colour.
+            // Otherwise, we remove the class rated so that it's unmarked.
             stars.forEach(function (star, index) {
                 if (match) {
                     star.classList.remove('rated');
@@ -78,6 +85,7 @@
                 }
             });
             document.querySelector('.stars').setAttribute('data-rating', num);
+            // the rating value will simply be the number at which the star is the same as span
             ratingValue.value = num;
         }
 

@@ -1,12 +1,17 @@
-{% extends 'layout.html' %}
+{# DESCRIPTION: This is the form for booking a space #}
+{# CONTRIBUTORS: Aure Enkaoua #}
 
+{% extends 'layout.html' %}
 {% block content %}
+
     <div class="content-section">
         <form method="POST" novalidate>
             {{ form.hidden_tag() }} <!-- we add a CSRF token for protection against furgery attacks -->
             <fieldset class="form-design">
+
                 <legend class="border-bottom"> Request Booking</legend>
                 <div class="form-group">
+                    {# entering email to share with PO for discussing details and price #}
                     {{ form.email.label(class="form-control-label") }}
                     {% if form.email.errors %}
                         <br>
@@ -22,7 +27,7 @@
                     {% endif %}
                 </div>
 
-
+                {# entering message #}
                 <div class="form-group">
                     {{ form.content.label(class="form-control-label") }}
                     {% if form.content.errors %}
@@ -38,8 +43,7 @@
                         {{ form.content(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
-
-
+                {# submit button #}
                 <div class="attempt">
                     <!-- added this above class and the below id to make the elements easier to target with css -->
                     <p id="signupbutton">{{ form.submit(class="form-control form-control-lg") }}</p></div>

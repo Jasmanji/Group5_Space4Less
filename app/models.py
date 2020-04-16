@@ -1,5 +1,5 @@
 # importing database instance from __init__ of app
-# Contributors:
+# Contributors: Aure Enkaoua
 from sqlalchemy import Column, ForeignKey, Integer, String
 # importing for encryption purposes
 from werkzeug.security import generate_password_hash, check_password_hash

@@ -1,16 +1,22 @@
-{% extends 'layout.html' %}
+{# DESCRIPTION: The invoice form the property owner sends when the price is decided #}
+{# CONTRIBUTORS: Aure Enkaoua #}
 
+{% extends 'layout.html' %}
 {% block content %}
+
+
     <div class="content-section">
         <form method="POST" novalidate>
             {{ form.hidden_tag() }} <!-- we add a CSRF token for protection against furgery attacks -->
             <fieldset class="form-design">
-                <legend class="border-bottom"> Send invoice in pounds </legend>
+
+                <legend class="border-bottom"> Send invoice in pounds</legend>
                 <div class="form-group">
-                    {{ form.price.label(class="form-control-label") }}£
+                    {# price in pounds decided upon prior the sending of the invoice #}
+                    {{ form.price.label(class="form-control-label") }}
                     {% if form.price.errors %}
                         <br>
-                        {{ form.price(class="form-control form-control-lg is-invalid") }}
+                        £ {{ form.price(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
                             {% for error in form.price.errors %}
                                 <span>{{ error }}</span>
@@ -18,10 +24,10 @@
                         </div>
                     {% else %}
                         <br>
-                        {{ form.price(class="form-control form-control-lg") }}
+                        £ {{ form.price(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
-
+                {# Submit button for invoice. #}
                 <div class="attempt">
                     <!-- added this above class and the below id to make the elements easier to target with css -->
                     <p id="signupbutton">{{ form.submit(class="form-control form-control-lg") }}</p></div>

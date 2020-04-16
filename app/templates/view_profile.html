@@ -1,5 +1,7 @@
-{% extends 'layout.html' %}
+{# DESCRIPTION: viewing profile of PO that own a post, mainly to look at their reviews #}
+{# CONTRIBUTORS: Aure Enkaoua #}
 
+{% extends 'layout.html' %}
 {% block content %}
 
     {# showing main things of PO profile, like image, name and username #}
@@ -8,34 +10,32 @@
     <img class="profile_picture"
          src="{{ url_for('static', filename='profile_pictures/' + user.image_file, width=50, height =50) }}">
 
-    {# showing all ratings of PO #}
-
-
+    {# showing all ratings of PO: #}
     {# if the user has no ratings, the total number of stars would be 0, so we wouldnt show anything #}
     {% if star_number['total']== 0 %}
         <h3>reviews</h3>
         this user has no reviews.
+        {# otherwise, if the user has ratings then we show all the ratings: #}
     {% else %}
-        <div class="align_center">
-            {# we show the average of the user #}
 
+        <div class="align_center">
+            {# we show the star average. For this, we loop through the 5 stars and print them
+             checked or unchecked depending on the average value. #}
             {% for star in range(average|round|int) %}
-                    <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
             {% endfor %}
             {% for star in range(5 - average|round|int) %}
-                    <span class="fa fa-star"></span>
+                <span class="fa fa-star"></span>
             {% endfor %}
+            {# we show the average of the user underneath the stars.#}
             <p>{{ average }} average based on {{ star_number['total'] }} reviews.</p>
         </div>
 
-
-
         {# star rating score card modified from w3schools at https://www.w3schools.com/howto/howto_css_user_rating.asp #}
-
         <hr style="border:3px solid #f1f1f1">
 
         <div class="row review_row">
-
+            {# shows a graph of how mamy users voted 5 stars for that PO #}
             <div class="side">5 star:</div>
             <div class="middle">
                 <div class="bar-container">
@@ -43,7 +43,7 @@
                 </div>
             </div>
             <div class="side right"> {{ star_number[5] }}</div>
-
+            {# shows a graph of how mamy users voted 4 stars for that PO #}
             <div class="side">4 star:</div>
             <div class="middle">
                 <div class="bar-container">
@@ -51,7 +51,7 @@
                 </div>
             </div>
             <div class="side right">{{ star_number[4] }}</div>
-
+            {# shows a graph of how mamy users voted 3 stars for that PO #}
             <div class="side">3 star:</div>
             <div class="middle">
                 <div class="bar-container">
@@ -59,7 +59,7 @@
                 </div>
             </div>
             <div class="side right">{{ star_number[3] }}</div>
-
+            {# shows a graph of how mamy users voted 2 stars for that PO #}
             <div class="side">2 star:</div>
             <div class="middle">
                 <div class="bar-container">
@@ -67,7 +67,7 @@
                 </div>
             </div>
             <div class="side right">{{ star_number[2] }}</div>
-
+            {# shows a graph of how mamy users voted 1 stars for that PO #}
             <div class="side">1 star:</div>
             <div class="middle">
                 <div class="bar-container">
@@ -76,50 +76,40 @@
             </div>
             <div class="side right">{{ star_number[1] }}</div>
         </div>
-
     {% endif %}
 
 
-
+    {# after the scoreboard, we see the actual reviews of individual users with their comments
+    and individual marks. #}
     <h3 class="align_center">reviews</h3>
     <hr>
     {% for review in reviews %}
+        {# we show the profile pic of the renter that posted the review #}
+        <img class="rating-profile-pic" class="rounded-circle"
+             src="{{ url_for('static', filename='profile_pictures/' + review.image_file, width=50, height =50) }}">
+        <div>
 
-
-
-                <img class="rating-profile-pic" class="rounded-circle"
-                     src="{{ url_for('static', filename='profile_pictures/' + review.image_file, width=50, height =50) }}">
-                <div>
-
-
-                <div class="star-average">
-                    <div class="score">
-                        score: {{ review.stars }}
-                    </div>
-
-
-                        {% for star in range(review.stars) %}
-                            <span class="fa fa-star checked"></span>
-                        {% endfor %}
-
-                        {% for star in range(5 - review.stars) %}
-                            <span class="fa fa-star"></span>
-                        {% endfor %}
-                    </div>
+            {# we show the score they gave the property owner #}
+            <div class="star-average">
+                <div class="score">
+                    score: {{ review.stars }}
                 </div>
+                {# the corresponding star icons of the score #}
+                {% for star in range(review.stars) %}
+                    <span class="fa fa-star checked"></span>
+                {% endfor %}
+                {% for star in range(5 - review.stars) %}
+                    <span class="fa fa-star"></span>
+                {% endfor %}
+            </div>
+        </div>
 
-
-                    <h3 class="review-title">{{ review.username }} said:</h3>
-                    <p class="rating-content"> {{ review.content }} </p>
-                    <p><small> Date posted: {{ review.date_posted.strftime('%Y-%m-%d') }}</small></p>
+        {# and finally the actual review, with the date posted. #}
+        <h3 class="review-title">{{ review.username }} said:</h3>
+        <p class="rating-content"> {{ review.content }} </p>
+        <p><small> Date posted: {{ review.date_posted.strftime('%Y-%m-%d') }}</small></p>
 
         <hr>
     {% endfor %}
-
-{##}
-{#    {% if current_user.roles == 'renter' %}#}
-{#        <a class="btn btn-primary" href="{{ url_for('main.rate', property_owner_user_id=user.user_id) }}"> post a#}
-{#            review </a>#}
-{#    {% endif %}#}
 
 {% endblock content %}

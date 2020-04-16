@@ -1,14 +1,13 @@
+{# DESCRIPTION: personal profile page of renter/PO #}
+{# CONTRIBUTORS: Aure Enkaoua#}
+
 {% extends 'layout.html' %}
 {% block content %}
-
     <img class='profile_picture rounded-circle' src="{{ image_file }}">
     <h1>{{ current_user.first_name }} {{ current_user.last_name }}</h1>
     <h2 class="align_center">{{ current_user.username }}</h2>
     <h3 class="align_center">{{ current_user.email }}</h3>
-
     <div class="center">
-
-
         {% if current_user.roles == 'renter' %}
             <h3>Booking History:</h3>
             <table class="table">
@@ -70,10 +69,8 @@
                         <p>a review was left!!</p>
                     {% endif %}
                 </div>
-
             {% endfor %}
         {% endif %}
-
     </div>
 
 {% endblock content %}

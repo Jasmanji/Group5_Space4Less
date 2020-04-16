@@ -1,3 +1,6 @@
+{# DESCRIPTION: This is the update account of a profile for adding an image, or email, username... #}
+{# CONTRIBUTORS: Aure Enkaoua #}
+
 {% extends 'layout.html' %}
 {% block content %}
 
@@ -6,9 +9,9 @@
             {{ form.hidden_tag() }} <!-- we add a CSRF token for protection against furgery attacks -->
             <fieldset class="form-design">
                 <legend class="border-bottom">Update account Information</legend>
+                {# To update first name. #}
                 <div class="form-group">
                     {{ form.firstname.label(class="form-control-label") }}
-
                     {# for more specific feedback to the user of any errors in this field #}
                     {% if form.firstname.errors %}
                         <br>
@@ -23,6 +26,7 @@
                         {{ form.firstname(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
+                {# To update last name. #}
                 <div class="form-group">
                     {{ form.surname.label(class="form-control-label") }}
 
@@ -35,12 +39,11 @@
                             {% endfor %}
                         </div>
                     {% else %}
-
                         <br>
                         {{ form.surname(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
-
+                {# To update username. #}
                 <div class="form-group">
                     {{ form.username.label(class="form-control-label") }}
 
@@ -57,6 +60,7 @@
                         {{ form.username(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
+                {# To update email. #}
                 <div class="form-group">
                     {{ form.email.label(class="form-control-label") }}
                     {% if form.email.errors %}
@@ -72,21 +76,18 @@
                         {{ form.email(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
-
+                {# To upload profile pic. #}
                 <div class="form-group">
                     {{ form.picture.label() }}
                     {{ form.picture(class="form-coltrol-file") }}
-
                     {% if form.picture.errors %}
                         {% for error in form.picture.errors %}
                             <span class="text-danger">{{ error }}</span>
                         {% endfor %}
                     {% endif %}
                 </div>
-
-                <div class="attempt">
-                    <!-- added this above class and the below id to make the elements easier to target with css -->
-                    <p id="signupbutton">{{ form.submit(class="form-control form-control-lg") }}</p></div>
+                <div class="attempt"><p id="signupbutton">{{ form.submit(class="form-control form-control-lg") }}</p>
+                </div>
             </fieldset>
         </form>
     </div>

@@ -1,3 +1,5 @@
+# Contributors:
+
 # # we import the instance of the database that we will be populating
 from app import db
 # # we also import the tables of the database
