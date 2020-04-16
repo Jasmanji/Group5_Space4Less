@@ -6,7 +6,8 @@ from app import db
 
 bp_errors = Blueprint('errors', __name__)
 
-# reference: Error handler structure view and controller structure adapted from https://flask.palletsprojects.com/en/1.1.x/patterns/errorpages/ on 13/04/2020
+# reference: Error handler structure view and controller structure
+# adapted from https://flask.palletsprojects.com/en/1.1.x/patterns/errorpages/ on 13/04/2020
 
 # For bad request errors
 @bp_errors.app_errorhandler(400)

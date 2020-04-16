@@ -1,4 +1,4 @@
-import stripe
+import stripe # for payment
 from flask import flash, redirect, url_for, render_template, request, Blueprint
 from flask_login import login_required, current_user
 
@@ -53,6 +53,8 @@ def send_invoice(bookid):
     return render_template('send_invoice.html', form=form_send_invoice)
 
 
+# This is the payment page. The renter, when he clicks on 'make payment' for a specific booking, it will
+# bring them to this page, and they will make the payment specified in the invoice sent by the property owner
 @bp_booking.route("/booking/<bookid>", methods=['GET', 'POST'])
 @login_required
 @role_required('renter')
