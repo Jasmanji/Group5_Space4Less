@@ -1,3 +1,4 @@
+# Contributors: Kowther
 import unittest
 
 from flask import url_for
@@ -8,6 +9,7 @@ from app.models import User
 from app.config import TestConfig
 
 from flask_login import current_user, login_user, logout_user
+
 
 class BaseTestCase(TestCase):
 
@@ -48,7 +50,7 @@ class BaseTestCase(TestCase):
             follow_redirects=True
         )
 
-    def signup(self, username, last_name, first_name,  email, password, roles):
+    def signup(self, username, last_name, first_name, email, password, roles):
         return self.client.post(
             '/signup',
             data=dict(username=username, first_name=first_name, last_name=last_name, email=email, password=password,
@@ -56,42 +58,18 @@ class BaseTestCase(TestCase):
             follow_redirects=True
         )
 
-
-    def test_login_fails_with_invalid_details(self):
-        response = self.login(email='atlas@gmail.com', password='password')
-        self.assertIn(b'Invalid username or password', response.data)
-
-    def test_signup_page_valid(self):
-        response = self.client.get('/signup')
+    def test_faq_page_valid(self):
+        response = self.client.get('/faq')
         self.assertEqual(response.status_code, 200)
 
-    def test_login_succeeds_with_valid_details(self):
-        response = self.login(email='luna@gmail.com', password='5678')
-        self.assertIn(b'Login successful!', response.data)
-
-    def test_registration_valid_details(self):
-        count = User.query.count()
-        response = self.client.post(url_for('auth.signup'), data=dict(
-            username=self.renter_data.get('Luna'),
-            first_name=self.renter_data.get('rent'),
-            last_name=self.renter_data.get('er'),
-            email=self.renter_data.get('email'),
-            password=self.renter_data.get('password'),
-            roles=self.renter_data.get('role')
-        ), follow_redirects=True)
-        count2 = User.query.count()
-        self.assertEqual(count2 - count, 0)
+    def test_about_me_page_valid(self):
+        response = self.client.get('/aboutme')
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b'Sign Up', response.data)
 
-    # renter_data = dict(username='Luna', first_name="rent", last_name="er", email="luna@gmail.com",
-    #                    roles='renter', password='5678')
     # propertyOwner_data = dict(username='Alan', first_name="proper", last_name="own", email="name@gmail.com",
     #                           roles='property_owner', password='pass')
     # post_data = dict(title='property1', content='this is some content', location='earth', space_size='M')
 
 
-
-
 if __name__ == '__main__':
-        unittest.main()
+    unittest.main()

@@ -1,3 +1,4 @@
+<!-- Contributors: Kowther (pagination), -->
 {% extends 'layout.html' %}
 
 {% block content %}
@@ -54,7 +55,10 @@
             </div>
         </div>
 
-
+<!--this section of code enables the search results to be paginated, it ensures that the button with the page number
+being viewed is filled in (see the different classes btn btn-info mb-4 for when it should be filled in and
+btn btn-outline-info mb-4 for just a button with an outline) finally as the number of pages increase an else statement
+ensures that an ellipsis will break up the page numbers-->
     {% endfor %}
     {% for page_num in posts.iter_pages() %}
         {% if page_num %}
