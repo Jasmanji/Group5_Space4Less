@@ -25,8 +25,8 @@ def saving_pictures_post(post_picture):
 
 
 @bp_posts.route('/post', methods=['GET', 'POST'])
-@role_required('property_owner')
 @login_required
+@role_required('property_owner')
 def post():
     form_post = PostForm()
     if form_post.validate_on_submit():
