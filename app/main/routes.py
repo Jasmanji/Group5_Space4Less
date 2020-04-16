@@ -52,29 +52,26 @@ def search():
         term = request.form.get("location")
         size = request.form.get("size")
         if term == "" and size == "":
-            flash("Enter a location or size to search for")
+            flash("Enter a location or size to search for", 'danger')
             return redirect('/')
         elif term != "" and size == "":
             results = Post.query.filter(Post.location.contains(term))\
                 .order_by(Post.date_posted.desc()).paginate(
-                page=page, per_page=6)
+                page=page, per_page=10)
             size_displayed = "all sized spaces"
             location_displayed = term
         elif term == "" and size != "":
             results = Post.query.filter_by(space_size=size)\
                 .order_by(Post.date_posted.desc()).paginate(
-                page=page, per_page=6)
+                page=page, per_page=10)
             size_displayed = size
             location_displayed = "all locations"
         elif term != "" and size != "":
             results = Post.query.filter_by(space_size=size, location=term)\
                 .order_by(Post.date_posted.desc()).paginate(
-                page=page, per_page=6)
+                page=page, per_page=10)
             size_displayed = size
             location_displayed = term
-        else:
-            flash("No post found matching this data.")
-            return redirect('/')
         return render_template('search.html', results=results, size_for_display=size_displayed,
                                location_for_display=location_displayed)
     else:

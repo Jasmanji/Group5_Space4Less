@@ -1,3 +1,21 @@
+.booking-request{
+    border: solid black;
+    padding: 1%;
+    margin: 2%;
+}
+
+.filter{
+    padding: 1%;
+}
+.filter-all{
+    background: #EBDEA8 !important;
+    padding: 2%;
+}
+.filter-all > form{
+    background: #EBDEA8 !important;
+    padding-top: 0 !important;
+}
+
 #filtering-class{
     border-color: #33383b;
     background-color: coral;
@@ -38,6 +56,7 @@
   width: auto;
   height: auto;
 }
+
 iframe {
     margin: auto;
     display: block;
@@ -55,40 +74,6 @@ iframe {
     list-style-type: none;
 }
 
-/*.all-signup{
-    border: #33383b; align-self: center;
-    display: table;
-    width: 100%;
-}
-
-
-.signup-left{
-    display: table-cell;
-    width: 50%;
-    background: coral;
-    float:left;
-    border: 2px solid black;
-
-}
-
-.signup-image{
-    width:100%;
-    background: #33383b;
-}
-
-.signup-content{
-    padding: 10%;
-    width: 100%;
-}
-
-.signup-right{
-    display: table-cell;
-
-    width: 50%;
-    float:right;
-}
-
-*/
 
 .post_image{
   width:25%
@@ -106,7 +91,7 @@ iframe {
 
 .col {
   flex: 1; /* additionally, equal width */
-  padding: 0% !important;
+  padding: 0 !important;
 }
 
 
@@ -186,7 +171,6 @@ iframe {
 }
 
 
-
 .align_center{
   text-align: center;
   margin: auto;
@@ -244,27 +228,15 @@ form {
 
 }
 
-
-/*nav{
-    background-image: url("nav-bar-image.png");
-    opacity: 0.5%;
-    background-size: cover;
-    min-height: 500px;
-}*/
-
 .nav {
   justify-content: space-between;
   height: 50px;
   width: 100%;
   background-color: transparent;
   opacity: 1;
-
-  /*position: relative;*/
 }
 
-/*.nav > .nav-header {
-  display: inline;
-}*/
+
 .nav{
   display: inline-block !important;
   margin: auto;
@@ -285,9 +257,9 @@ form {
 .nav > .nav-links {
   display: inline;
   /*float: right;*/
-  font-size: 18px;
   font-family: Montserrat, sans-serif;
   color: black;
+    font-size: 18px;
 }
 
 .nav > .nav-links > a {
@@ -341,6 +313,8 @@ form {
       padding: 1.5%;
   }
 
+
+
   .nav > .nav-links {
     position: absolute;
     display: block;
@@ -353,11 +327,14 @@ form {
     top: 50px;
     z-index: 9999;
     left: 0;
+
   }
 
   .nav > .nav-links > a {
     display: block;
     width: 100%;
+    padding: 5%;
+      font-size: 25px;
   }
 
   .nav > #nav-check:not(:checked) ~ .nav-links {

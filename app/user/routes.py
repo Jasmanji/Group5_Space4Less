@@ -38,8 +38,8 @@ def profile():
     elif current_user.roles == 'property_owner':
         bookings = Book.query.join(Post, Book.post_id == Post.post_id) \
             .join(User, User.user_id == Post.user_id) \
-            .with_entities(Book.content, Book.email, Book.book_id, Book.status, Book.price).filter_by(
-            user_id=userid).all()
+            .with_entities(Book.content, Book.email, Book.book_id, Book.status, Book.price, Book.renter_user_id)\
+            .filter_by(user_id=userid).all()
     return render_template('profile.html', title='profile', image_file=image, bookings=bookings)
 
 
