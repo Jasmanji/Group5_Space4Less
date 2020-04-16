@@ -1,3 +1,4 @@
+# Contributors: Kowther, Aure, Ariel
 import os
 import secrets
 
@@ -14,6 +15,12 @@ from app.models import Post, User, Comment
 bp_posts = Blueprint('posts', __name__)
 
 
+# this is the function created to allow for pictures that a property owner uploads as part of the post to be saved.
+# this function essentially creates a hex and attaches it onto the file extension (either jpg or png) and uses an OS
+# join to save the route to the picture to the database as the image itself cannot be saved the image itself is saved
+# in the POST_UPLOAD route (which is configured in the config.py) which  basically means the pictures themselves are
+# saved to the static/post_pictures folder.
+# Finally the path to the image is saved to the database and the post_image is returned
 def saving_pictures_post(post_picture):
     hide_name = secrets.token_hex(6)
     _, f_extension = os.path.splitext(post_picture.filename)
@@ -23,7 +30,9 @@ def saving_pictures_post(post_picture):
     post_picture.save(post_path)
     return post_image
 
-
+# beginning on the form_post.picture_for_posts.data line, the picture is requested from the user after which the
+# saving_pictures_post() function created above is called to save the image to the folder and the path to the image
+# is saved to the database
 @bp_posts.route('/post', methods=['GET', 'POST'])
 @login_required
 @role_required('property_owner')

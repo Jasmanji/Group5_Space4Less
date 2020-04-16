@@ -1,3 +1,4 @@
+# Contributors: Aure
 # we want to import wtforms to help us with the validation
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
@@ -7,19 +8,19 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationE
 
 
 #
-# # creating the class for the sign up form, which will inherit from the class FlaskForm to be representative of our form
-# # from app.models import User
+# # creating the class for the sign up form, which will inherit from the class FlaskForm to be representative of our
+# form # from app.models import User
 #
 #
 # class RegistrationForm(FlaskForm):
-#     # we will create form fields to validate specific things
-#     # the username is going to be a string field.
-#     # the first input is 'Username' which is the name of the filed. This will be used as the label in our HTML.
-#     # We then want to put some limits, we do this using validators: which will be a list of validations we want
-#     # to check.
-#     # the DataRequired validator will be used to check the user put an input.
-#     # the length gives a min and max amount the username can be.
-#     # the render_kw are there to add the placeholders for the string field type entries but the same is not applicatble
+#     we will create form fields to validate specific things
+#     the username is going to be a string field.
+#     the first input is 'Username' which is the name of the filed. This will be used as the label in our HTML.
+#     We then want to put some limits, we do this using validators: which will be a list of validations we want
+#     to check.
+#     the DataRequired validator will be used to check the user put an input.
+#     the length gives a min and max amount the username can be.
+#     the render_kw are there to add the placeholders for the string field type entries but the same is not applicatble
 #     # for the selectfield thus a different method (default) was used.
 #     username = StringField('Username',
 #                            validators=[DataRequired(), Length(min=2, max=20)],
