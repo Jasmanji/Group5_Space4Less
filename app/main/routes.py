@@ -107,16 +107,18 @@ def rate(bookid):
     property_owner_user_id = Book.query.filter_by(book_id=bookid).join(Post, Post.post_id==Book.post_id)\
         .with_entities(Post.user_id)
     user = User.query.get(current_user.get_id())
-    book=Book.query.filter_by(book_id=bookid)
+    book= Book.query.filter_by(book_id=bookid).first()
+    print(book)
     print(book.status)
     if review_form.validate_on_submit():
         book.status = 'booking complete'
-        db.session.commit()
+
         print(book.status)
         review = Review(content=review_form.content.data, stars=review_form.number.data, renter_user_id=user.user_id,
                         property_owner_user_id=property_owner_user_id)
+        book.status = 'booking complete'
+        print(book.status)
         db.session.add(review)
-
         db.session.commit()
         flash('you have successfully posted a review!', 'success')
         return redirect(url_for('main.home_page'))

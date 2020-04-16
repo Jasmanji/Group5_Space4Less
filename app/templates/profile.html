@@ -30,12 +30,12 @@
                             </td>
                         {% elif booking.status == 'payed' %}
 
-                            <td> payed {{ booking.price }} <a class="btn btn-primary" href="{{ url_for('main.rate', bookid=booking.book_id) }}"> post a
+                            <td> <a class="btn btn-primary" href="{{ url_for('main.rate', bookid=booking.book_id) }}"> post a
                                 review </a>
                             </td>
 
                         {% elif booking.status=='booking complete' %}
-                             <td> payed {{ booking.price }}</td>
+                             <td> payed £{{ booking.price }} </td>
                         {% endif %}
                     </tr>
                 {% endfor %}
