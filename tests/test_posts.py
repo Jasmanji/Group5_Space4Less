@@ -25,7 +25,7 @@ class TestPosts(BaseTestCase):
         )
         self.assertEqual(response.status_code, 200)
 
-    def test_adding_an_answer_fails(self):
+    def test_adding_an_answer_succeeds(self):
         self.login(email=self.propertyowner.email, password=self.propertyowner.password)
         response = self.client.get(
             '/answer/2',
