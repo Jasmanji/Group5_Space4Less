@@ -1,3 +1,6 @@
+{# DESCRIPTION: All bookings made by one renter.#}
+{# CONTRIBUTORS: Aure Enkaoua #}
+
 {% extends 'layout.html' %}
 {% block content %}
 
@@ -6,8 +9,6 @@
         you currently have no bookings
     {% else %}
         {% for post in bookings %}
-
-
 
             <div class="post">
                 <div class="media content-section">
@@ -25,8 +26,6 @@
                     </div>
                 </div>
             </div>
-
-
 
         {% endfor %}
     {% endif %}

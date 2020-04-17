@@ -1,13 +1,22 @@
 {# DESCRIPTION: personal profile page of renter/PO #}
-{# CONTRIBUTORS: Aure Enkaoua#}
+{# CONTRIBUTORS: Aure Enkaoua #}
 
 {% extends 'layout.html' %}
 {% block content %}
+    {# Personal details and profile pic #}
     <img class='profile_picture rounded-circle' src="{{ image_file }}">
     <h1>{{ current_user.first_name }} {{ current_user.last_name }}</h1>
     <h2 class="align_center">{{ current_user.username }}</h2>
     <h3 class="align_center">{{ current_user.email }}</h3>
     <div class="center">
+        {# as a renter, you can view your booking history, which will be a table with the date
+        booked, post title, and the status of the booking. The status of the booking will change
+        according to the phase of booking we are in, and this is where all booking actions will be
+        done from. The first stage is when the user has requested a booking, so it will say
+        'request pending' under the status. Then, when the PO sends the invoice, under status there
+         will be a button that sends you to the payment page. When you have made the payment, this
+         will give you access to a button for reviewing the PO based on your experience.
+         Once all this has been complete, it will state how much you have payed. #}
         {% if current_user.roles == 'renter' %}
             <h3>Booking History:</h3>
             <table class="table">
@@ -25,41 +34,54 @@
 
                         {% elif booking.status == 'payment required' %}
                             <td><a class="btn btn-primary"
-                                   href="{{ url_for('booking.payment', bookid = booking.book_id) }}">MAKE PAYMENT</a>
+                                   href="{{ url_for('booking.payment', bookid = booking.book_id) }}">
+                                MAKE PAYMENT
+                            </a>
                             </td>
                         {% elif booking.status == 'payed' %}
 
-                            <td> <a class="btn btn-primary" href="{{ url_for('main.rate', bookid=booking.book_id) }}"> post a
-                                review </a>
+                            <td><a class="btn btn-primary"
+                                   href="{{ url_for('main.rate', bookid=booking.book_id) }}">
+                                post a review </a>
                             </td>
 
                         {% elif booking.status=='booking complete' %}
-                             <td> payed £{{ booking.price }} </td>
+                            <td> payed £{{ booking.price }} </td>
                         {% endif %}
                     </tr>
                 {% endfor %}
 
             </table>
 
-
+            {# a renter can also view their bookings by clicking the button, and can update
+            their profile by clicking the update profile button. #}
             <a class="align_center btn btn-primary" href="{{ url_for('user.my_bookings') }}">BOOKINGS</a>
             <a class="align_center btn btn-primary" href="{{ url_for('user.update_account') }}">Update account</a>
+
+            {# otherwise, if the user is a PO, they can view 'my properties', also can update their account
+            they can also view their reviews. #}
         {% elif current_user.roles == 'property_owner' %}
 
             <a class="align_center btn btn-primary" href="{{ url_for('user.my_posts') }}">MY PROPERTIES</a>
             <a class="align_center btn btn-primary" href="{{ url_for('user.update_account') }}">Update account</a>
-            <a class="align_center btn btn-primary" href="{{ url_for('main.view_profile', userid=current_user.get_id() ) }}">reviews</a>
-
+            <a class="align_center btn btn-primary"
+               href="{{ url_for('main.view_profile', userid=current_user.get_id() ) }}">reviews</a>
+            {# The booking process for a PO  is as follows:
+                When someone is interested in their property, they get a notification with the message
+                and email of the renter interested.
+                They can then agree with them on a price, and once this is done they can send an invoice.
+                When the renter pays the invoice, it will confirm they have payed the price. Finally,
+                when the renter left a review, it will say they have a review. #}
             <h3 class="align_center">booking requests</h3>
             {% for request in bookings %}
                 <div class="booking-request">
                     <p>{{ request.content }}</p>
-                <hr>
-                <p>You may now talk to them and arrange a date and price
-                    email: <span style="color: red">{{ request.email }}</span></p>
+                    <hr>
+                    <p>You may now talk to them and arrange a date and price
+                        email: <span style="color: red">{{ request.email }}</span></p>
                     {% if request.status == 'request pending' %}
                         <a class="btn btn-success" href="{{ url_for('booking.send_invoice', bookid=request.book_id) }}">Send
-                        Invoice Request</a>
+                            Invoice Request</a>
                     {% elif request.status == 'booking required' %}
                         <p style="color: red"> PAYMENT PENDING </p>
                     {% elif request.status == 'payed' %}

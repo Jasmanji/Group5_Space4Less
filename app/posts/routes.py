@@ -7,9 +7,8 @@ from flask_login import login_required, current_user
 
 from app import db
 from app.main.routes import role_required
-from app.posts.forms import PostForm, QuestionForm, AnswerForm, UpdatePostForm
-
 from app.models import Post, User, Comment
+from app.posts.forms import PostForm, QuestionForm, AnswerForm, UpdatePostForm
 
 # we create an instance of blueprint as main
 bp_posts = Blueprint('posts', __name__)
@@ -33,9 +32,9 @@ def saving_pictures_post(post_picture):
     return post_image
 
 
-# beginning on the form_post.picture_for_posts.data line, the picture is requested from the user after which the
-# saving_pictures_post() function created above is called to save the image to the folder and the path to the image
-# is saved to the database
+# beginning on the form_post.picture_for_posts.data line, the picture is requested from the user
+# after which the saving_pictures_post() function created above is called to save the image to
+# the folder and the path to the image is saved to the database
 @bp_posts.route('/post', methods=['GET', 'POST'])
 @login_required
 @role_required('property_owner')
@@ -58,6 +57,8 @@ def post():
     return render_template('post.html', title='Post', content='content', image=image, form=form_post)
 
 
+# Route to view a single post. It has comments and answers of that post aswell.
+# If you are a renter, you can also submit a question in this page.
 @bp_posts.route("/single_post/<post_id>", methods=['GET', 'POST'])
 @login_required
 def single_post(post_id):
@@ -79,6 +80,8 @@ def single_post(post_id):
     return render_template('single_post.html', title=post.title, post=post, form=form_question, comments=comments)
 
 
+# This is the answer route for a specific comment. Can be accessed only by a PO that owns
+# that specific property.
 @bp_posts.route('/answer/<commentid>', methods=['GET', 'POST'])
 @login_required
 @role_required('property_owner')
@@ -93,6 +96,7 @@ def answer(commentid):
     return render_template('answer.html', form=answer_form)
 
 
+# Update post route, just like update profile but for a post.
 @bp_posts.route("/update_post/<postid>", methods=['GET', 'POST'])
 @role_required('property_owner')
 def update_post(postid):

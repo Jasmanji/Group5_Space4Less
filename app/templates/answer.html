@@ -1,5 +1,9 @@
+{# DESCRIPTION: Answering a specific question on a post #}
+{# CONTRIBUTORS: Aure Enkaoua #}
+
 {% extends 'layout.html' %}
 {% block content %}
+
     <form method="POST" novalidate enctype="multipart/form-data">
         {{ form.hidden_tag() }} <!-- we add a CSRF token for protection against furgery attacks -->
         <fieldset class="form-design">

@@ -1,20 +1,26 @@
+{# Description: Payment process withs stripe. #}
+{# Contributors: Aure Enkaoua #}
+
 {% extends 'layout.html' %}
 {% block content %}
-
+    {# Specifying how much the person needs to pay #}
     <h1>you are making a payment of £ {{ invoice.price }}</h1>
-<div class="align_center">
-    <form action="{{ url_for('booking.pay', bookid=invoice.book_id) }}" method="POST">
-        <script
-                src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                data-key="{{ pub_key }}"
-                data-amount="{{ invoice.price *100 }}"
-                data-name="Space4less"
-                data-description="Widget"
-                data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-                data-locale="auto"
-                data-currency="GBP">
-        </script>
-    </form>
-</div>
+    <div class="align_center">
+        {# Form from one of the stripe already made forms, but different data used.
+    The data currency is in GBP, and the data-amunt needs to be multiplied by 100 as it is in
+    cents, but the form was specified in pounds.#}
+        <form action="{{ url_for('booking.pay', bookid=invoice.book_id) }}" method="POST">
+            <script
+                    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                    data-key="{{ pub_key }}"
+                    data-amount="{{ invoice.price *100 }}"
+                    data-name="Space4less"
+                    data-description="renting a space"
+                    data-image="/static/logo.jpg"
+                    data-locale="auto"
+                    data-currency="GBP">
+            </script>
+        </form>
+    </div>
 
 {% endblock content %}

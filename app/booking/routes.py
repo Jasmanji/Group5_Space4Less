@@ -1,14 +1,12 @@
-# Contributors: Aure
-import stripe # for payment
+# Contributors: Aure Enkaoua
+import stripe  # for payment
 from flask import flash, redirect, url_for, render_template, request, Blueprint
 from flask_login import login_required, current_user
 
 from app import db
 from app.booking.forms import BookingRequestForm, SendInvoiceForm
-
-from app.models import Book
-
 from app.main.routes import role_required
+from app.models import Book
 
 # for stripe booking
 pub_key = 'pk_test_IzPesEUVXnPzY8a4Ecvr3J7C00bikUjRsi'
@@ -19,6 +17,9 @@ stripe.api_key = secret_key
 bp_booking = Blueprint('booking', __name__)
 
 
+# This is the requesting of a property by a renter. They need to fill in the required info in the
+# form in order to create a row in the Book db. When this is done, they will be redirected to the
+# profile, as this is where all the booking process takes place.
 @bp_booking.route('/book/<postid>', methods=['GET', 'POST'])
 @login_required
 @role_required('renter')
@@ -37,6 +38,8 @@ def book(postid):
     return render_template('request_booking.html', form=form_request_booking)
 
 
+# This is where the PO sends teh invoice for a specific booking. When this is complete,
+# we can add the price of the property, and set the status to 'payment required'.
 @bp_booking.route('/send invoice/<bookid>', methods=['GET', 'POST'])
 @login_required
 @role_required('property_owner')
@@ -54,8 +57,9 @@ def send_invoice(bookid):
     return render_template('send_invoice.html', form=form_send_invoice)
 
 
-# This is the payment page. The renter, when he clicks on 'make payment' for a specific booking, it will
-# bring them to this page, and they will make the payment specified in the invoice sent by the property owner
+# This is the payment page. The renter, when he clicks on 'make payment' for a specific booking,
+# it will bring them to this page, and they will make the payment specified in the invoice sent
+# by the property owner.
 @bp_booking.route("/booking/<bookid>", methods=['GET', 'POST'])
 @login_required
 @role_required('renter')
@@ -64,6 +68,9 @@ def payment(bookid):
     return render_template('payment.html', pub_key=pub_key, invoice=invoice)
 
 
+# Stripe checkout. We need a customer, which is our stripe account, ans our stripe token.
+# To this customer, we specify how much to pay them, and we set the currency to gbp.
+# We also change the status of booking to 'payed' once this is complete.
 @bp_booking.route('/pay/<bookid>', methods=['POST'])
 @login_required
 @role_required('renter')

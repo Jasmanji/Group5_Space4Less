@@ -1,4 +1,4 @@
-# Contributors:
+# Contributors: Aure
 # we want to import wtforms to help us with the validation
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed

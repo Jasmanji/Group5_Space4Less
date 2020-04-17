@@ -1,5 +1,5 @@
 # Contributors: Aure, Kowther
-from flask import url_for, flash, redirect, render_template, request, Blueprint
+from flask import url_for, flash, render_template, request, Blueprint
 from flask_login import current_user, login_user, logout_user
 from flask_mail import Message
 from werkzeug.security import generate_password_hash
@@ -134,6 +134,7 @@ def reset_email():
         return render_template('email_password_reset.html', form=form_reset)
 
     return render_template('email_password_reset.html', form=form_reset)
+
 
 # Modified from: https://github.com/CoreyMSchafer/code_snippets/blob/master/Python/Flask_Blog/10-Password-Reset-Email
 # /flaskblog/routes.py.  Date of retrieval: [2020/03/27]

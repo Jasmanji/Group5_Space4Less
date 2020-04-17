@@ -11,26 +11,27 @@
             </div>
             <div class="filter">
                 <select class="form-control" name="size" id="size">
-                <option value="" selected>Select a size</option>
-                <option value="Extra Small">XS</option>
-                <option value="Small">S</option>
-                <option value="Medium">M</option>
-                <option value="Medium Large">ML</option>
-                <option value="Large">L</option>
-                <option value="Extra Large">XL</option>
+                    <option value="" selected>Select a size</option>
+                    <option value="Extra Small">XS</option>
+                    <option value="Small">S</option>
+                    <option value="Medium">M</option>
+                    <option value="Medium Large">ML</option>
+                    <option value="Large">L</option>
+                    <option value="Extra Large">XL</option>
                 </select>
             </div>
             <div class="filter">
                 <input class="btn btn-success form-control" type="submit" placeholder="submit">
             </div>
             <div class="filter">
-            <p style="font-family: Montserrat, sans-serif">Showing results for {{ size_for_display }} sized spaces in {{ location_for_display }}</p>
+                <p style="font-family: Montserrat, sans-serif">Showing results for {{ size_for_display }} sized spaces
+                    in {{ location_for_display }}</p>
             </div>
         </form>
     </div>
 
 
-{# the results are now paginate items thus results.items is required #}
+    {# the results are now paginate items thus results.items is required #}
     {% for result in results.items %}
         <div class="post">
             <div class="media content-section">

@@ -1,6 +1,6 @@
-<!-- Contributors: Kowther Elmi, Aure
-this is the layout page which all pages extend from which includes the main elements for every page such as the navbar
-and footer-->
+<!-- Contributors: Kowther Elmi, Aure Enkaoua
+this is the layout page which all pages extend from which includes the main elements
+for every page such as the navbar and footer-->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,8 +24,8 @@ and footer-->
     <!-- Add icon library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-
-
+    {# In each route, we enter the title of that specific page. If there's no title specified,
+    it will take the name space4less. #}
     {% if title %}
         <title> {{ title }} </title>
     {% else %}
@@ -50,7 +50,6 @@ and footer-->
                     style='color: red; font-family: "Mr Dafoe"; font-size: 50px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 26.4px; '> 4 </span>
                 Less
             </div>
-
         </div>
 
 
@@ -65,7 +64,7 @@ and footer-->
 
         <!-- navbar content on the right -->
         <div class="nav-links">
-
+            {# the navbar links will change depending on who is logged in/if you are logged in #}
             <a href="{{ url_for('main.home_page') }}"> Home/Browse</a>
             {% if current_user.is_authenticated %}
                 {% if current_user.roles == 'property_owner' %}

@@ -1,3 +1,6 @@
+{# DESCRIPTION: form for Posting a space #}
+{# CONTRIBUTORS: Aure #}
+
 {% extends 'layout.html' %}
 
 {% block content %}
@@ -7,6 +10,7 @@
             {{ form.hidden_tag() }} <!-- we add a CSRF token for protection against furgery attacks -->
             <fieldset class="form-design">
                 <legend class="border-bottom">Create Post</legend>
+                {# title of post #}
                 <div class="form-group">
                     {{ form.title.label(class="form-control-label") }}
                     {% if form.title.errors %}
@@ -22,6 +26,7 @@
                         {{ form.title(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
+                {# content of post #}
                 <div class="form-group">
                     {{ form.content.label(class="form-control-label") }}
                     {% if form.content.errors %}
@@ -37,6 +42,7 @@
                         {{ form.content(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
+                {# postcode of space #}
                 <div class="form-group">
                     {{ form.location.label(class="form-control-label") }}
                     {% if form.location.errors %}
@@ -52,6 +58,7 @@
                         {{ form.location(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
+                {# size of space #}
                 <div class="dropdownmenu">
                     {{ form.space_size.label(class="form-control-label") }}
                     {% if form.space_size.errors %}
@@ -63,7 +70,7 @@
                             {% endfor %}
                         </div>
                     {% else %}
-
+                        {# hover menu #}
                         <button type="button" class="btn btn-light" id="hover-icon">Info</button>
                         <div class="hover-info-space-size">
                             <ul class="list-of-space-sizes">
@@ -81,6 +88,7 @@
                 <br>
                 <br>
                 <div class="form-group">
+                    {# picture of space #}
                     {{ form.picture_for_posts.label() }}
                     {% if form.picture_for_posts.errors %}
                         <br>
@@ -94,7 +102,6 @@
                         <br>
                         {{ form.picture_for_posts(class="form-control-file") }}
                     {% endif %}
-
                 </div>
                 <div class="attempt">
                     <!-- added this above class and the below id to make the elements easier to target with css -->

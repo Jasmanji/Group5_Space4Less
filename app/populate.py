@@ -1,4 +1,4 @@
-# Contributors:
+# Contributors: Aure Enkaoua
 
 # # we import the instance of the database that we will be populating
 from app import db

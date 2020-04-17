@@ -2,11 +2,13 @@
 # the render template is to help us with returning an html template for a route
 # the url_for is a function within flask that will find the exact location of routes for us
 import functools
+
 from flask import render_template, url_for, redirect, flash, Blueprint, request
+from flask_login import current_user, login_required
+
 from app import db
 from app.main.forms import ReviewForm  # we also need to import the forms we will be using
 from app.models import User, Post, Review, Book  # the tables from the db we will use
-from flask_login import current_user, login_required
 
 # we create an instance of blueprint as main
 bp_main = Blueprint('main', __name__)
@@ -14,7 +16,8 @@ bp_main = Blueprint('main', __name__)
 
 # creating role required decorator to stop certain pages from being accessed depending on
 # your role.
-# with help from Victor!! Modified from: https://gist.github.com/VictorDarvariu/243773079e4e954bbda85ab505ebc270
+# with help from Victor!!
+# Modified from: https://gist.github.com/VictorDarvariu/243773079e4e954bbda85ab505ebc270
 def role_required(required_role):
     def role_decorator(func):  # this is the decorator we are writing. The function we want to
         # run is named 'func'
