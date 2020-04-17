@@ -14,6 +14,7 @@ from app.models import User, Post, Review, Book  # the tables from the db we wil
 bp_main = Blueprint('main', __name__)
 
 
+
 # creating role required decorator to stop certain pages from being accessed depending on
 # your role.
 # with help from Victor!!
