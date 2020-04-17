@@ -95,12 +95,13 @@ def logout():
     return redirect(url_for('main.home_page'))
 
 
-# this is the function used in the reset_email route below
-# this function creates a token using the get_reset_token() function created in the models.py and the message is
-# specified
-# the title of the email is specified as Password Reset, the sender is the gmail we created and the user's email is
-# specified as the recipient. Finally the message body is specified and the unique url is attached to the message body
-# finally mail.send() function is called.
+# Modified from: https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xi-email-support,
+# Date of retrieval: [2020/03/27]
+# this is the function used in the reset_email route below this function creates a
+# token using the get_reset_token() function created in the models.py and the message is specified the title of the
+# email is specified as Password Reset, the sender is the gmail we created and the user's email is specified as the
+# recipient. Finally the message body is specified and the unique url is attached to the message body finally
+# mail.send() function is called.
 def send_email(user):
     token = user.get_reset_token()
     msg = Message('Password Reset',
@@ -112,11 +113,13 @@ def send_email(user):
     mail.send(msg)
 
 
-# this route uses the Email Form from auth/forms.py, once the email is input the database is queried to check that
-# email inserted corresponds to a user and the if/else statement is used to account for the 2 options; user is in the
-# database or there is no email associated with the account. option 1 leads to the send_email() function being called
-# as the email has been validated option 2 leads to a flash message being displayed to let the user know that the
-# email was not found to be associated with a user in the database
+# Modified from: https://github.com/CoreyMSchafer/code_snippets/blob/master/Python/Flask_Blog/10-Password-Reset-Email
+# /flaskblog/routes.py.  Date of retrieval: [2020/03/27]
+# this route uses the Email Form from auth/forms.py, once the email is input the database is
+# queried to check that email inserted corresponds to a user and the if/else statement is used to account for the 2
+# options; user is in the database or there is no email associated with the account. option 1 leads to the
+# send_email() function being called as the email has been validated option 2 leads to a flash message being
+# displayed to let the user know that the email was not found to be associated with a user in the database
 @bp_auth.route('/reset', methods=['GET', 'POST'])
 def reset_email():
     form_reset = EmailForm()
@@ -132,7 +135,8 @@ def reset_email():
 
     return render_template('email_password_reset.html', form=form_reset)
 
-
+# Modified from: https://github.com/CoreyMSchafer/code_snippets/blob/master/Python/Flask_Blog/10-Password-Reset-Email
+# /flaskblog/routes.py.  Date of retrieval: [2020/03/27]
 # this route is where the user can reset their password. The user is taken to this route after pressing on the url
 # sent to them in the message body of the email as shown in the send_email() above This route uses the PasswordReset
 # form as shown in auth/forms.py after the token is verified using the verify_reset_token() which was created in the

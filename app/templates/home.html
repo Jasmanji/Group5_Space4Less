@@ -11,13 +11,13 @@
             </div>
             <div class="filter">
                 <select class="form-control" name="size" id="size">
-                <option value="" selected>Select a size</option>
-                <option value="Extra Small">XS</option>
-                <option value="Small">S</option>
-                <option value="Medium">M</option>
-                <option value="Medium Large">ML</option>
-                <option value="Large">L</option>
-                <option value="Extra Large">XL</option>
+                    <option value="" selected>Select a size</option>
+                    <option value="Extra Small">XS</option>
+                    <option value="Small">S</option>
+                    <option value="Medium">M</option>
+                    <option value="Medium Large">ML</option>
+                    <option value="Large">L</option>
+                    <option value="Extra Large">XL</option>
                 </select>
             </div>
             <br>
@@ -54,11 +54,12 @@
                 </div>
             </div>
         </div>
-
-<!--this section of code enables the search results to be paginated, it ensures that the button with the page number
-being viewed is filled in (see the different classes btn btn-info mb-4 for when it should be filled in and
-btn btn-outline-info mb-4 for just a button with an outline) finally as the number of pages increase an else statement
-ensures that an ellipsis will break up the page numbers-->
+        <!-- Modified from: https://github.com/CoreyMSchafer/code_snippets/blob/master/Python/Flask_Blog/09-Pagination/flaskblog/templates/home.html
+           Date of Retrieval: [2020/04/10]-->
+        <!--this section of code enables the search results to be paginated, it ensures that the button with the page number
+        being viewed is filled in (see the different classes btn btn-info mb-4 for when it should be filled in and
+        btn btn-outline-info mb-4 for just a button with an outline) finally as the number of pages increase an else statement
+        ensures that an ellipsis will break up the page numbers-->
     {% endfor %}
     {% for page_num in posts.iter_pages() %}
         {% if page_num %}

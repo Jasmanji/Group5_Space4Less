@@ -31,6 +31,8 @@ from app.populate import populate_db
 def create_app(config_class=DevConfig):
     # we start by creating an instance of an app.
     app = Flask(__name__)
+    # # Modified from: https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xi-email-support,
+    # # Date of retrieval: [2020/03/27]
     # these just configure flask mail and ensure it always sends from our new email
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'
     app.config['MAIL_PORT'] = 587
