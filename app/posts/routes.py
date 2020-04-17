@@ -77,6 +77,7 @@ def single_post(post_id):
 
 
 @bp_posts.route('/answer/<commentid>', methods=['GET', 'POST'])
+@login_required
 @role_required('property_owner')
 def answer(commentid):
     answer_form = AnswerForm()

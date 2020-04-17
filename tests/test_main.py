@@ -1,14 +1,12 @@
 # Contributors: Kowther
 import unittest
 
-from flask import url_for
+from flask_login import current_user
 from flask_testing import TestCase
+
 from app import create_app, db
-
-from app.models import User
 from app.config import TestConfig
-
-from flask_login import current_user, login_user, logout_user
+from app.models import User
 
 
 class BaseTestCase(TestCase):
@@ -66,9 +64,17 @@ class BaseTestCase(TestCase):
         response = self.client.get('/aboutme')
         self.assertEqual(response.status_code, 200)
 
-    # propertyOwner_data = dict(username='Alan', first_name="proper", last_name="own", email="name@gmail.com",
-    #                           roles='property_owner', password='pass')
-    # post_data = dict(title='property1', content='this is some content', location='earth', space_size='M')
+    def test_review_succeeds(self):
+        self.login(email=self.renter.email, password=self.renter.password)
+        response = self.client.post(
+            '/view_profile/1',
+            data=dict(renter_user_id=current_user.get_id(), property_owner_user_id=1, review_id=1,
+                      stars=1, content='content'),
+            follow_redirects=False
+
+        )
+
+        self.assertEqual(response.status_code, 302)
 
 
 if __name__ == '__main__':

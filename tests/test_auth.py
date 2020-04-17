@@ -1,8 +1,8 @@
 # Contributors: Aure, Kowther
 from flask import url_for
+
 from app.models import User
 from tests.test_main import BaseTestCase
-from flask_login import current_user
 
 
 class TestPosts(BaseTestCase):
@@ -34,4 +34,4 @@ class TestPosts(BaseTestCase):
         self.assertIn(b'Sign Up', response.data)
 
     renter_data = dict(username='Luna', first_name="rent", last_name="er", email="luna@gmail.com",
-                        roles='renter', password='5678')
+                       roles='renter', password='5678')
