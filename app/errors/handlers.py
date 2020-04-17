@@ -1,4 +1,4 @@
-# Contributed to by: Aure, Ariel
+# Contributors: Aure, Ariel
 
 from flask import Blueprint, render_template
 
