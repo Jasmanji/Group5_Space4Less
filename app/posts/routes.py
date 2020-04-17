@@ -19,8 +19,10 @@ bp_posts = Blueprint('posts', __name__)
 # this function essentially creates a hex and attaches it onto the file extension (either jpg or png) and uses an OS
 # join to save the route to the picture to the database as the image itself cannot be saved the image itself is saved
 # in the POST_UPLOAD route (which is configured in the config.py) which  basically means the pictures themselves are
-# saved to the static/post_pictures folder.
-# Finally the path to the image is saved to the database and the post_image is returned
+# saved to the static/post_pictures folder. Finally the path to the image is saved to the database and the post_image
+# is returned
+# Modified from: https://github.com/CoreyMSchafer/code_snippets/blob/master/Python/Flask_Blog/07-User
+# -Account-Profile-Pic/flaskblog/routes.py.  Date retrieved: [2020/03/05]
 def saving_pictures_post(post_picture):
     hide_name = secrets.token_hex(6)
     _, f_extension = os.path.splitext(post_picture.filename)
@@ -29,6 +31,7 @@ def saving_pictures_post(post_picture):
     post_path = os.path.join(config['POST_UPLOAD'], post_image)
     post_picture.save(post_path)
     return post_image
+
 
 # beginning on the form_post.picture_for_posts.data line, the picture is requested from the user after which the
 # saving_pictures_post() function created above is called to save the image to the folder and the path to the image

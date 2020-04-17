@@ -21,6 +21,8 @@ bp_user = Blueprint('user', __name__)
 # in the UPLOAD_FOLDER route (which is configured in the config.py) which  basically means the pictures themselves are
 # saved to the static/profile_pictures folder.
 # Finally the path to the image is saved to the database and the post_image is returned
+# Modified from: https://github.com/CoreyMSchafer/code_snippets/blob/master/Python/Flask_Blog/07-User
+# -Account-Profile-Pic/flaskblog/routes.py.  Date retrieved: [2020/03/05]
 def saving_pictures(profile_picture):
     hide_name = secrets.token_hex(6)
     _, f_extension = os.path.splitext(profile_picture.filename)
